@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+
+:root {
+
+  font-family: "Inter", sans-serif;
+
+  color: #0f172a;
+
+  background: #ffffff;
+
+}
+
+
+
+*{
+  box-sizing:border-box;
+}
+
+
+
+html{
+  scroll-behavior:smooth;
+}
+
+
+
+body{
+
+  margin:0;
+
+  min-height:100vh;
+
+  background:#ffffff;
+
+}
+
+
+
+
+
+/* Glass Effect */
+
+.glass{
+
+background:
+rgba(255,255,255,0.85);
+
+backdrop-filter:
+blur(12px);
+
+-webkit-backdrop-filter:
+blur(12px);
+
+border:
+1px solid rgba(226,232,240,0.8);
+
+}
+
+
+
+
+
+/* Soft Government Portal Glow */
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+width:350px;
+
+height:350px;
+
+top:-150px;
+
+right:-100px;
+
+
+background:
+
+radial-gradient(
+circle,
+rgba(37,99,235,.15),
+transparent 70%
+);
+
+
+filter:blur(60px);
+
+z-index:-1;
+
+}
+
+
+
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+width:300px;
+
+height:300px;
+
+bottom:-100px;
+
+left:-100px;
+
+
+background:
+
+radial-gradient(
+circle,
+rgba(20,184,166,.10),
+transparent 70%
+);
+
+
+filter:blur(60px);
+
+z-index:-1;
+
+}
