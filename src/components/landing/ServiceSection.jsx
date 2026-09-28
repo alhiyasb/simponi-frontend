@@ -101,10 +101,21 @@ export default function ServiceSection() {
                     to={service.to}
                     className="mt-8 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-600 hover:text-white hover:shadow-[0_12px_30px_rgba(37,99,235,0.22)]"
                   >
-                    <span>Pelajari</span>
+                    <span>
+                      {index === 0
+                        ? "Lapor Sekarang"
+                        : index === 1
+                        ? "Tracking Sekarang"
+                        : "Lihat Sekarang"}
+                    </span>
+
                     <motion.span
                       animate={{ x: [0, 4, 0] }}
-                      transition={{ duration: 1.3, repeat: Infinity, ease: "easeInOut" }}
+                      transition={{
+                        duration: 1.3,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
                       className="inline-block"
                     >
                       →

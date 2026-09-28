@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useStatistikData } from '../../hooks/useStatistikData';
 import Navbar from '../../components/layout/Navbar';
 import {
@@ -60,7 +60,7 @@ const EMPTY_STYLE = {
   color: '#64748B',
 };
 
-export default function DataPage() {
+export default function DataProvinsiPage() {
   const {
     loading,
     error,
@@ -103,9 +103,6 @@ export default function DataPage() {
   const hasActiveFilters =
     filters.tahun !== 'ALL' || filters.kabupaten !== 'ALL';
 
-  // =========================
-  // TAMPILAN JIKA ERROR
-  // =========================
   if (error) {
     return (
       <>
@@ -139,9 +136,6 @@ export default function DataPage() {
     );
   }
 
-  // =========================
-  // TAMPILAN UTAMA
-  // =========================
   return (
     <>
       <Navbar />
@@ -149,10 +143,10 @@ export default function DataPage() {
       <div style={PAGE_STYLE}>
         <div style={CONTAINER_STYLE}>
           <div style={HEADER_STYLE}>
-            <h1 style={TITLE_STYLE}>Statistik Kasus</h1>
+            <h1 style={TITLE_STYLE}>Statistik Kasus - Provinsi</h1>
 
             <p style={SUBTITLE_STYLE}>
-              Visualisasi data pernikahan dini dari API statistik. Gunakan
+              Visualisasi data pernikahan dini tingkat provinsi. Gunakan
               filter untuk menyesuaikan tampilan.
             </p>
           </div>
@@ -173,8 +167,8 @@ export default function DataPage() {
               filters.kategoriChart === 'kabupaten'
                 ? 'Top 15 Kabupaten/Kota berdasarkan jumlah kasus'
                 : filters.kategoriChart === 'tahun'
-                ? 'Distribusi kasus per tahun'
-                : 'Distribusi kasus per jenis kelamin'
+                  ? 'Distribusi kasus per tahun'
+                  : 'Distribusi kasus per jenis kelamin'
             }
           >
             <CaseBarChart data={chartData} loading={loading} />

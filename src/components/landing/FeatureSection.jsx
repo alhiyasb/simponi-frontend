@@ -1,4 +1,4 @@
-import heroImage from "../../assets/images/pernikahan-dini.jpeg";
+import heroImage from "../../assets/images/seminar.jpeg";
 
 const features = [
   "Pelaporan aman dan mudah diakses masyarakat",
@@ -45,9 +45,6 @@ export default function FeatureSection() {
               ))}
             </div>
 
-            <button className="mt-10 rounded-full bg-gradient-to-r from-blue-600 to-sky-500 px-8 py-3.5 font-semibold text-white shadow-[0_20px_40px_rgba(37,99,235,0.25)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_25px_50px_rgba(59,130,246,0.35)]">
-              Pelajari Lebih Lanjut
-            </button>
           </div>
 
           <div className="relative">

@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 const roles = [
   {
     id: 'masyarakat',
     label: 'Masyarakat',
     badge: 'Pelapor / Warga',
-    description: 'Login cepat dengan OTP dan akses laporan',
+    description: 'Login dengan email/NIK dan password',
   },
   {
     id: 'pemda',
@@ -31,14 +32,16 @@ const featureList = [
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
+
   const [mode, setMode] = useState('login');
   const [selectedRole, setSelectedRole] = useState('masyarakat');
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
-  const [otp, setOtp] = useState('');
-  const [isOtpSent, setIsOtpSent] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   const [fullName, setFullName] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPhone, setRegisterPhone] = useState('');
@@ -46,31 +49,23 @@ export default function Login() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
-  const handleSendOtp = () => {
-    if (!identifier.trim()) {
-      setError('Masukkan nomor HP atau email terlebih dahulu.');
-      return;
-    }
-
-    setError('');
-    setIsOtpSent(true);
-  };
-
-  const navigateByRole = () => {
-    if (selectedRole === 'masyarakat') {
+  const navigateByRole = (role) => {
+    if (role === 'public') {
       navigate('/pelaporan');
       return;
     }
-
-    if (selectedRole === 'pemda') {
+    if (role === 'admin_pemda') {
       navigate('/data');
       return;
     }
-
-    navigate('/data');
+    if (role === 'admin_pemprov') {
+      navigate('/data-provinsi');
+      return;
+    }
+    navigate('/pelaporan');
   };
 
-  const handleRegister = (event) => {
+  const handleRegister = async (event) => {
     event.preventDefault();
 
     if (!fullName.trim() || !registerEmail.trim() || !registerPhone.trim()) {
@@ -98,83 +93,28 @@ export default function Login() {
       return;
     }
 
-    const savedUsers = JSON.parse(localStorage.getItem('simponi-users') || '[]');
-    const emailExists = savedUsers.some((user) => user.email.toLowerCase() === registerEmail.toLowerCase());
-    const phoneExists = savedUsers.some((user) => user.phone === registerPhone);
-
-    if (emailExists || phoneExists) {
-      setError('Akun dengan email atau nomor HP ini sudah terdaftar.');
-      return;
-    }
-
-    const newUser = {
-      id: Date.now(),
-      fullName: fullName.trim(),
-      email: registerEmail.trim(),
-      phone: registerPhone.trim(),
-      password: registerPassword,
-      role: selectedRole,
-      createdAt: new Date().toISOString(),
-    };
-
-    localStorage.setItem('simponi-users', JSON.stringify([...savedUsers, newUser]));
-    localStorage.setItem('simponi-user-logged-in', JSON.stringify(true));
-    localStorage.setItem('simponi-user-role', JSON.stringify(selectedRole));
-    localStorage.setItem('simponi-user-name', JSON.stringify(newUser.fullName));
-
-    setError('');
-    setMode('login');
-    setIdentifier(registerEmail);
-    setPassword(registerPassword);
-    setRegisterEmail('');
-    setRegisterPhone('');
-    setRegisterPassword('');
-    setConfirmPassword('');
-    setAcceptedTerms(false);
-    setFullName('');
-    setOtp('');
-    setIsOtpSent(false);
-
-    navigateByRole();
+    setError('Registrasi belum tersedia. Silakan hubungi administrator untuk pembuatan akun.');
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setError('');
 
-    if (selectedRole === 'masyarakat') {
-      if (!identifier.trim()) {
-        setError('Nomor HP atau email wajib diisi.');
-        return;
-      }
-
-      if (isOtpSent && otp.trim().length < 4) {
-        setError('Kode OTP tidak valid.');
-        return;
-      }
-    }
-
-    if (selectedRole !== 'masyarakat' && (!identifier.trim() || !password.trim())) {
-      setError('Email dinas dan password wajib diisi.');
+    if (!identifier.trim() || !password.trim()) {
+      setError('Email/NIK dan password wajib diisi.');
       return;
     }
 
-    if (selectedRole !== 'masyarakat' && (!otp.trim() || otp.trim().length < 4)) {
-      setError('Kode verifikasi 2FA wajib diisi.');
-      return;
+    setIsLoading(true);
+
+    try {
+      const user = await login(identifier, password);
+      navigateByRole(user.role);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
-
-    const userName =
-      selectedRole === 'masyarakat'
-        ? 'Warga SIMPONI'
-        : selectedRole === 'pemda'
-          ? 'Admin Pemda'
-          : 'Admin Pemprov';
-
-    localStorage.setItem('simponi-user-logged-in', JSON.stringify(true));
-    localStorage.setItem('simponi-user-role', JSON.stringify(selectedRole));
-    localStorage.setItem('simponi-user-name', JSON.stringify(userName));
-
-    navigateByRole();
   };
 
   return (
@@ -395,9 +335,7 @@ export default function Login() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
-                    {selectedRole === 'masyarakat' ? 'Nomor HP / Email' : 'Email dinas'}
-                  </label>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">Email / NIK</label>
                   <div className="relative">
                     <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
                       <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2" aria-hidden="true">
@@ -411,80 +349,37 @@ export default function Login() {
                       type="text"
                       value={identifier}
                       onChange={(event) => setIdentifier(event.target.value)}
-                      placeholder={selectedRole === 'masyarakat' ? '0812... / nama@email.com' : 'nama@jabarprov.go.id'}
+                      placeholder="Masukkan email atau NIK"
                       className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-slate-800 outline-none transition focus:border-[#155DFC] focus:bg-white focus:ring-4 focus:ring-[#155DFC]/10"
                     />
                   </div>
                 </div>
 
-                {selectedRole !== 'masyarakat' && (
-                  <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">Password</label>
-                    <div className="relative">
-                      <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-                        <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2" aria-hidden="true">
-                          <rect x="4" y="11" width="16" height="9" rx="2" />
-                          <path d="M8 11V8a4 4 0 1 1 8 0v3" />
-                        </svg>
-                      </span>
-                      <input
-                        type={showPassword ? 'text' : 'password'}
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        placeholder="Masukkan password"
-                        className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-11 text-slate-800 outline-none transition focus:border-[#155DFC] focus:bg-white focus:ring-4 focus:ring-[#155DFC]/10"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword((prev) => !prev)}
-                        className="absolute inset-y-0 right-0 flex items-center pr-4 text-sm font-medium text-slate-500 hover:text-slate-700"
-                      >
-                        {showPassword ? 'Sembunyikan' : 'Tampil'}
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {selectedRole === 'masyarakat' && (
-                  <div className="rounded-2xl border border-dashed border-blue-200 bg-blue-50/70 p-3.5">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="text-sm font-semibold text-slate-700">Verifikasi OTP</span>
-                      <button
-                        type="button"
-                        onClick={handleSendOtp}
-                        className="rounded-full bg-[#155DFC] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#0f47d6]"
-                      >
-                        {isOtpSent ? 'Kirim ulang' : 'Kirim OTP'}
-                      </button>
-                    </div>
-
-                    {isOtpSent && (
-                      <div className="mt-3">
-                        <label className="mb-2 block text-sm font-semibold text-slate-700">Kode OTP</label>
-                        <input
-                          type="text"
-                          value={otp}
-                          onChange={(event) => setOtp(event.target.value)}
-                          placeholder="Masukkan 4 digit OTP"
-                          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-[#155DFC] focus:ring-4 focus:ring-[#155DFC]/10"
-                        />
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {selectedRole !== 'masyarakat' && (
-                  <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">Kode 2FA</label>
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">Password</label>
+                  <div className="relative">
+                    <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                      <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2" aria-hidden="true">
+                        <rect x="4" y="11" width="16" height="9" rx="2" />
+                        <path d="M8 11V8a4 4 0 1 1 8 0v3" />
+                      </svg>
+                    </span>
                     <input
-                      type="text"
-                      value={otp}
-                      onChange={(event) => setOtp(event.target.value)}
-                      placeholder="Masukkan kode verifikasi"
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 outline-none transition focus:border-[#155DFC] focus:bg-white focus:ring-4 focus:ring-[#155DFC]/10"
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      placeholder="Masukkan password"
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-11 text-slate-800 outline-none transition focus:border-[#155DFC] focus:bg-white focus:ring-4 focus:ring-[#155DFC]/10"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className="absolute inset-y-0 right-0 flex items-center pr-4 text-sm font-medium text-slate-500 hover:text-slate-700"
+                    >
+                      {showPassword ? 'Sembunyikan' : 'Tampil'}
+                    </button>
                   </div>
-                )}
+                </div>
 
                 <div className="flex items-center justify-between gap-3 pt-1">
                   <label className="inline-flex items-center gap-2 text-sm text-slate-600">
@@ -504,9 +399,10 @@ export default function Login() {
 
                 <button
                   type="submit"
-                  className="w-full rounded-full bg-[linear-gradient(135deg,#155DFC_0%,#2f7bff_100%)] px-5 py-3.5 text-base font-semibold text-white shadow-[0_18px_36px_rgba(21,93,252,0.28)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_42px_rgba(21,93,252,0.34)]"
+                  disabled={isLoading}
+                  className="w-full rounded-full bg-[linear-gradient(135deg,#155DFC_0%,#2f7bff_100%)] px-5 py-3.5 text-base font-semibold text-white shadow-[0_18px_36px_rgba(21,93,252,0.28)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_42px_rgba(21,93,252,0.34)] disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {selectedRole === 'masyarakat' ? 'Masuk ke Laporan Saya' : 'Masuk ke Dashboard'}
+                  {isLoading ? 'Memproses...' : selectedRole === 'masyarakat' ? 'Masuk ke Laporan Saya' : 'Masuk ke Dashboard'}
                 </button>
 
                 <p className="text-center text-sm text-slate-500">

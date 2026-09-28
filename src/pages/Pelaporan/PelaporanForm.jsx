@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { submitPelaporan } from "../../services/api";
+import Navbar from "../../components/layout/Navbar";
 
 const initialState = {
   // Bagian 1
