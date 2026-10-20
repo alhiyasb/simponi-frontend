@@ -267,6 +267,7 @@ export default function PetaPernikahanDini({ availableYears = [] }) {
               zoom={8}
               minZoom={6}
               maxZoom={19}
+              dragging
               scrollWheelZoom
               style={{ height: 520, width: '100%' }}
             >
