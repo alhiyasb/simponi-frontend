@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   MapContainer,
   TileLayer,
   GeoJSON,
   LayersControl,
+  useMap,
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -39,15 +40,72 @@ function getRisk(feature) {
   return String(feature?.properties?.tingkat_risiko || '').toLowerCase();
 }
 
-function featureStyle(feature) {
+function featureStyle(feature, zoom = 8) {
   const risk = RISK_STYLE[getRisk(feature)];
+
+  if (zoom >= 12) {
+    return {
+      fillColor: risk?.color || DEFAULT_COLOR,
+      fillOpacity: 0,
+      color: '#ffffff',
+      opacity: 0,
+      weight: 0,
+    };
+  }
 
   return {
     fillColor: risk?.color || DEFAULT_COLOR,
-    fillOpacity: 0.24,
+    fillOpacity: 0.38,
     color: '#ffffff',
     weight: 1.25,
   };
+}
+
+function RiskGeoJSON({ data, layerKey }) {
+  const map = useMap();
+  const layerRef = useRef(null);
+
+  useEffect(() => {
+    const updateStyleForZoom = () => {
+      layerRef.current?.eachLayer((layer) => {
+        layer.setStyle(featureStyle(layer.feature, map.getZoom()));
+      });
+    };
+
+    map.on('zoomend', updateStyleForZoom);
+    updateStyleForZoom();
+
+    return () => map.off('zoomend', updateStyleForZoom);
+  }, [map]);
+
+  const onEachFeature = (feature, layer) => {
+    const props = feature.properties || {};
+
+    layer.bindTooltip(props.nama_kabupaten || '-', { sticky: true });
+    layer.bindPopup(buildPopupHtml(props));
+
+    layer.on({
+      mouseover: (event) =>
+        event.target.setStyle({
+          weight: 2.5,
+          fillOpacity: map.getZoom() >= 12 ? 0 : 0.4,
+        }),
+      mouseout: (event) =>
+        event.target.setStyle(featureStyle(feature, map.getZoom())),
+    });
+  };
+
+  return (
+    <LayersControl.Overlay checked name="Tingkat risiko wilayah">
+      <GeoJSON
+        ref={layerRef}
+        key={layerKey}
+        data={data}
+        style={(feature) => featureStyle(feature, map.getZoom())}
+        onEachFeature={onEachFeature}
+      />
+    </LayersControl.Overlay>
+  );
 }
 
 function buildPopupHtml(props) {
@@ -139,18 +197,6 @@ export default function PetaPernikahanDini({ availableYears = [] }) {
     return summary;
   }, [geoData]);
 
-  const onEachFeature = (feature, layer) => {
-    const props = feature.properties || {};
-
-    layer.bindTooltip(props.nama_kabupaten || '-', { sticky: true });
-    layer.bindPopup(buildPopupHtml(props));
-
-    layer.on({
-      mouseover: (e) => e.target.setStyle({ weight: 2.5, fillOpacity: 0.4 }),
-      mouseout: (e) => e.target.setStyle(featureStyle(feature)),
-    });
-  };
-
   return (
     <section className="mt-12">
       <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -234,35 +280,40 @@ export default function PetaPernikahanDini({ availableYears = [] }) {
                   />
                 </LayersControl.BaseLayer>
 
-                <LayersControl.BaseLayer name="Peta detail">
+                <LayersControl.BaseLayer name="Peta jalan detail">
                   <TileLayer
-                    attribution={`${TILE_ATTRIBUTION} &copy; <a href="https://carto.com/attributions">CARTO</a>`}
-                    url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-                    subdomains="abcd"
-                    maxNativeZoom={20}
-                    maxZoom={20}
+                    attribution="Tiles &copy; Esri"
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
+                    maxNativeZoom={19}
+                    maxZoom={19}
+                  />
+                </LayersControl.BaseLayer>
+
+                <LayersControl.BaseLayer name="Peta satelit">
+                  <TileLayer
+                    attribution="Imagery &copy; Esri, Maxar, Earthstar Geographics"
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                    maxNativeZoom={19}
+                    maxZoom={19}
                   />
                 </LayersControl.BaseLayer>
 
                 <LayersControl.BaseLayer name="Peta topografi">
                   <TileLayer
-                    attribution={`${TILE_ATTRIBUTION} | Map style: <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)`}
-                    url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
-                    maxNativeZoom={17}
+                    attribution="Tiles &copy; Esri"
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
+                    maxNativeZoom={19}
                     maxZoom={19}
                   />
                 </LayersControl.BaseLayer>
-              </LayersControl>
 
-              {geoData?.features?.length > 0 && (
-                <GeoJSON
-                  /* key wajib: GeoJSON react-leaflet tidak update otomatis saat data berubah */
-                  key={`${tahun || 'semua'}-${reloadKey}`}
-                  data={geoData}
-                  style={featureStyle}
-                  onEachFeature={onEachFeature}
-                />
-              )}
+                {geoData?.features?.length > 0 && (
+                  <RiskGeoJSON
+                    layerKey={`${tahun || 'semua'}-${reloadKey}`}
+                    data={geoData}
+                  />
+                )}
+              </LayersControl>
             </MapContainer>
 
             {/* LEGENDA */}

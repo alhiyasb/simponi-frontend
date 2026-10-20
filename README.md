@@ -2,6 +2,12 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+## Local development
+
+Start the backend API on `127.0.0.1:8000`, then run the frontend with `npm run dev`.
+The Vite development proxy forwards `/api` requests to that backend. To use a
+different backend host, set `VITE_API_PROXY_TARGET` in `.env`.
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
