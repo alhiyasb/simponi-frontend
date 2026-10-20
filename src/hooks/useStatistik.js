@@ -11,6 +11,11 @@ import {
   getKemiskinanBps,
   getRingkasan,
 } from '../services/api';
+import {
+  getStatistikRegion,
+  getStatistikValue,
+  getStatistikYear,
+} from '../utils/statistik';
 
 const endpointMap = {
   'pernikahan-dini': getPernikahanDini,
@@ -80,26 +85,30 @@ export function useStatistik(endpointKey) {
   }, [fetchData]);
 
   const years = useMemo(
-    () => [...new Set(rawData.map((item) => Number(item.tahun)).filter((year) => !Number.isNaN(year)))].sort((a, b) => b - a),
+    () => [...new Set(rawData.map(getStatistikYear).filter(Boolean))]
+      .sort((a, b) => String(b).localeCompare(String(a), undefined, { numeric: true })),
     [rawData]
   );
 
   const kabupatens = useMemo(
-    () => [...new Set(rawData.map((item) => item.nama_kabupaten_kota || item.kabupaten || item.nama_kabupaten).filter(Boolean))].sort(),
+    () => [...new Set(rawData.map(getStatistikRegion).filter(Boolean))].sort(),
     [rawData]
   );
 
   const filteredData = useMemo(() => {
     return rawData.filter((item) => {
-      if (filters.tahun !== 'ALL' && Number(item.tahun) !== Number(filters.tahun)) return false;
-      if (filters.kabupaten !== 'ALL' && (item.nama_kabupaten_kota || item.kabupaten || item.nama_kabupaten) !== filters.kabupaten) return false;
+      if (filters.tahun !== 'ALL' && String(getStatistikYear(item)) !== filters.tahun) return false;
+      if (filters.kabupaten !== 'ALL' && getStatistikRegion(item) !== filters.kabupaten) return false;
       return true;
     });
   }, [rawData, filters.tahun, filters.kabupaten]);
 
   const stats = useMemo(() => {
-    const totalKasus = filteredData.reduce((sum, item) => sum + Number(item.jumlah_perkawinan || item.jumlah_putus_sekolah || item.jumlah_stunting || item.jumlah_kemiskinan || item.jumlah || 0), 0);
-    const uniqueKabupaten = new Set(filteredData.map((item) => item.nama_kabupaten_kota || item.kabupaten || item.nama_kabupaten).filter(Boolean)).size;
+    const totalKasus = filteredData.reduce(
+      (sum, item) => sum + getStatistikValue(item, endpointKey),
+      0
+    );
+    const uniqueKabupaten = new Set(filteredData.map(getStatistikRegion).filter(Boolean)).size;
     
     let totalPerempuan = 0;
     let totalLaki = 0;
@@ -118,34 +127,18 @@ export function useStatistik(endpointKey) {
       totalPerempuan,
       totalLaki,
     };
-  }, [filteredData]);
+  }, [filteredData, endpointKey]);
 
   const chartData = useMemo(() => {
-    let groupKey;
-    switch (filters.kategoriChart) {
-      case 'tahun':
-        groupKey = 'tahun';
-        break;
-      case 'jenis_kelamin':
-        groupKey = 'jenis_kelamin';
-        break;
-      case 'kabupaten':
-      default:
-        groupKey = 'nama_kabupaten_kota';
-        if (!filteredData.some(item => item.nama_kabupaten_kota)) {
-          groupKey = 'kabupaten';
-        }
-        if (!filteredData.some(item => item[groupKey])) {
-          groupKey = 'nama_kabupaten';
-        }
-        break;
-    }
-
     const groups = {};
     filteredData.forEach((item) => {
-      const key = item[groupKey];
+      const key = filters.kategoriChart === 'tahun'
+        ? getStatistikYear(item)
+        : filters.kategoriChart === 'jenis_kelamin'
+          ? item.jenis_kelamin
+          : getStatistikRegion(item);
       if (!key) return;
-      groups[key] = (groups[key] || 0) + Number(item.jumlah_perkawinan || item.jumlah_putus_sekolah || item.jumlah_stunting || item.jumlah_kemiskinan || item.jumlah || 0);
+      groups[key] = (groups[key] || 0) + getStatistikValue(item, endpointKey);
     });
 
     let data = Object.entries(groups)
@@ -157,7 +150,7 @@ export function useStatistik(endpointKey) {
     }
 
     return data;
-  }, [filteredData, filters.kategoriChart]);
+  }, [filteredData, filters.kategoriChart, endpointKey]);
 
   const updateFilter = useCallback((key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));

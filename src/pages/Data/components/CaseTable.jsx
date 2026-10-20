@@ -1,3 +1,9 @@
+import {
+  getStatistikRegion,
+  getStatistikValue,
+  getStatistikYear,
+} from '../../../utils/statistik';
+
 const TH_STYLE = {
   padding: '15px 16px',
   textAlign: 'left',
@@ -102,7 +108,7 @@ export function CaseTable({ data, pagination }) {
           <tbody>
             {data.map((item, index) => (
           <tr
-            key={`${item.id || index}-${item.nama_kabupaten_kota}-${item.tahun}`}
+            key={`${item.id || index}-${getStatistikRegion(item)}-${getStatistikYear(item)}`}
             style={{
               background:
                 index % 2 === 0
@@ -112,13 +118,13 @@ export function CaseTable({ data, pagination }) {
           >
                 <td style={TD_STYLE}>{item.id || '-'}</td>
                 <td style={TD_STYLE}>{item.nama_provinsi || '-'}</td>
-                <td style={TD_STYLE}>{item.nama_kabupaten_kota || '-'}</td>
+                <td style={TD_STYLE}>{getStatistikRegion(item) || '-'}</td>
                 <td style={TD_STYLE}>{item.jenis_kelamin || '-'}</td>
                 <td style={{ ...TD_STYLE, fontWeight: 700, color: '#0F172A' }}>
-                  {Number(item.jumlah_perkawinan || 0).toLocaleString('id-ID')}
+                  {getStatistikValue(item).toLocaleString('id-ID')}
                 </td>
                 <td style={TD_STYLE}>{item.satuan || '-'}</td>
-                <td style={TD_STYLE}>{item.tahun || '-'}</td>
+                <td style={TD_STYLE}>{getStatistikYear(item) || '-'}</td>
               </tr>
             ))}
           </tbody>

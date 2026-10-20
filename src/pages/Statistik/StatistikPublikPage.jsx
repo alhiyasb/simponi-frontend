@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 
 import Navbar from "../../components/layout/Navbar";
@@ -11,6 +11,11 @@ import {
   getStunting,
   getKemiskinan,
 } from "../../services/api";
+import {
+  getPutusSekolahValue,
+  getStatistikRegion,
+  normalizeStatistikRegion,
+} from "../../utils/statistik";
 
 /* =========================================================
    HELPER
@@ -46,58 +51,17 @@ function extractList(response) {
   return [];
 }
 
-function normalizeRegion(value) {
-  return String(value || "")
-    .trim()
-    .toLowerCase()
-    .replace(/^kabupaten\s+/i, "")
-    .replace(/^kota\s+/i, "")
-    .replace(/\s+/g, " ");
-}
-
-function getRegion(item) {
-  return (
-    item?.nama_kabupaten_kota ||
-    item?.wilayah ||
-    item?.kabupaten_kota ||
-    item?.kabupaten ||
-    item?.nama_wilayah ||
-    ""
-  );
-}
-
-function getPutusSekolahValue(item) {
-  const possibleFields = [
-    "jumlah_putus_sekolah",
-    "jumlah_siswa_putus_sekolah",
-    "jumlah_peserta_didik_putus_sekolah",
-    "jumlah",
-    "total",
-    "value",
-  ];
-
-  for (const field of possibleFields) {
-    const value = Number(item?.[field]);
-
-    if (Number.isFinite(value)) {
-      return value;
-    }
-  }
-
-  return 0;
-}
-
 function aggregateByRegion(data, valueGetter) {
   const result = {};
 
   data.forEach((item) => {
-    const region = getRegion(item);
+    const region = getStatistikRegion(item);
 
     if (!region) {
       return;
     }
 
-    const key = normalizeRegion(region);
+    const key = normalizeStatistikRegion(region);
 
     if (!result[key]) {
       result[key] = {
@@ -535,23 +499,38 @@ export default function StatistikPublikPage() {
       selectedComparisonConfig.valueGetter
     );
 
-    return Object.keys(primary)
+    const regionKeys =
+      selectedComparisonConfig.key === "putus-sekolah"
+        ? new Set([
+            ...Object.keys(primary),
+            ...Object.keys(secondary),
+          ])
+        : new Set(Object.keys(primary));
+
+    const chartRows = [...regionKeys]
       .map((key) => ({
-        wilayah: primary[key].region,
-        dispensasi_nikah: primary[key].value,
-        secondaryValue:
-          secondary[key]?.value || 0,
+        wilayah: primary[key]?.region || secondary[key]?.region,
+        dispensasi_nikah: primary[key]?.value || 0,
+        secondaryValue: secondary[key]?.value || 0,
       }))
       .sort(
-        (a, b) =>
-          b.dispensasi_nikah -
-          a.dispensasi_nikah
-      )
-      .slice(0, 15);
+        selectedComparisonConfig.key === "putus-sekolah"
+          ? (a, b) => b.secondaryValue - a.secondaryValue
+          : (a, b) => b.dispensasi_nikah - a.dispensasi_nikah
+      );
+
+    return selectedComparisonConfig.key === "putus-sekolah"
+      ? chartRows
+      : chartRows.slice(0, 15);
   }, [
     data.pernikahanDini,
     selectedComparisonConfig,
   ]);
+
+  const correlationChartHeight =
+    selectedComparison === "putus-sekolah"
+      ? Math.max(500, correlationData.length * 26)
+      : 500;
 
   /* =======================================================
      RENDER
@@ -745,7 +724,10 @@ export default function StatistikPublikPage() {
             {/* Chart */}
             <div className="p-4 sm:p-6">
               {loading ? (
-                <div className="flex h-[500px] items-center justify-center">
+                <div
+                  className="flex items-center justify-center"
+                  style={{ height: correlationChartHeight }}
+                >
                   <div className="text-center">
                     <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-blue-100 border-t-[#155DFC]" />
 
@@ -757,7 +739,7 @@ export default function StatistikPublikPage() {
               ) : (
                 <DoubleAxisChart
                   data={correlationData}
-                  height={500}
+                  height={correlationChartHeight}
                   primaryDataKey="dispensasi_nikah"
                   primaryName="Dispensasi Nikah"
                   primaryColor="#155DFC"

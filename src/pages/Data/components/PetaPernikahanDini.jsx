@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  GeoJSON,
+  LayersControl,
+} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import { getPetaPernikahanDini } from '../../../services/api';
@@ -12,6 +17,8 @@ const RISK_STYLE = {
 
 const DEFAULT_COLOR = '#CBD5E1';
 const JABAR_CENTER = [-6.9, 107.6];
+const TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 function formatNumber(num) {
   return Number(num || 0).toLocaleString('id-ID', {
@@ -37,9 +44,9 @@ function featureStyle(feature) {
 
   return {
     fillColor: risk?.color || DEFAULT_COLOR,
-    fillOpacity: 0.65,
+    fillOpacity: 0.24,
     color: '#ffffff',
-    weight: 1.5,
+    weight: 1.25,
   };
 }
 
@@ -139,7 +146,7 @@ export default function PetaPernikahanDini({ availableYears = [] }) {
     layer.bindPopup(buildPopupHtml(props));
 
     layer.on({
-      mouseover: (e) => e.target.setStyle({ weight: 3, fillOpacity: 0.85 }),
+      mouseover: (e) => e.target.setStyle({ weight: 2.5, fillOpacity: 0.4 }),
       mouseout: (e) => e.target.setStyle(featureStyle(feature)),
     });
   };
@@ -212,14 +219,40 @@ export default function PetaPernikahanDini({ availableYears = [] }) {
             <MapContainer
               center={JABAR_CENTER}
               zoom={8}
-              minZoom={7}
-              scrollWheelZoom={false}
+              minZoom={6}
+              maxZoom={19}
+              scrollWheelZoom
               style={{ height: 520, width: '100%' }}
             >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
+              <LayersControl position="topright">
+                <LayersControl.BaseLayer checked name="Peta jalan">
+                  <TileLayer
+                    attribution={TILE_ATTRIBUTION}
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    maxNativeZoom={19}
+                    maxZoom={19}
+                  />
+                </LayersControl.BaseLayer>
+
+                <LayersControl.BaseLayer name="Peta detail">
+                  <TileLayer
+                    attribution={`${TILE_ATTRIBUTION} &copy; <a href="https://carto.com/attributions">CARTO</a>`}
+                    url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+                    subdomains="abcd"
+                    maxNativeZoom={20}
+                    maxZoom={20}
+                  />
+                </LayersControl.BaseLayer>
+
+                <LayersControl.BaseLayer name="Peta topografi">
+                  <TileLayer
+                    attribution={`${TILE_ATTRIBUTION} | Map style: <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)`}
+                    url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
+                    maxNativeZoom={17}
+                    maxZoom={19}
+                  />
+                </LayersControl.BaseLayer>
+              </LayersControl>
 
               {geoData?.features?.length > 0 && (
                 <GeoJSON
