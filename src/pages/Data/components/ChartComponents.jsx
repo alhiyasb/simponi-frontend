@@ -1,9 +1,7 @@
-import React from "react";
 import {
   Bar,
   CartesianGrid,
   ComposedChart,
-  Legend,
   Line,
   ResponsiveContainer,
   Tooltip,
@@ -31,12 +29,6 @@ export function DoubleAxisChart({
 
   primaryUnit = "kasus",
   secondaryUnit = "%",
-
-  primaryYAxisMin = 0,
-  primaryYAxisMax,
-
-  secondaryYAxisMin = 0,
-  secondaryYAxisMax,
 }) {
   /* =======================================================
      LOADING
@@ -88,7 +80,7 @@ export function DoubleAxisChart({
      NORMALIZE DATA
      ======================================================= */
 
-  const chartData = data.map((item, index) => {
+  const rawChartData = data.map((item, index) => {
     const rawRegion =
       item?.wilayah ||
       item?.nama_kabupaten_kota ||
@@ -136,37 +128,31 @@ export function DoubleAxisChart({
     };
   });
 
-  /* =======================================================
-     PRIMARY RANGE
-     ======================================================= */
-
-  const primaryValues = chartData.map((item) =>
-    Number(item?.[primaryDataKey]) || 0
+  const maxValue = Math.max(
+    ...rawChartData.flatMap((item) => [
+      item[primaryDataKey],
+      item[secondaryDataKey],
+    ]),
+    0
   );
-
-  const secondaryValues = chartData.map((item) =>
-    Number(item?.[secondaryDataKey]) || 0
+  const rawTickStep = maxValue > 0 ? maxValue / 4 : 1;
+  const tickMagnitude = 10 ** Math.floor(Math.log10(rawTickStep));
+  const normalizedStep = rawTickStep / tickMagnitude;
+  const niceStep =
+    (normalizedStep <= 1
+      ? 1
+      : normalizedStep <= 2
+        ? 2
+        : normalizedStep <= 2.5
+          ? 2.5
+          : normalizedStep <= 5
+            ? 5
+            : 10) * tickMagnitude;
+  const sharedAxisMax = niceStep * 4;
+  const sharedTicks = Array.from(
+    { length: 5 },
+    (_, index) => niceStep * index
   );
-
-  const maxPrimary = Math.max(
-    ...primaryValues,
-    Number(primaryYAxisMin) || 0
-  );
-
-  const maxSecondary = Math.max(
-    ...secondaryValues,
-    Number(secondaryYAxisMin) || 0
-  );
-
-  const safePrimaryMax =
-    primaryYAxisMax !== undefined
-      ? primaryYAxisMax
-      : Math.ceil(maxPrimary * 1.1 || 1);
-
-  const safeSecondaryMax =
-    secondaryYAxisMax !== undefined
-      ? secondaryYAxisMax
-      : Math.ceil(maxSecondary * 1.1 || 1);
 
   /* =======================================================
      FORMAT TOOLTIP
@@ -179,7 +165,9 @@ export function DoubleAxisChart({
       return "0";
     }
 
-    return new Intl.NumberFormat("id-ID").format(number);
+    return new Intl.NumberFormat("id-ID", {
+      maximumFractionDigits: 0,
+    }).format(number);
   };
 
   /* =======================================================
@@ -227,7 +215,7 @@ export function DoubleAxisChart({
      CUSTOM TOOLTIP
      ======================================================= */
 
-  const CustomTooltip = ({
+  const renderTooltip = ({
     active,
     payload,
     label,
@@ -252,17 +240,14 @@ export function DoubleAxisChart({
         </p>
 
         {payload.map((entry, index) => {
-          const value = entry?.value ?? 0;
+          const isPrimary = entry?.dataKey === primaryDataKey;
+          const value = isPrimary
+            ? entry?.payload?.[primaryDataKey] ?? 0
+            : entry?.payload?.[secondaryDataKey] ?? 0;
 
-          const name =
-            entry?.dataKey === primaryDataKey
-              ? primaryName
-              : secondaryName;
+          const name = isPrimary ? primaryName : secondaryName;
 
-          const unit =
-            entry?.dataKey === primaryDataKey
-              ? primaryUnit
-              : secondaryUnit;
+          const unit = isPrimary ? primaryUnit : secondaryUnit;
 
           return (
             <div
@@ -300,10 +285,10 @@ export function DoubleAxisChart({
         height="100%"
       >
         <ComposedChart
-          data={chartData}
+          data={rawChartData}
           layout="vertical"
           margin={{
-            top: 35,
+            top: 48,
             right: 65,
             left: 15,
             bottom: 35,
@@ -327,21 +312,27 @@ export function DoubleAxisChart({
             xAxisId="primary"
             type="number"
             orientation="bottom"
-            domain={[
-              primaryYAxisMin,
-              safePrimaryMax,
-            ]}
+            domain={[0, sharedAxisMax]}
+            ticks={sharedTicks}
             tickLine={false}
             axisLine={{
-              stroke: "#CBD5E1",
+              stroke: primaryColor,
             }}
             tick={{
-              fill: "#64748B",
+              fill: primaryColor,
               fontSize: 10,
             }}
             tickFormatter={(value) =>
               formatNumber(value)
             }
+            label={{
+              value: `${primaryName} (${primaryUnit})`,
+              position: "insideBottom",
+              offset: -30,
+              fill: primaryColor,
+              fontSize: 11,
+              fontWeight: 600,
+            }}
           />
 
           {/* =================================================
@@ -352,21 +343,27 @@ export function DoubleAxisChart({
             xAxisId="secondary"
             type="number"
             orientation="top"
-            domain={[
-              secondaryYAxisMin,
-              safeSecondaryMax,
-            ]}
+            domain={[0, sharedAxisMax]}
+            ticks={sharedTicks}
             tickLine={false}
             axisLine={{
-              stroke: "#CBD5E1",
+              stroke: secondaryColor,
             }}
             tick={{
-              fill: "#64748B",
+              fill: secondaryColor,
               fontSize: 10,
             }}
             tickFormatter={(value) =>
               formatNumber(value)
             }
+            label={{
+              value: `${secondaryName} (${secondaryUnit})`,
+              position: "insideTop",
+              offset: -35,
+              fill: secondaryColor,
+              fontSize: 11,
+              fontWeight: 600,
+            }}
           />
 
           {/* =================================================
@@ -392,24 +389,9 @@ export function DoubleAxisChart({
              ================================================= */}
 
           <Tooltip
-            content={<CustomTooltip />}
+            content={renderTooltip}
             cursor={{
               fill: "rgba(21, 93, 252, 0.04)",
-            }}
-          />
-
-          {/* =================================================
-              LEGEND
-             ================================================= */}
-
-          <Legend
-            verticalAlign="bottom"
-            height={30}
-            iconType="circle"
-            wrapperStyle={{
-              fontSize: "12px",
-              fontWeight: 600,
-              color: "#475569",
             }}
           />
 

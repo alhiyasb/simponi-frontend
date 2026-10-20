@@ -452,13 +452,13 @@ export default function StatistikPublikPage() {
       {
         key: "kemiskinan",
         label: "Kemiskinan",
-        color: "#2563EB",
-        unit: "ribu penduduk",
+        color: "#9333EA",
+        unit: "penduduk",
         data: data.kemiskinan,
         valueGetter: (item) =>
           Number(
             item?.jumlah_penduduk_miskin_maret_ribu
-          ) || 0,
+          ) * 1000 || 0,
       },
 
       {
@@ -757,7 +757,6 @@ export default function StatistikPublikPage() {
                     selectedComparisonConfig?.unit ||
                     ""
                   }
-                  primaryYAxisMin={4000}
                 />
               )}
             </div>
