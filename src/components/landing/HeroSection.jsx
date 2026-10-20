@@ -585,7 +585,7 @@ const HeroSection = () => {
       {/* =========================================================
           KEYFRAME STYLES (inline untuk animasi custom)
       ========================================================= */}
-      <style jsx global>{`
+      <style>{`
         @keyframes aurora-1 {
           0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
           25% { transform: translate(-50px, -30px) scale(1.05); opacity: 0.8; }

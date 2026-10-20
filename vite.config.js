@@ -10,6 +10,7 @@ export default defineConfig({
 
   server: {
     host: '0.0.0.0',
+    port: 5173,
 
     allowedHosts: [
       '.ngrok-free.dev',
@@ -18,9 +19,9 @@ export default defineConfig({
 
     proxy: {
       '/api': {
-        target: 'https://pulmonary-stained-catnip.ngrok-free.dev',
+        target: 'http://192.168.1.59:8000',
         changeOrigin: true,
-        secure: true,
+        secure: false,
       },
     },
   },
