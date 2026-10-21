@@ -53,35 +53,26 @@ function StatusRapor({ status }) {
   );
 }
 
-function KartuRingkasan({ judul, nilai, keterangan }) {
+function KartuRingkasan({ judul, nilai, keterangan, accent }) {
   return (
-    <div
-      style={{
-        background: '#FFFFFF',
-        border: '1px solid #E5E7EB',
-        borderRadius: '14px',
-        padding: '20px',
-        minWidth: 0,
-      }}
-    >
-      <p style={{ margin: 0, color: '#64748B', fontSize: '13px' }}>
-        {judul}
-      </p>
+    <div className="group relative overflow-hidden rounded-[26px] border border-blue-100 bg-gradient-to-br from-[#0B5ED7] via-[#0F6EE6] to-[#6AAEFF] p-5 text-white shadow-[0_18px_35px_rgba(1,100,221,0.22)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_40px_rgba(1,100,221,0.28)]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.25),_transparent_28%)]" />
 
-      <h2
-        style={{
-          margin: '12px 0 8px',
-          fontSize: '25px',
-          color: '#0F172A',
-          overflowWrap: 'anywhere',
-        }}
-      >
-        {nilai ?? '-'}
-      </h2>
+      <div className="relative z-10 flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-blue-100">
+            {judul}
+          </p>
 
-      <p style={{ margin: 0, color: '#64748B', fontSize: '12px' }}>
-        {keterangan}
-      </p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight text-white">
+            {nilai ?? '-'}
+          </h2>
+
+          <p className="mt-2 text-xs text-blue-100/90">
+            {keterangan}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -111,242 +102,193 @@ export default function RaporKabupaten() {
 
   return (
     <AdminLayout>
-      <div
-        style={{
-          padding: '24px',
-          background: '#F8FAFC',
-          minHeight: '100%',
-        }}
-      >
-        <div style={{ marginBottom: '24px' }}>
-          <h1
-            style={{
-              margin: '0 0 8px',
-              fontSize: '28px',
-              color: '#0F172A',
-            }}
-          >
-            Rapor Kabupaten
-          </h1>
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(1,100,221,0.12),_transparent_28%),linear-gradient(180deg,#f8fbff_0%,#eef5ff_100%)] p-6 sm:p-8">
+        <div className="mx-auto max-w-7xl">
+          <header className="mb-6 overflow-hidden rounded-[30px] border border-blue-100 bg-gradient-to-r from-[#0A5BD6] via-[#0F6EE6] to-[#78BAFF] p-6 text-white shadow-[0_22px_40px_rgba(1,100,221,0.25)] sm:p-8">
+            <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <p className="text-sm font-semibold text-blue-100">
+                  Monitoring kabupaten
+                </p>
 
-          <p style={{ margin: 0, color: '#64748B' }}>
-            Pantau volume laporan dan penyelesaian laporan di setiap kabupaten.
-          </p>
-        </div>
+                <h1 className="mt-2 text-3xl font-black tracking-tight text-white sm:text-4xl">
+                  Rapor Kabupaten
+                </h1>
 
-        {loading && (
-          <div
-            style={{
-              padding: '24px',
-              background: '#FFFFFF',
-              borderRadius: '12px',
-            }}
-          >
-            Memuat data rapor kabupaten...
-          </div>
-        )}
-
-        {!loading && error && (
-          <div
-            role="alert"
-            style={{
-              padding: '16px',
-              marginBottom: '20px',
-              borderRadius: '12px',
-              background: '#FEE2E2',
-              color: '#B91C1C',
-            }}
-          >
-            <p style={{ marginTop: 0 }}>{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              style={{
-                padding: '9px 14px',
-                border: 0,
-                borderRadius: '8px',
-                background: '#B91C1C',
-                color: '#FFFFFF',
-                cursor: 'pointer',
-              }}
-            >
-              Muat ulang halaman
-            </button>
-          </div>
-        )}
-
-        {!loading && !error && rapor && (
-          <>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '16px',
-                marginBottom: '24px',
-              }}
-            >
-              <KartuRingkasan
-                judul="Kabupaten Aktif"
-                nilai={formatAngka(rapor.total_kabupaten_aktif)}
-                keterangan="Kabupaten dalam data rapor"
-              />
-
-              <KartuRingkasan
-                judul="Rapor Merah"
-                nilai={formatAngka(rapor.kabupaten_rapor_merah)}
-                keterangan="Kabupaten dengan status merah"
-              />
-
-              <KartuRingkasan
-                judul="Volume Laporan Tertinggi"
-                nilai={rapor.kabupaten_volume_tertinggi || '-'}
-                keterangan="Kabupaten dengan laporan terbanyak"
-              />
-
-              <KartuRingkasan
-                judul="Kabupaten Terlambat"
-                nilai={rapor.kabupaten_terlambat || '-'}
-                keterangan="Berdasarkan hasil evaluasi BE"
-              />
-            </div>
-
-            <div
-              style={{
-                background: '#FFFFFF',
-                border: '1px solid #E5E7EB',
-                borderRadius: '14px',
-                overflow: 'hidden',
-              }}
-            >
-              <div style={{ padding: '20px 20px 12px' }}>
-                <h2
-                  style={{
-                    margin: '0 0 6px',
-                    fontSize: '19px',
-                    color: '#0F172A',
-                  }}
-                >
-                  Detail Rapor Kabupaten
-                </h2>
-
-                <p style={{ margin: 0, color: '#64748B', fontSize: '13px' }}>
-                  Total {formatAngka(rapor.data?.length)} kabupaten pada hasil
-                  API.
+                <p className="mt-2 max-w-2xl text-sm text-blue-100/90">
+                  Pantau volume laporan dan hasil evaluasi penanganan di setiap kabupaten.
                 </p>
               </div>
 
-              {rapor.data?.length > 0 ? (
-                <div style={{ overflowX: 'auto' }}>
-                  <table
-                    style={{
-                      width: '100%',
-                      borderCollapse: 'collapse',
-                      fontSize: '13px',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    <thead>
-                      <tr style={{ background: '#F1F5F9', color: '#475569' }}>
-                        {[
-                          'No.',
-                          'Kode',
-                          'Kabupaten',
-                          'Total Laporan',
-                          'Diajukan',
-                          'Diproses',
-                          'Selesai',
-                          'Ditolak',
-                          'Penyelesaian',
-                          'Rapor',
-                        ].map((judul) => (
-                          <th
-                            key={judul}
-                            style={{
-                              padding: '14px 16px',
-                              textAlign: 'left',
-                              borderBottom: '1px solid #E2E8F0',
-                            }}
-                          >
-                            {judul}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {rapor.data.map((item, index) => (
-                        <tr key={item.kode_kabupaten}>
-                          <td style={gayaSel}>{index + 1}</td>
-                          <td style={gayaSel}>{item.kode_kabupaten}</td>
-                          <td style={{ ...gayaSel, fontWeight: 600 }}>
-                            {item.nama_kabupaten}
-                          </td>
-                          <td style={gayaSel}>
-                            {formatAngka(item.total_laporan)}
-                          </td>
-                          <td style={gayaSel}>
-                            {formatAngka(item.diajukan)}
-                          </td>
-                          <td style={gayaSel}>
-                            {formatAngka(item.diproses)}
-                          </td>
-                          <td style={gayaSel}>
-                            {formatAngka(item.selesai)}
-                          </td>
-                          <td style={gayaSel}>
-                            {formatAngka(item.ditolak)}
-                          </td>
-                          <td style={gayaSel}>
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '10px',
-                              }}
-                            >
-                              <div
-                                style={{
-                                  width: '90px',
-                                  height: '7px',
-                                  borderRadius: '10px',
-                                  background: '#E2E8F0',
-                                  overflow: 'hidden',
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    width: `${Math.min(
-                                      100,
-                                      Math.max(
-                                        0,
-                                        Number(item.persen_selesai) || 0
-                                      )
-                                    )}%`,
-                                    height: '100%',
-                                    background: '#2563EB',
-                                    borderRadius: '10px',
-                                  }}
-                                />
-                              </div>
-
-                              <span>{formatPersen(item.persen_selesai)}</span>
-                            </div>
-                          </td>
-                          <td style={gayaSel}>
-                            <StatusRapor status={item.rapor} />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+              <div className="flex items-center gap-3 self-start rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-sm">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-lg font-bold text-white">
+                  ↗
                 </div>
-              ) : (
-                <p style={{ padding: '20px', color: '#64748B' }}>
-                  Belum ada data rapor kabupaten.
-                </p>
-              )}
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-100">
+                    Data
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-white">
+                    {rapor?.data?.length ?? 0} kabupaten
+                  </p>
+                </div>
+              </div>
             </div>
-          </>
-        )}
+
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.2),_transparent_58%)]" />
+          </header>
+
+          {loading && (
+            <div className="flex min-h-[280px] items-center justify-center rounded-[28px] border border-slate-200 bg-white shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
+              <div className="text-center">
+                <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-blue-100 border-t-[#0164DD]" />
+                <p className="mt-4 text-sm text-slate-500">
+                  Memuat data rapor kabupaten...
+                </p>
+              </div>
+            </div>
+          )}
+
+          {!loading && error && (
+            <div role="alert" className="rounded-[28px] border border-red-200 bg-red-50 p-5 shadow-sm">
+              <p className="text-base font-semibold text-red-700">{error}</p>
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="mt-4 rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-red-500"
+              >
+                Muat ulang halaman
+              </button>
+            </div>
+          )}
+
+          {!loading && !error && rapor && (
+            <>
+              <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                <KartuRingkasan
+                  judul="Kabupaten Aktif"
+                  nilai={formatAngka(rapor.total_kabupaten_aktif)}
+                  keterangan="Kabupaten dalam data rapor"
+                  accent="from-[#0164DD] via-[#1685F7] to-[#6AB7FF]"
+                />
+
+                <KartuRingkasan
+                  judul="Rapor Merah"
+                  nilai={formatAngka(rapor.kabupaten_rapor_merah)}
+                  keterangan="Kabupaten dengan status merah"
+                  accent="from-[#F97316] via-[#FB7185] to-[#EF4444]"
+                />
+
+                <KartuRingkasan
+                  judul="Volume Tertinggi"
+                  nilai={rapor.kabupaten_volume_tertinggi || '-'}
+                  keterangan="Kabupaten dengan laporan terbanyak"
+                  accent="from-[#8B5CF6] via-[#A78BFA] to-[#6366F1]"
+                />
+
+                <KartuRingkasan
+                  judul="Kabupaten Terlambat"
+                  nilai={rapor.kabupaten_terlambat || '-'}
+                  keterangan="Berdasarkan hasil evaluasi BE"
+                  accent="from-[#10B981] via-[#2CCB94] to-[#0EA5A4]"
+                />
+              </div>
+
+              <div className="overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+                <div className="flex flex-col gap-2 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white px-6 py-5 sm:flex-row sm:items-end sm:justify-between">
+                  <div>
+                    <h2 className="text-xl font-black text-slate-900">
+                      Detail Rapor Kabupaten
+                    </h2>
+
+                    <p className="mt-1 text-sm text-slate-500">
+                      Total {formatAngka(rapor.data?.length)} kabupaten pada hasil API.
+                    </p>
+                  </div>
+
+                  <span className="inline-flex rounded-full border border-slate-200 bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                    Update terkini
+                  </span>
+                </div>
+
+                {rapor.data?.length > 0 ? (
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full border-collapse text-sm text-slate-700">
+                      <thead>
+                        <tr className="bg-gradient-to-r from-slate-100 to-blue-50 text-left text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
+                          {[
+                            'No.',
+                            'Kode',
+                            'Kabupaten',
+                            'Total Laporan',
+                            'Diajukan',
+                            'Diproses',
+                            'Selesai',
+                            'Ditolak',
+                            'Penyelesaian',
+                            'Rapor',
+                          ].map((judul) => (
+                            <th key={judul} className="border-b border-slate-200 px-4 py-3">
+                              {judul}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {rapor.data.map((item, index) => (
+                          <tr
+                            key={item.kode_kabupaten}
+                            className={`transition duration-200 hover:bg-blue-50/60 ${index % 2 === 0 ? 'bg-white' : 'bg-slate-50/70'}`}
+                          >
+                            <td className="border-b border-slate-200 px-4 py-3 text-slate-600">{index + 1}</td>
+                            <td className="border-b border-slate-200 px-4 py-3 text-slate-600">{item.kode_kabupaten}</td>
+                            <td className="border-b border-slate-200 px-4 py-3">
+                              <div className="flex items-center gap-3">
+                                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 text-xs font-bold text-[#0164DD]">
+                                  {item.nama_kabupaten?.slice(0, 2)?.toUpperCase() || 'NA'}
+                                </div>
+                                <span className="font-semibold text-slate-800">{item.nama_kabupaten}</span>
+                              </div>
+                            </td>
+                            <td className="border-b border-slate-200 px-4 py-3 font-semibold text-slate-800">{formatAngka(item.total_laporan)}</td>
+                            <td className="border-b border-slate-200 px-4 py-3">{formatAngka(item.diajukan)}</td>
+                            <td className="border-b border-slate-200 px-4 py-3">{formatAngka(item.diproses)}</td>
+                            <td className="border-b border-slate-200 px-4 py-3">{formatAngka(item.selesai)}</td>
+                            <td className="border-b border-slate-200 px-4 py-3">{formatAngka(item.ditolak)}</td>
+                            <td className="border-b border-slate-200 px-4 py-3">
+                              <div className="flex items-center gap-3">
+                                <div className="h-2.5 w-[90px] overflow-hidden rounded-full bg-slate-200">
+                                  <div
+                                    className="h-full rounded-full bg-gradient-to-r from-[#0164DD] to-[#5AA8FF]"
+                                    style={{
+                                      width: `${Math.min(100, Math.max(0, Number(item.persen_selesai) || 0))}%`,
+                                    }}
+                                  />
+                                </div>
+
+                                <span className="font-semibold text-slate-700">
+                                  {formatPersen(item.persen_selesai)}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="border-b border-slate-200 px-4 py-3">
+                              <StatusRapor status={item.rapor} />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <p className="p-6 text-sm text-slate-500">
+                    Belum ada data rapor kabupaten.
+                  </p>
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </AdminLayout>
   );

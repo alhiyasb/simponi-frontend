@@ -682,69 +682,104 @@ export async function createAdminOfficer(payload) {
 
 /* PATCH /api/v1/admin/officers/{id} */
 export async function updateAdminOfficer(id, payload) {
-  const response = await authFetch(
+  const endpoints = [
     `${BASE_URL_V1}/admin/officers/${id}`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    }
-  );
+    `${BASE_URL_V1}/admin/officers/update/${id}`,
+    `${BASE_URL_V1}/admin/officers/${id}/update`,
+  ];
 
-  if (!response.ok) {
-    let message = "Gagal memperbarui data petugas.";
+  const methods = ["PATCH", "PUT"];
+  let lastError = null;
+
+  for (const endpoint of endpoints) {
+    for (const method of methods) {
+      const response = await authFetch(endpoint, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        if (response.status === 204) {
+          return null;
+        }
+
+        const text = await response.text();
+        return text ? JSON.parse(text) : null;
+      }
+
+      lastError = response;
+    }
+  }
+
+  const fallbackMessage = "Gagal memperbarui data petugas.";
+
+  if (lastError) {
+    if (lastError.status === 404) {
+      throw new Error(
+        "Fitur edit petugas belum tersedia di API backend."
+      );
+    }
 
     try {
-      const data = await response.json();
-      message = getErrorMessage(data, message);
+      const data = await lastError.clone().json();
+      throw new Error(getErrorMessage(data, fallbackMessage));
     } catch {
-      // Gunakan pesan default.
+      throw new Error(fallbackMessage);
     }
-
-    throw new Error(message);
   }
 
-  if (response.status === 204) {
-    return null;
-  }
-
-  const text = await response.text();
-
-  return text ? JSON.parse(text) : null;
+  throw new Error(fallbackMessage);
 }
 
 
 /* DELETE /api/v1/admin/officers/{id} */
 export async function deleteAdminOfficer(id) {
-  const response = await authFetch(
+  const endpoints = [
     `${BASE_URL_V1}/admin/officers/${id}`,
-    {
-      method: "DELETE",
-    }
-  );
+    `${BASE_URL_V1}/admin/officers/delete/${id}`,
+    `${BASE_URL_V1}/admin/officers/${id}/delete`,
+  ];
 
-  if (!response.ok) {
-    let message = "Gagal menghapus akun petugas.";
+  let lastError = null;
+
+  for (const endpoint of endpoints) {
+    const response = await authFetch(endpoint, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      if (response.status === 204) {
+        return null;
+      }
+
+      const text = await response.text();
+      return text ? JSON.parse(text) : null;
+    }
+
+    lastError = response;
+  }
+
+  const fallbackMessage = "Gagal menghapus akun petugas.";
+
+  if (lastError) {
+    if (lastError.status === 404) {
+      throw new Error(
+        "Fitur hapus petugas belum tersedia di API backend."
+      );
+    }
 
     try {
-      const data = await response.json();
-      message = getErrorMessage(data, message);
+      const data = await lastError.clone().json();
+      throw new Error(getErrorMessage(data, fallbackMessage));
     } catch {
-      // Gunakan pesan default.
+      throw new Error(fallbackMessage);
     }
-
-    throw new Error(message);
   }
 
-  if (response.status === 204) {
-    return null;
-  }
-
-  const text = await response.text();
-
-  return text ? JSON.parse(text) : null;
+  throw new Error(fallbackMessage);
 }
 
 

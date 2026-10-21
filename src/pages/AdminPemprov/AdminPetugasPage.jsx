@@ -329,44 +329,44 @@ export default function AdminPetugasPage() {
 
   return (
     <AdminLayout>
-      <div className="min-h-screen">
-        {/* HEADER */}
-        <header className="border-b border-slate-200 bg-white">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(1,100,221,0.14),_transparent_28%),linear-gradient(180deg,#f8fbff_0%,#eef5ff_100%)]">
+        <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur-sm">
           <div className="px-6 py-7 sm:px-8 lg:px-10">
-            <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
+            <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
               <div>
-                <p className="text-sm font-semibold text-[#0164DD]">
+                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#0164DD]">
                   Administrasi
                 </p>
 
-                <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-900">
+                <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
                   Manajemen Petugas
                 </h1>
 
-                <p className="mt-2 max-w-2xl text-sm text-slate-500">
-                  Kelola akun Admin Pemda yang bertugas
-                  menangani laporan di setiap kabupaten/kota.
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+                  Kelola akun Admin Pemda yang bertugas menangani
+                  laporan di setiap kabupaten/kota.
                 </p>
               </div>
 
-              <button
-                type="button"
-                onClick={openCreateForm}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0164DD] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0058C7]"
-              >
-                <span className="text-lg">+</span>
-                Tambah Petugas
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={openCreateForm}
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#0164DD] to-[#1386FF] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_25px_rgba(1,100,221,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_28px_rgba(1,100,221,0.28)]"
+                >
+                  <span className="text-lg leading-none">＋</span>
+                  Tambah Petugas
+                </button>
+              </div>
             </div>
           </div>
         </header>
 
         <main className="px-6 py-7 sm:px-8 lg:px-10">
-          {/* PESAN SUKSES */}
           {success && (
             <div
               role="status"
-              className="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3"
+              className="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 shadow-sm"
             >
               <p className="text-sm font-medium text-emerald-700">
                 ✓ {success}
@@ -374,11 +374,10 @@ export default function AdminPetugasPage() {
             </div>
           )}
 
-          {/* PESAN ERROR */}
           {error && (
             <div
               role="alert"
-              className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3"
+              className="mb-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 shadow-sm"
             >
               <p className="text-sm font-medium text-red-700">
                 {error}
@@ -386,7 +385,44 @@ export default function AdminPetugasPage() {
             </div>
           )}
 
-          {/* RINGKASAN */}
+          <section className="relative mb-6 overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0A5BD6] via-[#0673E3] to-[#53A6FF] p-7 text-white shadow-[0_22px_45px_rgba(1,100,221,0.22)] sm:p-8">
+            <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.22),_transparent_52%)]" />
+            <div className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-white/10" />
+            <div className="absolute -bottom-14 right-20 h-44 w-44 rounded-full bg-white/10" />
+
+            <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+              <div className="max-w-2xl">
+                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-blue-100">
+                  Super admin
+                </p>
+
+                <h2 className="mt-3 text-2xl font-black sm:text-3xl">
+                  Kelola tim Admin Pemda dengan lebih terstruktur.
+                </h2>
+
+                <p className="mt-3 max-w-xl text-sm leading-6 text-blue-100">
+                  Pantau data petugas, status akun, dan wilayah kerja
+                  secara cepat dari satu halaman yang lebih rapi dan
+                  informatif.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 self-start rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-sm">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-lg font-bold shadow-inner">
+                  ↗
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-blue-100">
+                    Total akun
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-white">
+                    {officers.length} petugas
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <div className="mb-6 grid gap-4 sm:grid-cols-3">
             <SummaryCard
               title="Total Petugas"
@@ -409,28 +445,36 @@ export default function AdminPetugasPage() {
             />
           </div>
 
-          {/* DAFTAR PETUGAS */}
-          <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-100 px-6 py-5">
-              <h2 className="font-bold text-slate-900">
-                Daftar Petugas
-              </h2>
+          <section className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+            <div className="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">
+                  Daftar Petugas
+                </h2>
 
-              <p className="mt-1 text-sm text-slate-400">
-                Daftar akun Admin Pemda yang terdaftar pada
-                sistem SIMPONI.
-              </p>
+                <p className="mt-1 text-sm text-slate-400">
+                  Daftar akun Admin Pemda yang terdaftar pada sistem
+                  SIMPONI.
+                </p>
+              </div>
+
+              <span className="inline-flex w-fit items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                {officers.length} terdaftar
+              </span>
             </div>
 
             {isLoading ? (
               <div className="flex min-h-[250px] items-center justify-center">
-                <p className="text-sm text-slate-400">
-                  Memuat data petugas...
-                </p>
+                <div className="text-center">
+                  <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-blue-100 border-t-[#0164DD]" />
+                  <p className="mt-4 text-sm text-slate-500">
+                    Memuat data petugas...
+                  </p>
+                </div>
               </div>
             ) : officers.length === 0 ? (
               <div className="flex min-h-[250px] flex-col items-center justify-center px-6 text-center">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-2xl text-[#0164DD]">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-2xl text-[#0164DD] shadow-inner shadow-blue-100">
                   ♙
                 </div>
 
@@ -439,14 +483,14 @@ export default function AdminPetugasPage() {
                 </h3>
 
                 <p className="mt-1 max-w-sm text-sm text-slate-400">
-                  Tambahkan akun Admin Pemda untuk mulai
-                  mengelola laporan wilayah.
+                  Tambahkan akun Admin Pemda untuk mulai mengelola
+                  laporan wilayah.
                 </p>
 
                 <button
                   type="button"
                   onClick={openCreateForm}
-                  className="mt-5 rounded-xl bg-[#0164DD] px-4 py-2.5 text-sm font-semibold text-white"
+                  className="mt-5 rounded-xl bg-[#0164DD] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0058C7]"
                 >
                   Tambah Petugas
                 </button>
@@ -455,7 +499,7 @@ export default function AdminPetugasPage() {
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[1200px]">
                   <thead>
-                    <tr className="border-b border-slate-100 bg-slate-50/70">
+                    <tr className="border-b border-slate-100 bg-slate-50/80">
                       {[
                         "Petugas",
                         "NIP",
@@ -466,7 +510,7 @@ export default function AdminPetugasPage() {
                       ].map((heading) => (
                         <th
                           key={heading}
-                          className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-400"
+                          className="px-6 py-4 text-left text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400"
                         >
                           {heading}
                         </th>
@@ -482,7 +526,7 @@ export default function AdminPetugasPage() {
                       >
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 font-bold text-[#0164DD]">
+                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-[#dbeeff] font-bold text-[#0164DD] shadow-sm">
                               {officer.full_name
                                 ?.charAt(0)
                                 ?.toUpperCase() || "P"}
@@ -509,37 +553,34 @@ export default function AdminPetugasPage() {
                         </td>
 
                         <td className="px-6 py-4">
-                          <span className="rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">
+                          <span className="inline-flex rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 ring-1 ring-slate-200">
                             {officer.kode_kabupaten ?? "-"}
                           </span>
                         </td>
 
                         <td className="px-6 py-4">
-                          <StatusBadge
-                            active={officer.is_active}
-                          />
+                          <StatusBadge active={officer.is_active} />
                         </td>
 
-                        {/* TOMBOL AKSI */}
                         <td className="px-6 py-4">
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             <button
                               type="button"
                               onClick={() => handleEdit(officer)}
-                              className="rounded-lg border border-blue-200 px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-50"
+                              disabled
+                              title="Edit petugas belum tersedia di API backend"
+                              className="cursor-not-allowed rounded-xl border border-slate-200 bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-400 transition"
                             >
                               Edit
                             </button>
 
                             <button
                               type="button"
-                              onClick={() =>
-                                handleToggleStatus(officer)
-                              }
-                              className={`whitespace-nowrap rounded-lg border px-3 py-2 text-xs font-semibold transition ${
+                              onClick={() => handleToggleStatus(officer)}
+                              className={`whitespace-nowrap rounded-xl border px-3 py-2 text-xs font-semibold transition ${
                                 officer.is_active
-                                  ? "border-amber-200 text-amber-700 hover:bg-amber-50"
-                                  : "border-emerald-200 text-emerald-700 hover:bg-emerald-50"
+                                  ? "border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100"
+                                  : "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
                               }`}
                             >
                               {officer.is_active
@@ -549,10 +590,10 @@ export default function AdminPetugasPage() {
 
                             <button
                               type="button"
-                              onClick={() =>
-                                handleDelete(officer)
-                              }
-                              className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50"
+                              onClick={() => handleDelete(officer)}
+                              disabled
+                              title="Hapus petugas belum tersedia di API backend"
+                              className="cursor-not-allowed rounded-xl border border-slate-200 bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-400 transition"
                             >
                               Hapus
                             </button>
@@ -567,7 +608,6 @@ export default function AdminPetugasPage() {
           </section>
         </main>
 
-        {/* MODAL TAMBAH / EDIT */}
         {showForm && (
           <div
             className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-sm"
@@ -581,42 +621,44 @@ export default function AdminPetugasPage() {
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-petugas-title"
-              className="relative z-[10000] max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl bg-white shadow-2xl"
+              className="relative z-[10000] max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-[28px] bg-white shadow-[0_24px_60px_rgba(15,23,42,0.22)]"
               onMouseDown={(event) => event.stopPropagation()}
             >
-              <div className="flex items-start justify-between border-b border-slate-100 px-6 py-5">
-                <div>
-                  <h2
-                    id="modal-petugas-title"
-                    className="text-xl font-bold text-slate-900"
-                  >
-                    {editingOfficer
-                      ? "Edit Data Petugas"
-                      : "Tambah Akun Petugas"}
-                  </h2>
+              <div className="border-b border-slate-100 bg-gradient-to-r from-[#f4f9ff] to-white px-6 py-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0164DD]">
+                      {editingOfficer ? "Perbarui" : "Baru"}
+                    </p>
+                    <h2
+                      id="modal-petugas-title"
+                      className="mt-2 text-xl font-bold text-slate-900"
+                    >
+                      {editingOfficer
+                        ? "Edit Data Petugas"
+                        : "Tambah Akun Petugas"}
+                    </h2>
+                  </div>
 
-                  <p className="mt-1 text-sm text-slate-400">
-                    {editingOfficer
-                      ? "Perbarui informasi akun Admin Pemda."
-                      : "Buat akun baru untuk Admin Pemda."}
-                  </p>
+                  <button
+                    type="button"
+                    aria-label="Tutup modal"
+                    onClick={closeForm}
+                    disabled={isSaving}
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition hover:bg-slate-200 disabled:opacity-50"
+                  >
+                    ×
+                  </button>
                 </div>
 
-                <button
-                  type="button"
-                  aria-label="Tutup modal"
-                  onClick={closeForm}
-                  disabled={isSaving}
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition hover:bg-slate-200 disabled:opacity-50"
-                >
-                  ×
-                </button>
+                <p className="mt-2 text-sm text-slate-400">
+                  {editingOfficer
+                    ? "Perbarui informasi akun Admin Pemda."
+                    : "Buat akun baru untuk Admin Pemda."}
+                </p>
               </div>
 
-              <form
-                onSubmit={handleSubmit}
-                className="space-y-5 p-6"
-              >
+              <form onSubmit={handleSubmit} className="space-y-5 p-6">
                 <FormInput
                   label="Nama Lengkap"
                   name="full_name"
@@ -702,7 +744,7 @@ export default function AdminPetugasPage() {
                   <button
                     type="submit"
                     disabled={isSaving}
-                    className="rounded-xl bg-[#0164DD] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0058C7] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-xl bg-gradient-to-r from-[#0164DD] to-[#1386FF] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_25px_rgba(1,100,221,0.2)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {isSaving
                       ? "Menyimpan..."
