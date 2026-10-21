@@ -25,6 +25,7 @@ import StatistikPublikPage from "./pages/Statistik/StatistikPublikPage";
 // ADMIN PEMPROV
 // ================================
 import AdminPemprovDashboard from "./pages/AdminPemprov/AdminPemprovDashboard";
+import AdminPemprovProfil from "./pages/AdminPemprov/AdminPemprovProfil";
 import AdminPetugasPage from "./pages/AdminPemprov/AdminPetugasPage";
 import RaporKabupaten from "./pages/AdminPemprov/RaporKabupaten";
 
@@ -90,6 +91,7 @@ function AppRoutes() {
       ================================= */}
       <Route element={<ProtectedRoute allowedRoles={["admin_pemprov"]} />}>
         <Route path="/admin/pemprov" element={<AdminPemprovDashboard />} />
+        <Route path="/admin/pemprov/profil" element={<AdminPemprovProfil />} />
         <Route path="/admin/pemprov/petugas" element={<AdminPetugasPage />} />
 
         {/* HALAMAN RAPOR KABUPATEN */}
@@ -98,9 +100,9 @@ function AppRoutes() {
           element={<RaporKabupaten />}
         />
         <Route
-  path="/admin/pemprov/ekspor"
-  element={<EksporData />}
-/>
+          path="/admin/pemprov/ekspor"
+          element={<EksporData />}
+        />
 
         <Route path="/data-provinsi" element={<DataProvinsiPage />} />
       </Route>

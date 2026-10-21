@@ -22,11 +22,6 @@ const menuItems = [
     path: '/admin/pemprov/ekspor',
     icon: '⇩',
   },
-  {
-    label: 'Data Provinsi',
-    path: '/data-provinsi',
-    icon: '◫',
-  },
 ];
 
 export default function AdminLayout({ children }) {
@@ -57,7 +52,7 @@ export default function AdminLayout({ children }) {
         {/* =====================================================
             SIDEBAR
         ===================================================== */}
-        <aside className="fixed inset-y-0 left-0 z-40 hidden w-[260px] border-r border-slate-200 bg-white lg:flex lg:flex-col">
+        <aside className="fixed inset-y-0 left-0 z-40 hidden w-[260px] border-r border-blue-200 bg-gradient-to-b from-[#0F6EE6] via-[#0E69E4] to-[#0A5BD6] text-white shadow-[8px_0_24px_rgba(10,91,214,0.18)] lg:flex lg:flex-col">
 
           {/* Logo */}
           <div className="flex h-[88px] items-center px-7">
@@ -66,11 +61,11 @@ export default function AdminLayout({ children }) {
               onClick={() => navigate('/admin/pemprov')}
               className="text-left"
             >
-              <div className="text-xl font-extrabold tracking-tight text-[#0164DD]">
+              <div className="text-xl font-extrabold tracking-tight text-white">
                 SIMPONI
               </div>
 
-              <div className="mt-0.5 text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400">
+              <div className="mt-0.5 text-[11px] font-medium uppercase tracking-[0.16em] text-blue-100">
                 Admin Pemprov
               </div>
             </button>
@@ -78,7 +73,7 @@ export default function AdminLayout({ children }) {
 
           {/* Menu */}
           <div className="flex-1 px-4 py-4">
-            <p className="px-4 pb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+            <p className="px-4 pb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-blue-100/90">
               Menu Utama
             </p>
 
@@ -93,15 +88,15 @@ export default function AdminLayout({ children }) {
                     onClick={() => navigate(item.path)}
                     className={`group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition-all duration-200 ${
                       active
-                        ? 'bg-[#0164DD] text-white shadow-[0_8px_20px_rgba(1,100,221,0.18)]'
-                        : 'text-slate-600 hover:bg-blue-50 hover:text-[#0164DD]'
+                        ? 'bg-white text-[#0A5BD6] shadow-[0_10px_24px_rgba(255,255,255,0.22)]'
+                        : 'text-blue-50 hover:bg-white hover:text-[#0A5BD6]'
                     }`}
                   >
                     <span
                       className={`flex h-8 w-8 items-center justify-center rounded-lg text-base ${
                         active
-                          ? 'bg-white/15 text-white'
-                          : 'bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-[#0164DD]'
+                          ? 'bg-blue-50 text-[#0A5BD6]'
+                          : 'bg-white/10 text-white group-hover:bg-blue-50 group-hover:text-[#0A5BD6]'
                       }`}
                     >
                       {item.icon}
@@ -115,31 +110,33 @@ export default function AdminLayout({ children }) {
           </div>
 
           {/* Bottom profile */}
-          <div className="border-t border-slate-100 p-4">
-            <div className="mb-3 rounded-2xl bg-slate-50 p-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 font-bold text-[#0164DD]">
-                  {user?.full_name?.charAt(0)?.toUpperCase() || 'A'}
-                </div>
-
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-slate-800">
-                    {user?.full_name || 'Admin Pemprov'}
-                  </p>
-
-                  <p className="truncate text-xs text-slate-400">
-                    Admin Pemprov
-                  </p>
-                </div>
+          <div className="border-t border-white/15 p-4">
+            <button
+              type="button"
+              onClick={() => navigate('/admin/pemprov/profil')}
+              className="mb-3 flex w-full items-center gap-3 rounded-2xl bg-white/10 p-3 text-left ring-1 ring-white/10 backdrop-blur-sm transition hover:bg-white/15"
+            >
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15 font-bold text-white ring-1 ring-white/15">
+                {user?.full_name?.charAt(0)?.toUpperCase() || 'A'}
               </div>
-            </div>
+
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-white">
+                  {user?.full_name || 'Admin Pemprov'}
+                </p>
+
+                <p className="truncate text-xs text-blue-100">
+                  Profil Admin
+                </p>
+              </div>
+            </button>
 
             <button
               type="button"
               onClick={handleLogout}
-              className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-red-50 hover:text-red-600"
+              className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-blue-50 transition hover:bg-white hover:text-[#0A5BD6]"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-base">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-base text-white">
                 ↪
               </span>
 

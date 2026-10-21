@@ -48,25 +48,25 @@ const statusItems = [
 
 function SmallStat({ label, value, description, icon, accent }) {
   return (
-    <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_35px_rgba(15,23,42,0.08)]">
+    <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-[0_10px_30px_rgba(15,23,42,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_35px_rgba(15,23,42,0.08)] sm:p-5">
       <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${accent}`} />
 
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
+      <div className="flex items-start justify-between gap-3 sm:gap-4">
+        <div className="min-w-0 flex-1">
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400 sm:text-[11px]">
             {label}
           </p>
 
-          <p className="mt-3 text-3xl font-bold tracking-tight text-slate-900">
+          <p className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
             {value}
           </p>
 
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-2 text-[11px] leading-5 text-slate-500 sm:text-xs">
             {description}
           </p>
         </div>
 
-        <div className={`flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br ${accent} text-lg font-bold text-white shadow-lg shadow-slate-200`}>
+        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${accent} text-base font-bold text-white shadow-lg shadow-slate-200 sm:h-11 sm:w-11 sm:text-lg`}>
           {icon}
         </div>
       </div>
@@ -122,37 +122,7 @@ export default function AdminPemprovDashboard() {
   return (
     <AdminLayout>
       <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(1,100,221,0.16),_transparent_32%),linear-gradient(180deg,#f8fbff_0%,#eff5ff_100%)]">
-        <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur-sm">
-          <div className="px-6 py-7 sm:px-8 lg:px-10">
-            <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
-              <div>
-                
-                <h1 className="mt-1 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
-                  Dashboard
-                </h1>
-
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="hidden rounded-2xl border border-slate-200 bg-white px-4 py-2.5 shadow-sm sm:block">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
-                    Wilayah kerja
-                  </p>
-
-                  <p className="mt-1 text-sm font-semibold text-[#0164DD]">
-                    {dashboard?.nama_scope || 'Jawa Barat'}
-                  </p>
-                </div>
-
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-[#0164DD] to-[#5AA8FF] font-bold text-white shadow-lg shadow-blue-200">
-                  A
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <div className="px-6 py-7 sm:px-8 lg:px-10">
+        <div className="px-6 pb-7 pt-2 sm:px-8 lg:px-10">
           {isLoading && (
             <div className="flex min-h-[500px] items-center justify-center">
               <div className="text-center">
@@ -186,71 +156,47 @@ export default function AdminPemprovDashboard() {
           )}
 
           {!isLoading && !error && dashboard && (
-            <div className="space-y-6">
-              <section className="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0A5BD6] via-[#0673E3] to-[#53A6FF] p-7 text-white shadow-[0_20px_45px_rgba(1,100,221,0.24)] sm:p-8">
+            <div className="space-y-4 sm:space-y-6">
+              <section className="relative overflow-hidden rounded-[22px] bg-gradient-to-br from-[#0A5BD6] via-[#0673E3] to-[#53A6FF] p-4 text-white shadow-[0_16px_35px_rgba(1,100,221,0.22)] sm:rounded-[26px] sm:p-6">
                 <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.22),_transparent_52%)]" />
-                <div className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-white/10" />
-                <div className="absolute -bottom-14 right-20 h-44 w-44 rounded-full bg-white/10" />
+                <div className="absolute -right-12 -top-12 h-28 w-28 rounded-full bg-white/10 sm:h-36 sm:w-36" />
+                <div className="absolute -bottom-12 right-8 h-24 w-24 rounded-full bg-white/10 sm:right-16 sm:h-32 sm:w-32" />
 
-                <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-                  <div className="max-w-2xl">
-                    <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">
-                      Monitoring Provinsi
-                    </p>
+                <div className="relative z-10 max-w-2xl">
+                  <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-blue-100 sm:text-[10px]">
+                    Monitoring Provinsi
+                  </p>
 
-                    <h2 className="mt-3 text-2xl font-black sm:text-3xl">
-                      Pantau Jawa Barat dalam satu dashboard.
-                    </h2>
+                  <h2 className="mt-2 text-lg font-black leading-snug sm:text-xl lg:text-2xl">
+                    Pantau Jawa Barat dalam satu dashboard.
+                  </h2>
 
-                    <p className="mt-3 max-w-xl text-sm leading-6 text-blue-100">
-                      Lihat jumlah laporan, status penanganan,
-                      dan akses fitur pengelolaan Admin Pemprov
-                      SIMPONI.
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-3 self-start rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-sm">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-lg font-bold">
-                      ↗
-                    </div>
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-blue-100">
-                        Aktual
-                      </p>
-                      <p className="mt-1 text-sm font-semibold text-white">
-                        {dashboard.total ?? 0} laporan
-                      </p>
-                    </div>
-                  </div>
+                  <p className="mt-2 max-w-xl text-xs leading-5 text-blue-100 sm:text-sm sm:leading-6">
+                    Lihat jumlah laporan, status penanganan,
+                    dan akses fitur pengelolaan Admin Pemprov
+                    SIMPONI.
+                  </p>
                 </div>
               </section>
 
               <section>
-                <div className="mb-4 flex items-end justify-between gap-3">
+                <div className="mb-3 flex flex-col gap-2 sm:mb-4 sm:flex-row sm:items-end sm:justify-between">
                   <div>
-                    <h2 className="text-lg font-bold text-slate-900">
+                    <h2 className="text-base font-bold text-slate-900 sm:text-lg">
                       Ringkasan
                     </h2>
 
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-xs text-slate-500 sm:text-sm">
                       Kondisi laporan secara keseluruhan.
                     </p>
                   </div>
 
-                  <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  <span className="w-fit rounded-full border border-slate-200 bg-white px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-slate-500 sm:text-[10px]">
                     Update real-time
                   </span>
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                  <SmallStat
-                    label="Total laporan"
-                    value={dashboard.total ?? 0}
-                    description="Seluruh laporan masuk"
-                    icon="▣"
-                    accent="from-[#0164DD] via-[#1A7EF2] to-[#6BB7FF]"
-                  />
-
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                   <SmallStat
                     label="Antrean"
                     value={dashboard.queue ?? 0}
@@ -277,25 +223,22 @@ export default function AdminPemprovDashboard() {
                 </div>
               </section>
 
-              <section className="grid gap-6 xl:grid-cols-[1.5fr_0.8fr]">
-                <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.05)]">
+              <section className="grid gap-4 xl:grid-cols-[1.5fr_0.8fr] xl:gap-6">
+                <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_12px_30px_rgba(15,23,42,0.05)] sm:rounded-[28px] sm:p-6">
                   <div className="flex items-center justify-between gap-4">
                     <div>
-                      <h2 className="font-bold text-slate-900">
+                      <h2 className="text-base font-bold text-slate-900 sm:text-lg">
                         Status Laporan
                       </h2>
 
-                      <p className="mt-1 text-xs text-slate-400">
+                      <p className="mt-1 text-[11px] text-slate-400 sm:text-xs">
                         Distribusi laporan berdasarkan tahapan.
                       </p>
                     </div>
 
-                    <span className="rounded-xl bg-blue-50 px-3 py-1.5 text-xs font-semibold text-[#0164DD]">
-                      Jawa Barat
-                    </span>
                   </div>
 
-                  <div className="mt-6 space-y-5">
+                  <div className="mt-5 space-y-5 sm:mt-6">
                     {statusItems.map((status) => {
                       const value = byStatus[status.key] ?? 0;
                       const total = dashboard.total || 0;
@@ -343,73 +286,65 @@ export default function AdminPemprovDashboard() {
                   </div>
                 </div>
 
-                <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.05)]">
-                  <div className="flex items-center justify-between">
+                <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_12px_30px_rgba(15,23,42,0.05)] sm:rounded-[28px] sm:p-6">
+                  <div className="flex items-center justify-between gap-3">
                     <div>
-                      <h2 className="font-bold text-slate-900">
+                      <h2 className="text-base font-bold text-slate-900 sm:text-lg">
                         Wilayah Kerja
                       </h2>
 
-                      <p className="mt-1 text-xs text-slate-400">
+                      <p className="mt-1 text-[11px] text-slate-400 sm:text-xs">
                         Cakupan monitoring saat ini.
                       </p>
                     </div>
 
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#EAF3FF] to-[#DCEBFF] text-lg text-[#0164DD]">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#EAF3FF] to-[#DCEBFF] text-base text-[#0164DD] sm:h-10 sm:w-10 sm:text-lg">
                       ◫
                     </div>
                   </div>
 
-                  <div className="mt-6 rounded-3xl bg-gradient-to-br from-[#F5F9FF] via-[#EEF5FF] to-[#E9F3FF] p-5">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">
+                  <div className="mt-5 rounded-3xl bg-gradient-to-br from-[#0A5BD6] via-[#0F6EE6] to-[#6AAEFF] p-4 text-white shadow-[0_18px_35px_rgba(1,100,221,0.18)] sm:p-5">
+                    <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-blue-100 sm:text-[10px]">
                       Provinsi
                     </p>
 
-                    <p className="mt-2 text-2xl font-black text-[#0164DD]">
+                    <p className="mt-2 text-xl font-black text-white sm:text-2xl">
                       {dashboard.nama_scope || 'Jawa Barat'}
                     </p>
 
                     <div className="mt-5 grid grid-cols-2 gap-3">
-                      <div className="rounded-2xl bg-white p-4 shadow-sm">
-                        <p className="text-2xl font-black text-slate-900">
+                      <div className="rounded-2xl bg-white/12 p-3 ring-1 ring-white/15 backdrop-blur-sm sm:p-4">
+                        <p className="text-xl font-black text-white sm:text-2xl">
                           {dashboard.total ?? 0}
                         </p>
 
-                        <p className="mt-1 text-[11px] text-slate-500">
+                        <p className="mt-1 text-[10px] text-blue-100 sm:text-[11px]">
                           Total laporan
                         </p>
                       </div>
 
-                      <div className="rounded-2xl bg-white p-4 shadow-sm">
-                        <p className="text-2xl font-black text-slate-900">
+                      <div className="rounded-2xl bg-white/12 p-3 ring-1 ring-white/15 backdrop-blur-sm sm:p-4">
+                        <p className="text-xl font-black text-white sm:text-2xl">
                           {dashboard.queue ?? 0}
                         </p>
 
-                        <p className="mt-1 text-[11px] text-slate-500">
+                        <p className="mt-1 text-[10px] text-blue-100 sm:text-[11px]">
                           Antrean
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => navigate('/data-provinsi')}
-                    className="mt-4 flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-[#0164DD]"
-                  >
-                    <span>Lihat data provinsi</span>
-                    <span className="text-base">→</span>
-                  </button>
                 </div>
               </section>
 
               <section>
-                <div className="mb-4">
-                  <h2 className="text-lg font-bold text-slate-900">
+                <div className="mb-3 sm:mb-4">
+                  <h2 className="text-base font-bold text-slate-900 sm:text-lg">
                     Akses Cepat
                   </h2>
 
-                  <p className="mt-1 text-sm text-slate-500">
+                  <p className="mt-1 text-xs text-slate-500 sm:text-sm">
                     Fitur utama untuk pengelolaan Admin Pemprov.
                   </p>
                 </div>

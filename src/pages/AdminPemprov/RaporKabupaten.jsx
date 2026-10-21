@@ -102,8 +102,8 @@ export default function RaporKabupaten() {
 
   return (
     <AdminLayout>
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(1,100,221,0.12),_transparent_28%),linear-gradient(180deg,#f8fbff_0%,#eef5ff_100%)] p-6 sm:p-8">
-        <div className="mx-auto max-w-7xl">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(1,100,221,0.12),_transparent_28%),linear-gradient(180deg,#f8fbff_0%,#eef5ff_100%)] p-3 sm:p-5 lg:p-7">
+        <div className="mx-auto w-full max-w-[1600px]">
           <header className="mb-6 overflow-hidden rounded-[30px] border border-blue-100 bg-gradient-to-r from-[#0A5BD6] via-[#0F6EE6] to-[#78BAFF] p-6 text-white shadow-[0_22px_40px_rgba(1,100,221,0.25)] sm:p-8">
             <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
               <div>
@@ -164,7 +164,7 @@ export default function RaporKabupaten() {
 
           {!loading && !error && rapor && (
             <>
-              <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="mb-6 grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
                 <KartuRingkasan
                   judul="Kabupaten Aktif"
                   nilai={formatAngka(rapor.total_kabupaten_aktif)}
@@ -195,91 +195,142 @@ export default function RaporKabupaten() {
               </div>
 
               <div className="overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
-                <div className="flex flex-col gap-2 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white px-6 py-5 sm:flex-row sm:items-end sm:justify-between">
+                <div className="flex flex-col gap-2 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white px-4 py-4 sm:px-6 sm:py-5 sm:flex-row sm:items-end sm:justify-between">
                   <div>
-                    <h2 className="text-xl font-black text-slate-900">
+                    <h2 className="text-lg font-black text-slate-900 sm:text-xl">
                       Detail Rapor Kabupaten
                     </h2>
 
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-xs text-slate-500 sm:text-sm">
                       Total {formatAngka(rapor.data?.length)} kabupaten pada hasil API.
                     </p>
                   </div>
 
-                  <span className="inline-flex rounded-full border border-slate-200 bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                  <span className="inline-flex w-fit rounded-full border border-slate-200 bg-white px-3 py-1 text-[9px] font-bold uppercase tracking-[0.16em] text-slate-500 sm:text-[10px]">
                     Update terkini
                   </span>
                 </div>
 
                 {rapor.data?.length > 0 ? (
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full border-collapse text-sm text-slate-700">
-                      <thead>
-                        <tr className="bg-gradient-to-r from-slate-100 to-blue-50 text-left text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
-                          {[
-                            'No.',
-                            'Kode',
-                            'Kabupaten',
-                            'Total Laporan',
-                            'Diajukan',
-                            'Diproses',
-                            'Selesai',
-                            'Ditolak',
-                            'Penyelesaian',
-                            'Rapor',
-                          ].map((judul) => (
-                            <th key={judul} className="border-b border-slate-200 px-4 py-3">
-                              {judul}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-
-                      <tbody>
+                  <>
+                    <div className="block p-3 sm:p-4 lg:hidden">
+                      <div className="space-y-3">
                         {rapor.data.map((item, index) => (
-                          <tr
-                            key={item.kode_kabupaten}
-                            className={`transition duration-200 hover:bg-blue-50/60 ${index % 2 === 0 ? 'bg-white' : 'bg-slate-50/70'}`}
-                          >
-                            <td className="border-b border-slate-200 px-4 py-3 text-slate-600">{index + 1}</td>
-                            <td className="border-b border-slate-200 px-4 py-3 text-slate-600">{item.kode_kabupaten}</td>
-                            <td className="border-b border-slate-200 px-4 py-3">
-                              <div className="flex items-center gap-3">
-                                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 text-xs font-bold text-[#0164DD]">
-                                  {item.nama_kabupaten?.slice(0, 2)?.toUpperCase() || 'NA'}
-                                </div>
-                                <span className="font-semibold text-slate-800">{item.nama_kabupaten}</span>
+                          <div key={item.kode_kabupaten} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 shadow-sm">
+                            <div className="flex items-start justify-between gap-3">
+                              <div>
+                                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">
+                                  {item.kode_kabupaten}
+                                </p>
+                                <h3 className="mt-1 text-base font-bold text-slate-900">
+                                  {item.nama_kabupaten}
+                                </h3>
                               </div>
-                            </td>
-                            <td className="border-b border-slate-200 px-4 py-3 font-semibold text-slate-800">{formatAngka(item.total_laporan)}</td>
-                            <td className="border-b border-slate-200 px-4 py-3">{formatAngka(item.diajukan)}</td>
-                            <td className="border-b border-slate-200 px-4 py-3">{formatAngka(item.diproses)}</td>
-                            <td className="border-b border-slate-200 px-4 py-3">{formatAngka(item.selesai)}</td>
-                            <td className="border-b border-slate-200 px-4 py-3">{formatAngka(item.ditolak)}</td>
-                            <td className="border-b border-slate-200 px-4 py-3">
-                              <div className="flex items-center gap-3">
-                                <div className="h-2.5 w-[90px] overflow-hidden rounded-full bg-slate-200">
-                                  <div
-                                    className="h-full rounded-full bg-gradient-to-r from-[#0164DD] to-[#5AA8FF]"
-                                    style={{
-                                      width: `${Math.min(100, Math.max(0, Number(item.persen_selesai) || 0))}%`,
-                                    }}
-                                  />
-                                </div>
-
-                                <span className="font-semibold text-slate-700">
-                                  {formatPersen(item.persen_selesai)}
-                                </span>
-                              </div>
-                            </td>
-                            <td className="border-b border-slate-200 px-4 py-3">
                               <StatusRapor status={item.rapor} />
-                            </td>
-                          </tr>
+                            </div>
+
+                            <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-slate-600">
+                              <div className="rounded-xl bg-white p-2.5">
+                                <p className="text-[10px] uppercase tracking-[0.12em] text-slate-400">Total</p>
+                                <p className="mt-1 font-bold text-slate-800">{formatAngka(item.total_laporan)}</p>
+                              </div>
+                              <div className="rounded-xl bg-white p-2.5">
+                                <p className="text-[10px] uppercase tracking-[0.12em] text-slate-400">Selesai</p>
+                                <p className="mt-1 font-bold text-slate-800">{formatAngka(item.selesai)}</p>
+                              </div>
+                              <div className="rounded-xl bg-white p-2.5">
+                                <p className="text-[10px] uppercase tracking-[0.12em] text-slate-400">Diproses</p>
+                                <p className="mt-1 font-bold text-slate-800">{formatAngka(item.diproses)}</p>
+                              </div>
+                              <div className="rounded-xl bg-white p-2.5">
+                                <p className="text-[10px] uppercase tracking-[0.12em] text-slate-400">Diajukan</p>
+                                <p className="mt-1 font-bold text-slate-800">{formatAngka(item.diajukan)}</p>
+                              </div>
+                            </div>
+
+                            <div className="mt-4">
+                              <div className="mb-1 flex items-center justify-between gap-3">
+                                <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">Penyelesaian</span>
+                                <span className="text-xs font-bold text-slate-700">{formatPersen(item.persen_selesai)}</span>
+                              </div>
+                              <div className="h-2.5 overflow-hidden rounded-full bg-slate-200">
+                                <div
+                                  className="h-full rounded-full bg-gradient-to-r from-[#0164DD] to-[#5AA8FF]"
+                                  style={{
+                                    width: `${Math.min(100, Math.max(0, Number(item.persen_selesai) || 0))}%`,
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          </div>
                         ))}
-                      </tbody>
-                    </table>
-                  </div>
+                      </div>
+                    </div>
+
+                    <div className="hidden overflow-x-auto lg:block">
+                      <table className="w-full min-w-[1200px] border-collapse text-sm text-slate-700">
+                        <thead>
+                          <tr className="bg-gradient-to-r from-slate-100 to-blue-50 text-left text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
+                            {[
+                              'No.',
+                              'Kode',
+                              'Kabupaten',
+                              'Total Laporan',
+                              'Diajukan',
+                              'Diproses',
+                              'Selesai',
+                              'Ditolak',
+                              'Penyelesaian',
+                              'Rapor',
+                            ].map((judul) => (
+                              <th key={judul} className="border-b border-slate-200 px-4 py-3 text-center">
+                                {judul}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          {rapor.data.map((item, index) => (
+                            <tr
+                              key={item.kode_kabupaten}
+                              className={`transition duration-200 hover:bg-blue-50/60 ${index % 2 === 0 ? 'bg-white' : 'bg-slate-50/70'}`}
+                            >
+                              <td className="border-b border-slate-200 px-4 py-3 text-center text-slate-600">{index + 1}</td>
+                              <td className="border-b border-slate-200 px-4 py-3 text-center text-slate-600">{item.kode_kabupaten}</td>
+                              <td className="border-b border-slate-200 px-4 py-3 text-center">
+                                <span className="font-semibold text-slate-800">{item.nama_kabupaten}</span>
+                              </td>
+                              <td className="border-b border-slate-200 px-4 py-3 text-center font-semibold text-slate-800">{formatAngka(item.total_laporan)}</td>
+                              <td className="border-b border-slate-200 px-4 py-3 text-center">{formatAngka(item.diajukan)}</td>
+                              <td className="border-b border-slate-200 px-4 py-3 text-center">{formatAngka(item.diproses)}</td>
+                              <td className="border-b border-slate-200 px-4 py-3 text-center">{formatAngka(item.selesai)}</td>
+                              <td className="border-b border-slate-200 px-4 py-3 text-center">{formatAngka(item.ditolak)}</td>
+                              <td className="border-b border-slate-200 px-4 py-3 text-center">
+                                <div className="flex items-center justify-center gap-3">
+                                  <div className="h-2.5 w-[90px] overflow-hidden rounded-full bg-slate-200">
+                                    <div
+                                      className="h-full rounded-full bg-gradient-to-r from-[#0164DD] to-[#5AA8FF]"
+                                      style={{
+                                        width: `${Math.min(100, Math.max(0, Number(item.persen_selesai) || 0))}%`,
+                                      }}
+                                    />
+                                  </div>
+
+                                  <span className="font-semibold text-slate-700">
+                                    {formatPersen(item.persen_selesai)}
+                                  </span>
+                                </div>
+                              </td>
+                              <td className="border-b border-slate-200 px-4 py-3 text-center">
+                                <StatusRapor status={item.rapor} />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
                 ) : (
                   <p className="p-6 text-sm text-slate-500">
                     Belum ada data rapor kabupaten.
