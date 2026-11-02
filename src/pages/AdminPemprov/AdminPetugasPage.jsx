@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import AdminLayout from "../../components/layout/AdminLayout";
 
 import {
@@ -17,6 +18,24 @@ const EMPTY_FORM = {
   password: "",
   kode_kabupaten: "",
 };
+
+function Reveal({ children, delay = 0, className = "" }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 function StatusBadge({ active }) {
   return (
@@ -96,6 +115,7 @@ function SummaryCard({
 
 export default function AdminPetugasPage() {
   const [officers, setOfficers] = useState([]);
+  const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -106,6 +126,31 @@ export default function AdminPetugasPage() {
   const [editingOfficer, setEditingOfficer] = useState(null);
 
   const [form, setForm] = useState({ ...EMPTY_FORM });
+
+  const filteredOfficers = officers
+    .filter((officer) => {
+      const keyword = search.trim().toLowerCase();
+
+      if (!keyword) return true;
+
+      const haystack = [
+        officer.full_name,
+        officer.email,
+        officer.nip,
+        officer.kode_kabupaten,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return haystack.includes(keyword);
+    })
+    .sort((a, b) => {
+      const aKode = Number(a.kode_kabupaten ?? 0);
+      const bKode = Number(b.kode_kabupaten ?? 0);
+
+      return aKode - bKode;
+    });
 
   // Mengambil data petugas
   async function loadOfficers() {
@@ -330,35 +375,35 @@ export default function AdminPetugasPage() {
   return (
     <AdminLayout>
       <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(1,100,221,0.14),_transparent_28%),linear-gradient(180deg,#f8fbff_0%,#eef5ff_100%)]">
-        <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur-sm">
-          <div className="px-6 py-7 sm:px-8 lg:px-10">
-            <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
-              <div>
-              
+        <Reveal delay={0.04}>
+          <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur-sm">
+            <div className="px-6 py-7 sm:px-8 lg:px-10">
+              <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+                <div>
+                  <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
+                    Manajemen Petugas
+                  </h1>
 
-                <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
-                  Manajemen Petugas
-                </h1>
+                  <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+                    Kelola akun Admin Pemda yang bertugas menangani
+                    laporan di setiap kabupaten/kota.
+                  </p>
+                </div>
 
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-                  Kelola akun Admin Pemda yang bertugas menangani
-                  laporan di setiap kabupaten/kota.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={openCreateForm}
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#0164DD] to-[#1386FF] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_25px_rgba(1,100,221,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_28px_rgba(1,100,221,0.28)]"
-                >
-                  <span className="text-lg leading-none">＋</span>
-                  Tambah Petugas
-                </button>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={openCreateForm}
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#0164DD] to-[#1386FF] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_25px_rgba(1,100,221,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_28px_rgba(1,100,221,0.28)]"
+                  >
+                    <span className="text-lg leading-none">＋</span>
+                    Tambah Petugas
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </header>
+          </header>
+        </Reveal>
 
         <main className="px-6 py-7 sm:px-8 lg:px-10">
           {success && (
@@ -383,83 +428,80 @@ export default function AdminPetugasPage() {
             </div>
           )}
 
-          <section className="relative mb-6 overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0A5BD6] via-[#0673E3] to-[#53A6FF] p-7 text-white shadow-[0_22px_45px_rgba(1,100,221,0.22)] sm:p-8">
-            <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.22),_transparent_52%)]" />
-            <div className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-white/10" />
-            <div className="absolute -bottom-14 right-20 h-44 w-44 rounded-full bg-white/10" />
+          <Reveal delay={0.08}>
+            <section className="relative mb-6 overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0A5BD6] via-[#0673E3] to-[#53A6FF] p-7 text-white shadow-[0_22px_45px_rgba(1,100,221,0.22)] sm:p-8">
+              <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.22),_transparent_52%)]" />
+              <div className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-white/10" />
+              <div className="absolute -bottom-14 right-20 h-44 w-44 rounded-full bg-white/10" />
 
-            <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-              <div className="max-w-2xl">
-                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-blue-100">
-                  Super admin
-                </p>
-
-                <h2 className="mt-3 text-2xl font-black sm:text-3xl">
-                  Kelola tim Admin Pemda dengan lebih terstruktur.
-                </h2>
-
-                <p className="mt-3 max-w-xl text-sm leading-6 text-blue-100">
-                  Pantau data petugas, status akun, dan wilayah kerja
-                  secara cepat dari satu halaman yang lebih rapi dan
-                  informatif.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 self-start rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-sm">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-lg font-bold shadow-inner">
-                  ↗
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.18em] text-blue-100">
-                    Total akun
+              <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                <div className="max-w-2xl">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-blue-100">
+                    Super admin
                   </p>
-                  <p className="mt-1 text-sm font-semibold text-white">
-                    {officers.length} petugas
+
+                  <h2 className="mt-3 text-2xl font-black sm:text-3xl">
+                    Kelola tim Admin Pemda dengan lebih terstruktur.
+                  </h2>
+
+                  <p className="mt-3 max-w-xl text-sm leading-6 text-blue-100">
+                    Pantau data petugas, status akun, dan wilayah kerja
+                    secara cepat dari satu halaman yang lebih rapi dan
+                    informatif.
                   </p>
                 </div>
+
+                <div className="flex items-center gap-3 self-start rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-sm">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-lg font-bold shadow-inner">
+                    ↗
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-blue-100">
+                      Total akun
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-white">
+                      {officers.length} petugas
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </Reveal>
 
           <div className="mb-6 grid gap-4 sm:grid-cols-3">
-            <SummaryCard
-              title="Total Petugas"
-              value={officers.length}
-              description="Akun Admin Pemda"
-            />
-
-            <SummaryCard
-              title="Aktif"
-              value={activeCount}
-              description="Dapat masuk ke sistem"
-              valueClass="text-emerald-600"
-            />
-
-            <SummaryCard
-              title="Nonaktif"
-              value={inactiveCount}
-              description="Tidak dapat masuk"
-              valueClass="text-slate-500"
-            />
+            <Reveal delay={0.12}><SummaryCard title="Total Petugas" value={officers.length} description="Akun Admin Pemda" /></Reveal>
+            <Reveal delay={0.18}><SummaryCard title="Aktif" value={activeCount} description="Dapat masuk ke sistem" valueClass="text-emerald-600" /></Reveal>
+            <Reveal delay={0.24}><SummaryCard title="Nonaktif" value={inactiveCount} description="Tidak dapat masuk" valueClass="text-slate-500" /></Reveal>
           </div>
 
-          <section className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
-            <div className="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <h2 className="text-lg font-bold text-slate-900">
-                  Daftar Petugas
-                </h2>
+          <Reveal delay={0.14}>
+            <section className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+              <div className="flex flex-col gap-4 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">
+                    Daftar Petugas
+                  </h2>
 
-                <p className="mt-1 text-sm text-slate-400">
-                  Daftar akun Admin Pemda yang terdaftar pada sistem
-                  SIMPONI.
-                </p>
+                  <p className="mt-1 text-sm text-slate-400">
+                    Daftar akun Admin Pemda yang terdaftar pada sistem
+                    SIMPONI.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <input
+                    type="text"
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
+                    placeholder="Cari petugas, email, NIP, kode kabupaten"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[#0164DD] focus:bg-white focus:ring-4 focus:ring-blue-50 sm:w-80"
+                  />
+
+                  <span className="inline-flex w-fit items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    {filteredOfficers.length} tampil
+                  </span>
+                </div>
               </div>
-
-              <span className="inline-flex w-fit items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                {officers.length} terdaftar
-              </span>
-            </div>
 
             {isLoading ? (
               <div className="flex min-h-[250px] items-center justify-center">
@@ -470,24 +512,27 @@ export default function AdminPetugasPage() {
                   </p>
                 </div>
               </div>
-            ) : officers.length === 0 ? (
+            ) : filteredOfficers.length === 0 ? (
               <div className="flex min-h-[250px] flex-col items-center justify-center px-6 text-center">
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-2xl text-[#0164DD] shadow-inner shadow-blue-100">
                   ♙
                 </div>
 
                 <h3 className="mt-4 font-semibold text-slate-800">
-                  Belum ada petugas
+                  Tidak ada petugas yang cocok
                 </h3>
 
                 <p className="mt-1 max-w-sm text-sm text-slate-400">
-                  Tambahkan akun Admin Pemda untuk mulai mengelola
-                  laporan wilayah.
+                  Coba ubah kata kunci pencarian atau tambah akun baru
+                  untuk wilayah lain.
                 </p>
 
                 <button
                   type="button"
-                  onClick={openCreateForm}
+                  onClick={() => {
+                    setSearch("");
+                    openCreateForm();
+                  }}
                   className="mt-5 rounded-xl bg-[#0164DD] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0058C7]"
                 >
                   Tambah Petugas
@@ -517,7 +562,7 @@ export default function AdminPetugasPage() {
                   </thead>
 
                   <tbody className="divide-y divide-slate-100">
-                    {officers.map((officer) => (
+                    {filteredOfficers.map((officer) => (
                       <tr
                         key={officer.id}
                         className="transition hover:bg-slate-50/70"
@@ -599,7 +644,8 @@ export default function AdminPetugasPage() {
                 </table>
               </div>
             )}
-          </section>
+            </section>
+          </Reveal>
         </main>
 
         {showForm && (

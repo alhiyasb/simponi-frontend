@@ -234,7 +234,11 @@ export async function getReportDetail(reportId) {
     );
   }
 
-  return data;
+  const normalized = data?.data ?? data?.report ?? data?.result ?? data;
+
+  return normalized && typeof normalized === "object"
+    ? normalized
+    : data;
 }
 
 

@@ -3,6 +3,16 @@ import { login as apiLogin } from '../services/api';
 import { roleMap } from '../constants/roles';
 import { AuthContext } from './AuthContext';
 
+const buildProfileFromUser = (userData = {}) => ({
+  name: userData.name || userData.full_name || userData.nama_lengkap || 'Pengguna',
+  nik: userData.nik || userData.NIK || '',
+  email: userData.email || '',
+  phone: userData.phone || userData.no_telepon || userData.telepon || '',
+  wilayah: userData.wilayah || userData.kabupaten || userData.kota || 'Kabupaten / Kota',
+  status: userData.status || 'Aktif',
+  photo: userData.photo || '',
+});
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
@@ -10,10 +20,16 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const persistAuth = useCallback((userData, tokenData) => {
-    localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('access_token', tokenData);
+    const normalizedUser = userData || {};
 
-    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(normalizedUser));
+    localStorage.setItem('access_token', tokenData);
+    localStorage.setItem(
+      'simponi-user-profile',
+      JSON.stringify(buildProfileFromUser(normalizedUser))
+    );
+
+    setUser(normalizedUser);
     setToken(tokenData);
     setIsAuthenticated(true);
   }, []);
@@ -21,6 +37,7 @@ export function AuthProvider({ children }) {
   const clearAuth = useCallback(() => {
     localStorage.removeItem('user');
     localStorage.removeItem('access_token');
+    localStorage.removeItem('simponi-user-profile');
 
     setUser(null);
     setToken(null);

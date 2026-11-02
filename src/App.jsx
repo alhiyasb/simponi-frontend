@@ -1,4 +1,3 @@
-import EksporData from "./pages/AdminPemprov/EksporData";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
@@ -28,6 +27,7 @@ import AdminPemprovDashboard from "./pages/AdminPemprov/AdminPemprovDashboard";
 import AdminPemprovProfil from "./pages/AdminPemprov/AdminPemprovProfil";
 import AdminPetugasPage from "./pages/AdminPemprov/AdminPetugasPage";
 import RaporKabupaten from "./pages/AdminPemprov/RaporKabupaten";
+import EksporData from "./pages/AdminPemprov/EksporData";
 
 // ================================
 // ADMIN PEMDA
@@ -35,7 +35,7 @@ import RaporKabupaten from "./pages/AdminPemprov/RaporKabupaten";
 import AdminPemdaDashboard from "./pages/AdminPemda/AdminPemdaDashboard";
 import AdminPemdaLaporan from "./pages/AdminPemda/AdminPemdaLaporan";
 import AdminPemdaPenanganan from "./pages/AdminPemda/AdminPemdaPenanganan";
-import AdminPemdaSelesai from "./pages/AdminPemda/AdminPemdaSelesaiDetail";
+import AdminPemdaSelesai from "./pages/AdminPemda/AdminPemdaSelesai";
 import AdminPemdaSelesaiDetail from "./pages/AdminPemda/AdminPemdaSelesaiDetail";
 import AdminPemdaProfil from "./pages/AdminPemda/AdminPemdaProfil";
 
@@ -93,17 +93,8 @@ function AppRoutes() {
         <Route path="/admin/pemprov" element={<AdminPemprovDashboard />} />
         <Route path="/admin/pemprov/profil" element={<AdminPemprovProfil />} />
         <Route path="/admin/pemprov/petugas" element={<AdminPetugasPage />} />
-
-        {/* HALAMAN RAPOR KABUPATEN */}
-        <Route
-          path="/admin/pemprov/rapor"
-          element={<RaporKabupaten />}
-        />
-        <Route
-          path="/admin/pemprov/ekspor"
-          element={<EksporData />}
-        />
-
+        <Route path="/admin/pemprov/rapor" element={<RaporKabupaten />} />
+        <Route path="/admin/pemprov/ekspor" element={<EksporData />} />
         <Route path="/data-provinsi" element={<DataProvinsiPage />} />
       </Route>
 
@@ -114,7 +105,6 @@ function AppRoutes() {
         <Route path="/profile" element={<ProfilePage />} />
       </Route>
     </Routes>
-    
   );
 }
 

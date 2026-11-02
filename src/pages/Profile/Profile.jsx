@@ -70,23 +70,41 @@ const getLastLogin = () => {
   );
 };
 
+const getActiveProfile = () => {
+  const fallbackProfile = { ...defaultProfile };
+
+  try {
+    const saved = localStorage.getItem('simponi-user-profile');
+    const currentUser = JSON.parse(localStorage.getItem('user') || 'null');
+
+    const mergedProfile = {
+      ...fallbackProfile,
+      ...(saved ? JSON.parse(saved) : {}),
+    };
+
+    const userName = currentUser?.name || currentUser?.full_name || currentUser?.nama_lengkap;
+    const userNik = currentUser?.nik || currentUser?.NIK;
+    const userEmail = currentUser?.email;
+    const userPhone = currentUser?.phone || currentUser?.no_telepon || currentUser?.telepon;
+    const userWilayah = currentUser?.wilayah || currentUser?.kabupaten || currentUser?.kota;
+
+    return {
+      ...mergedProfile,
+      name: userName || mergedProfile.name,
+      nik: userNik || mergedProfile.nik,
+      email: userEmail || mergedProfile.email,
+      phone: userPhone || mergedProfile.phone,
+      wilayah: userWilayah || mergedProfile.wilayah,
+      status: currentUser?.status || mergedProfile.status || 'Aktif',
+    };
+  } catch (error) {
+    console.error('Gagal membaca profil:', error);
+    return fallbackProfile;
+  }
+};
+
 function ProfilePage() {
-  const [profile, setProfile] = useState(() => {
-    try {
-      const saved = localStorage.getItem('simponi-user-profile');
-
-      if (saved) {
-        return {
-          ...defaultProfile,
-          ...JSON.parse(saved),
-        };
-      }
-    } catch (error) {
-      console.error('Gagal membaca profil:', error);
-    }
-
-    return defaultProfile;
-  });
+  const [profile, setProfile] = useState(() => getActiveProfile());
 
   const [isEditing, setIsEditing] = useState(false);
   const fileInputRef = useRef(null);

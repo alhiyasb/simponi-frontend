@@ -51,11 +51,55 @@ function formatFaktorPendorong(value) {
   return [];
 }
 
+function getFileUrl(file) {
+  if (!file) return "";
+
+  if (Array.isArray(file)) {
+    return getFileUrl(file[0]);
+  }
+
+  if (typeof file === "object") {
+    const value =
+      file.url ||
+      file.path ||
+      file.file_url ||
+      file.filename ||
+      file.name ||
+      file.link;
+    return getFileUrl(value);
+  }
+
+  const rawValue = String(file).trim();
+  if (!rawValue) return "";
+
+  if (/^https?:\/\//i.test(rawValue)) {
+    return rawValue;
+  }
+
+  const apiBase = (import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api")
+    .replace(/\/+$/, "");
+  const backendRoot = apiBase.replace(/\/api$/, "");
+  const normalized = rawValue.replace(/^\/+/, "").replace(/\\/g, "/");
+  const cleanValue = normalized.startsWith("api/") ? normalized.slice(4) : normalized;
+
+  if (cleanValue.startsWith("uploads/")) {
+    return `${backendRoot}/${cleanValue}`;
+  }
+
+  return `${backendRoot}/uploads/${cleanValue}`;
+}
+
 function Field({ label, children, wide = false }) {
   return (
-    <div className={wide ? "sm:col-span-2" : ""}>
-      <p className="print-label text-sm text-slate-500">{label}</p>
-      <div className="print-value font-medium text-slate-900">{children || "-"}</div>
+    <div className={wide ? "min-w-0 md:col-span-2" : "min-w-0"}>
+      {label && (
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+          {label}
+        </p>
+      )}
+      <div className="print-value rounded-2xl border border-sky-100 bg-white/70 px-3 py-2 text-sm text-slate-700 shadow-inner shadow-sky-100/60">
+        {children ?? "-"}
+      </div>
     </div>
   );
 }
@@ -125,9 +169,10 @@ export default function ReportDetailPage() {
   const cfg = getStatusConfig(report.status);
   const faktorPendorong = formatFaktorPendorong(report.faktor_pendorong);
   const histories = Array.isArray(report.histories) ? report.histories : [];
+  const dokumenPendukungUrl = getFileUrl(report.dokumen_pendukung);
 
   return (
-    <div className="report-detail-page min-h-screen bg-[linear-gradient(180deg,#eaf4ff_0%,#f8fbff_28%,#eef6ff_100%)] text-slate-800">
+    <div className="report-detail-page min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(96,165,250,0.25),_transparent_22%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.18),_transparent_22%),linear-gradient(180deg,#edf6ff_0%,#f8fbff_28%,#eef6ff_100%)] text-slate-800">
       <style>{`
         @media print {
           @page { size: A4 portrait; margin: 12mm; }
@@ -167,9 +212,9 @@ export default function ReportDetailPage() {
 
       <Navbar />
 
-      <main className="print-container mx-auto max-w-4xl px-4 pb-20 pt-28 sm:px-6 lg:px-8">
+      <main className="print-container mx-auto max-w-7xl px-4 pb-20 pt-28 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <div className="print-header print-no-break flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="print-header print-no-break flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-[30px] border border-white/60 bg-gradient-to-r from-white/80 via-sky-50/80 to-blue-50/80 p-5 shadow-[0_18px_45px_rgba(59,130,246,0.08)] backdrop-blur-xl">
             <div className="flex items-center gap-4">
               <button onClick={handleBack} className="print-hidden flex h-10 w-10 items-center justify-center rounded-full border border-sky-200 bg-white text-sky-600 shadow-sm hover:bg-sky-50" title="Kembali">
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7 7" /></svg>
@@ -184,29 +229,32 @@ export default function ReportDetailPage() {
             </button>
           </div>
 
-          <section className="print-card rounded-[28px] border border-sky-100 bg-white/85 p-6 shadow-[0_14px_40px_rgba(15,23,42,0.05)] backdrop-blur-sm">
+          <section className="print-card rounded-[30px] border border-blue-200 bg-gradient-to-br from-blue-600 via-sky-600 to-blue-500 p-6 text-white shadow-[0_18px_50px_rgba(37,99,235,0.28)] backdrop-blur-xl">
             <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{cfg.icon}</span>
-                <div><p className="print-muted text-sm text-slate-500">Status</p><span className={`rounded-full border px-3 py-1 text-sm font-semibold ${cfg.class}`}>{cfg.label}</span></div>
+                <div>
+                  <p className="print-muted text-sm text-blue-100">Status</p>
+                  <span className="rounded-full border border-white/30 bg-white/15 px-3 py-1 text-sm font-semibold text-white">{cfg.label}</span>
+                </div>
               </div>
-              <div className="flex gap-4 text-sm text-slate-600">
-                <span>ID: <b className="text-slate-900">{report.id || reportId}</b></span>
-                <span>Dibuat: <b className="text-slate-900">{formatDateShort(report.created_at)}</b></span>
+              <div className="flex flex-wrap gap-4 text-sm text-blue-50">
+                <span>ID: <b className="text-white">{report.id || reportId}</b></span>
+                <span>Dibuat: <b className="text-white">{formatDateShort(report.created_at)}</b></span>
               </div>
             </div>
             <div>
-              <div className="mb-2 flex justify-between text-sm text-slate-600"><span>Progress</span><b className="text-slate-800">{cfg.progress}%</b></div>
-              <div className="print-progress h-3 overflow-hidden rounded-full bg-sky-100">
-                <div style={{ width: `${cfg.progress}%` }} className="print-progress-fill h-full rounded-full bg-gradient-to-r from-sky-500 to-blue-600" />
+              <div className="mb-2 flex justify-between text-sm text-blue-100"><span>Progress</span><b className="text-white">{cfg.progress}%</b></div>
+              <div className="print-progress h-3 overflow-hidden rounded-full bg-white/20">
+                <div style={{ width: `${cfg.progress}%` }} className="print-progress-fill h-full rounded-full bg-gradient-to-r from-sky-200 to-white" />
               </div>
-              <div className="mt-2 flex justify-between text-[10px] text-slate-400"><span>Diajukan</span><span>Diverifikasi</span><span>Diproses</span><span>Selesai</span></div>
+              <div className="mt-2 flex justify-between text-[10px] text-blue-100"><span>Diajukan</span><span>Diverifikasi</span><span>Diproses</span><span>Selesai</span></div>
             </div>
           </section>
 
-          <section className="print-card rounded-[28px] border border-sky-100 bg-white/85 p-6 shadow-[0_14px_40px_rgba(15,23,42,0.05)]">
+          <section className="print-card rounded-[30px] border border-white/60 bg-gradient-to-br from-white/90 via-sky-50/90 to-blue-50/90 p-6 shadow-[0_18px_50px_rgba(59,130,246,0.08)] backdrop-blur-xl">
             <h2 className="mb-4 text-lg font-bold text-slate-900">Informasi Laporan</h2>
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3 min-w-0">
               <Field label="Nama Pelapor">{report.pelapor_nama}</Field>
               <Field label="NIK Pelapor"><span className="font-mono">{report.pelapor_nik}</span></Field>
               <Field label="Telepon">{report.pelapor_telepon}</Field>
@@ -219,9 +267,9 @@ export default function ReportDetailPage() {
             </div>
           </section>
 
-          <section className="print-card rounded-[28px] border border-sky-100 bg-white/85 p-6 shadow-[0_14px_40px_rgba(15,23,42,0.05)]">
+          <section className="print-card rounded-[30px] border border-white/60 bg-gradient-to-br from-white/90 via-sky-50/90 to-blue-50/90 p-6 shadow-[0_18px_50px_rgba(59,130,246,0.08)] backdrop-blur-xl">
             <h2 className="mb-4 text-lg font-bold text-slate-900">Detail Kasus</h2>
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3 min-w-0">
               <Field label="Usia Perempuan">{report.usia_perempuan}</Field>
               <Field label="Usia Laki-laki">{report.usia_laki_laki}</Field>
               <Field label="Status Pendidikan" wide>{report.status_pendidikan}</Field>
@@ -232,22 +280,24 @@ export default function ReportDetailPage() {
                 </div>
               </Field>
               <Field label="Kronologi / Keterangan" wide>
-                <div className="mt-2 whitespace-pre-line rounded-xl bg-slate-50 p-4">{report.description || "-"}</div>
+                <div className="mt-2 overflow-hidden rounded-2xl border border-sky-100 bg-gradient-to-r from-sky-50 via-white to-blue-50 p-4 leading-7 text-slate-700 shadow-inner shadow-sky-100/60 break-words">
+                  {report.description || "-"}
+                </div>
               </Field>
             </div>
           </section>
 
-          {report.dokumen_pendukung && (
-            <section className="print-card rounded-[28px] border border-sky-100 bg-white/85 p-6 shadow-[0_14px_40px_rgba(15,23,42,0.05)]">
+          {dokumenPendukungUrl && (
+            <section className="print-card rounded-[30px] border border-white/60 bg-gradient-to-br from-white/90 via-sky-50/90 to-blue-50/90 p-6 shadow-[0_18px_50px_rgba(59,130,246,0.08)] backdrop-blur-xl">
               <h2 className="mb-4 text-lg font-bold text-slate-900">Dokumen Pendukung</h2>
               <div className="rounded-xl border border-violet-200 bg-violet-50 p-4">
                 <p className="text-sm text-slate-500">Dokumen Pendukung</p>
-                <a href={report.dokumen_pendukung} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex text-sm font-semibold text-violet-600 hover:underline">Lihat Dokumen</a>
+                <a href={dokumenPendukungUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex text-sm font-semibold text-violet-600 hover:underline">Lihat Dokumen</a>
               </div>
             </section>
           )}
 
-          <section className="print-card rounded-[28px] border border-sky-100 bg-white/85 p-6 shadow-[0_14px_40px_rgba(15,23,42,0.05)]">
+          <section className="print-card rounded-[30px] border border-white/60 bg-gradient-to-br from-white/90 via-sky-50/90 to-blue-50/90 p-6 shadow-[0_18px_50px_rgba(59,130,246,0.08)] backdrop-blur-xl">
             <h2 className="mb-4 text-lg font-bold text-slate-900">Riwayat & Catatan</h2>
             <div className="border-l-2 border-sky-200 pl-4">
               {histories.length ? histories.map((item, index) => (

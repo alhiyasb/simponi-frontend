@@ -133,17 +133,29 @@ function InfoItem({ label, value }) {
 function getFileUrl(file) {
   if (!file) return null;
 
-  if (typeof file === "string") {
+  const backendRoot = (
+    import.meta.env.VITE_API_BASE_URL ||
+    "http://localhost:8000/api"
+  )
+    .replace(/\/+$/, "")
+    .replace(/\/api$/, "");
+
+  const toAbsoluteUrl = (value) => {
+    if (!value) return null;
+
     if (
-      file.startsWith("http://") ||
-      file.startsWith("https://")
+      value.startsWith("http://") ||
+      value.startsWith("https://")
     ) {
-      return file;
+      return value;
     }
 
-    return file.startsWith("/")
-      ? file
-      : `/${file}`;
+    const cleanValue = String(value).replace(/^\/+/, "");
+    return `${backendRoot}/${cleanValue}`;
+  };
+
+  if (typeof file === "string") {
+    return toAbsoluteUrl(file);
   }
 
   if (typeof file === "object") {
@@ -154,23 +166,222 @@ function getFileUrl(file) {
       file.filename ||
       file.name;
 
-    if (!value) return null;
-
-    if (
-      value.startsWith("http://") ||
-      value.startsWith("https://")
-    ) {
-      return value;
-    }
-
-    return value.startsWith("/")
-      ? value
-      : `/${value}`;
+    return toAbsoluteUrl(value);
   }
 
   return null;
 }
 
+function isImageUrl(url) {
+  if (!url) return false;
+
+  return /\.(png|jpe?g|gif|webp|bmp|svg)(\?.*)?$/i.test(url);
+}
+
+function isPdfUrl(url) {
+  if (!url) return false;
+
+  return /\.pdf(\?.*)?$/i.test(url);
+}
+
+/**
+ * Fetch file sebagai blob dengan header ngrok-skip-browser-warning
+ * agar file bisa diakses melalui ngrok free tanpa interstitial page.
+ */
+function useBlobUrl(fileUrl) {
+  const [blobUrl, setBlobUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (!fileUrl) {
+      setBlobUrl(null);
+      setLoading(false);
+      setError(false);
+      return;
+    }
+
+    let revoked = false;
+
+    async function fetchBlob() {
+      setLoading(true);
+      setError(false);
+
+      try {
+        const res = await fetch(fileUrl, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+
+        if (!res.ok) throw new Error("Gagal memuat file");
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+
+        if (!revoked) {
+          setBlobUrl(url);
+        } else {
+          URL.revokeObjectURL(url);
+        }
+      } catch {
+        if (!revoked) setError(true);
+      } finally {
+        if (!revoked) setLoading(false);
+      }
+    }
+
+    fetchBlob();
+
+    return () => {
+      revoked = true;
+
+      setBlobUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return null;
+      });
+    };
+  }, [fileUrl]);
+
+  return { blobUrl, loading, error };
+}
+
+function AttachmentPreview({ file, label, altText }) {
+  const fileUrl = getFileUrl(file);
+  const shouldUseBlobPreview = !!fileUrl && (isImageUrl(fileUrl) || isPdfUrl(fileUrl));
+  const { blobUrl, loading, error } = useBlobUrl(shouldUseBlobPreview ? fileUrl : null);
+
+  if (!fileUrl) {
+    return (
+      <p className="text-sm text-slate-500">
+        File tidak tersedia.
+      </p>
+    );
+  }
+
+  if (!shouldUseBlobPreview) {
+    return (
+      <div className="flex flex-col gap-3">
+        <a
+          href={fileUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="flex min-h-32 items-center justify-center rounded-xl border border-dashed border-blue-300 bg-blue-50 p-5 text-center text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
+        >
+          📎 Buka File {label}
+        </a>
+
+        <a
+          href={fileUrl}
+          target="_blank"
+          rel="noreferrer"
+          download
+          className="inline-flex w-fit items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+        >
+          ⬇ Download File
+        </a>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="flex min-h-[120px] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-5">
+        <p className="text-sm text-slate-500">Memuat file…</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 p-5 text-center">
+        
+        <a
+          href={fileUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
+        >
+          📎 Coba Buka Langsung
+        </a>
+      </div>
+    );
+  }
+
+  const displayUrl = blobUrl || fileUrl;
+
+  if (isImageUrl(fileUrl)) {
+    return (
+      <img
+        src={displayUrl}
+        alt={altText}
+        className="max-h-72 w-full rounded-xl border border-slate-200 object-contain"
+      />
+    );
+  }
+
+  if (isPdfUrl(fileUrl)) {
+    return (
+      <div className="space-y-3">
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+          <object
+            data={displayUrl}
+            type="application/pdf"
+            className="h-[420px] w-full bg-white"
+          >
+            <div className="flex min-h-[180px] items-center justify-center p-5 text-center text-sm text-slate-500">
+              Browser tidak bisa menampilkan preview PDF.
+            </div>
+          </object>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <a
+            href={displayUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
+          >
+            📄 Buka PDF
+          </a>
+
+          <a
+            href={displayUrl}
+            target="_blank"
+            rel="noreferrer"
+            download
+            className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+          >
+            ⬇ Download
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      <a
+        href={displayUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="flex min-h-32 items-center justify-center rounded-xl border border-dashed border-blue-300 bg-blue-50 p-5 text-center text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
+      >
+        📎 Buka File {label}
+      </a>
+
+      <a
+        href={displayUrl}
+        target="_blank"
+        rel="noreferrer"
+        download
+        className="inline-flex w-fit items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+      >
+        ⬇ Download File
+      </a>
+    </div>
+  );
+}
 
 /* =========================================================
    LIST PENANGANAN
@@ -915,6 +1126,25 @@ function PenangananDetail({ reportId }) {
 
                   <div className="grid gap-4 p-6 sm:grid-cols-2">
                     <InfoItem
+                      label="Nama Perempuan"
+                      value={
+                        report?.nama_perempuan ||
+                        report?.nama_korban ||
+                        report?.nama_laki_laki ||
+                        "-"
+                      }
+                    />
+
+                    <InfoItem
+                      label="Nama Laki-laki"
+                      value={
+                        report?.nama_laki_laki ||
+                        report?.nama_laki ||
+                        "-"
+                      }
+                    />
+
+                    <InfoItem
                       label="Usia Perempuan"
                       value={
                         report?.usia_perempuan
@@ -1002,30 +1232,10 @@ function PenangananDetail({ reportId }) {
               </Reveal>
 
 
-              {/* DESKRIPSI */}
-              {report?.description && (
-                <Reveal delay={0.2}>
-                  <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-                    <div className="border-b border-slate-100 px-6 py-5">
-                      <h2 className="font-bold text-slate-900">
-                        Keterangan Laporan
-                      </h2>
-                    </div>
-
-                    <div className="p-6">
-                      <p className="whitespace-pre-line text-sm leading-7 text-slate-700">
-                        {report.description}
-                      </p>
-                    </div>
-                  </section>
-                </Reveal>
-              )}
-
-
               {/* BUKTI */}
               {(report?.foto_bukti ||
                 report?.dokumen_pendukung) && (
-                <Reveal delay={0.25}>
+                <Reveal delay={0.2}>
                   <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
                     <div className="border-b border-slate-100 px-6 py-5">
                       <h2 className="font-bold text-slate-900">
@@ -1041,21 +1251,11 @@ function PenangananDetail({ reportId }) {
                             Foto / Bukti Awal
                           </p>
 
-                          {getFileUrl(
-                            report.foto_bukti
-                          ) ? (
-                            <img
-                              src={getFileUrl(
-                                report.foto_bukti
-                              )}
-                              alt="Bukti laporan"
-                              className="max-h-72 w-full rounded-xl border border-slate-200 object-contain"
-                            />
-                          ) : (
-                            <p className="text-sm text-slate-500">
-                              File tidak tersedia.
-                            </p>
-                          )}
+                          <AttachmentPreview
+                            file={report.foto_bukti}
+                            label="Bukti"
+                            altText="Bukti laporan"
+                          />
                         </div>
                       )}
 
@@ -1065,24 +1265,11 @@ function PenangananDetail({ reportId }) {
                             Dokumen Pendukung
                           </p>
 
-                          {getFileUrl(
-                            report.dokumen_pendukung
-                          ) ? (
-                            <a
-                              href={getFileUrl(
-                                report.dokumen_pendukung
-                              )}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="flex min-h-32 items-center justify-center rounded-xl border border-dashed border-blue-300 bg-blue-50 p-5 text-center text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
-                            >
-                              📄 Buka Dokumen Pendukung
-                            </a>
-                          ) : (
-                            <p className="text-sm text-slate-500">
-                              File tidak tersedia.
-                            </p>
-                          )}
+                          <AttachmentPreview
+                            file={report.dokumen_pendukung}
+                            label="Dokumen Pendukung"
+                            altText="Dokumen pendukung"
+                          />
                         </div>
                       )}
 

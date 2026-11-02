@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 
+import { useAuth } from "../../hooks/useAuth";
 import { submitPelaporan } from "../../services/api";
 
 const initialState = {
@@ -126,6 +127,19 @@ const inputClass =
 
 const errorClass = "mt-1 text-sm text-red-500";
 
+const sanitizeInteger = (value) =>
+  String(value ?? "").replace(/\D/g, "");
+
+const asInteger = (value) => {
+  const cleaned = sanitizeInteger(value);
+
+  if (!cleaned) return null;
+
+  const parsed = Number(cleaned);
+
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
 const StepIcon = ({ index }) => {
 
   const commonProps = {
@@ -204,9 +218,23 @@ const StepIcon = ({ index }) => {
 
 export default function PelaporanForm() {
 
+  const { user } = useAuth();
+
   const [form, setForm] = useState(initialState);
 
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (!user) return;
+
+    setForm((prev) => ({
+      ...prev,
+      nama_pelapor: prev.nama_pelapor || user.name || user.full_name || user.nama_lengkap || "",
+      nik_pelapor: prev.nik_pelapor || user.nik || user.NIK || "",
+      email: prev.email || user.email || "",
+      telepon: prev.telepon || user.phone || user.no_telepon || user.telepon || "",
+    }));
+  }, [user]);
 
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -614,7 +642,11 @@ export default function PelaporanForm() {
 
     if (stepIndex === 1) {
 
-      if (!form.usia_perempuan.trim()) {
+      const usiaPerempuan = sanitizeInteger(form.usia_perempuan);
+
+      const usiaLaki = sanitizeInteger(form.usia_laki);
+
+      if (!usiaPerempuan) {
 
         e.usia_perempuan =
 
@@ -622,7 +654,7 @@ export default function PelaporanForm() {
 
       }
 
-      if (!form.usia_laki.trim()) {
+      if (!usiaLaki) {
 
         e.usia_laki =
 
@@ -662,11 +694,19 @@ export default function PelaporanForm() {
 
       }
 
-      if (!form.kronologi.trim()) {
+      const kronologi = form.kronologi.trim();
+
+      if (!kronologi) {
 
         e.kronologi =
 
           "Deskripsi kronologi wajib diisi.";
+
+      } else if (kronologi.length < 100) {
+
+        e.kronologi =
+
+          "Deskripsi kronologi minimal 100 karakter.";
 
       }
 
@@ -800,7 +840,11 @@ export default function PelaporanForm() {
 
     }
 
-    if (!form.usia_perempuan.trim()) {
+    const usiaPerempuan = sanitizeInteger(form.usia_perempuan);
+
+    const usiaLaki = sanitizeInteger(form.usia_laki);
+
+    if (!usiaPerempuan) {
 
       e.usia_perempuan =
 
@@ -808,7 +852,7 @@ export default function PelaporanForm() {
 
     }
 
-    if (!form.usia_laki.trim()) {
+    if (!usiaLaki) {
 
       e.usia_laki =
 
@@ -848,11 +892,19 @@ export default function PelaporanForm() {
 
     }
 
-    if (!form.kronologi.trim()) {
+    const kronologi = form.kronologi.trim();
+
+    if (!kronologi) {
 
       e.kronologi =
 
         "Deskripsi kronologi wajib diisi.";
+
+    } else if (kronologi.length < 100) {
+
+      e.kronologi =
+
+        "Deskripsi kronologi minimal 100 karakter.";
 
     }
 
@@ -1122,13 +1174,25 @@ export default function PelaporanForm() {
 
         // =========================
 
+        nama_perempuan:
+
+          form.nama_perempuan,
+
+        nama_laki_laki:
+
+          form.nama_laki,
+
+        nama_laki:
+
+          form.nama_laki,
+
         usia_perempuan:
 
-          form.usia_perempuan,
+          asInteger(form.usia_perempuan),
 
         usia_laki_laki:
 
-          form.usia_laki,
+          asInteger(form.usia_laki),
 
         status_pendidikan:
 
@@ -1146,7 +1210,7 @@ export default function PelaporanForm() {
 
   form.kabupaten,
 
-kode_kabupaten: Number(form.kabupaten),
+kode_kabupaten: asInteger(form.kabupaten),
 
 lokasi_kecamatan_desa: [
 
@@ -1190,7 +1254,7 @@ lokasi_kecamatan_desa: [
 
         description:
 
-          form.kronologi,
+          form.kronologi.trim(),
 
         // =========================
 
@@ -1396,21 +1460,11 @@ lokasi_kecamatan_desa: [
 
               value={form.nama_pelapor}
 
-              onChange={(e) =>
+              readOnly
 
-                handleChange(
+              className={`${inputClass} cursor-not-allowed bg-slate-100 text-slate-600`}
 
-                  "nama_pelapor",
-
-                  e.target.value
-
-                )
-
-              }
-
-              className={inputClass}
-
-              placeholder="Masukkan nama lengkap"
+              placeholder="Nama otomatis dari profil"
 
             />
 
@@ -1440,31 +1494,15 @@ lokasi_kecamatan_desa: [
 
               value={form.nik_pelapor}
 
-              onChange={(e) =>
-
-                handleChange(
-
-                  "nik_pelapor",
-
-                  e.target.value.replace(
-
-                    /\D/g,
-
-                    ""
-
-                  )
-
-                )
-
-              }
+              readOnly
 
               maxLength={16}
 
               inputMode="numeric"
 
-              className={inputClass}
+              className={`${inputClass} cursor-not-allowed bg-slate-100 text-slate-600`}
 
-              placeholder="16 digit"
+              placeholder="NIK otomatis dari profil"
 
             />
 
@@ -1828,7 +1866,7 @@ lokasi_kecamatan_desa: [
 
                   "usia_perempuan",
 
-                  e.target.value
+                  sanitizeInteger(e.target.value)
 
                 )
 
@@ -1836,9 +1874,11 @@ lokasi_kecamatan_desa: [
 
               type="text"
 
+              inputMode="numeric"
+
               className={inputClass}
 
-              placeholder="Contoh: 17 tahun"
+              placeholder="Contoh: 17"
 
             />
 
@@ -1908,7 +1948,7 @@ lokasi_kecamatan_desa: [
 
                   "usia_laki",
 
-                  e.target.value
+                  sanitizeInteger(e.target.value)
 
                 )
 
@@ -1916,9 +1956,11 @@ lokasi_kecamatan_desa: [
 
               type="text"
 
+              inputMode="numeric"
+
               className={inputClass}
 
-              placeholder="Contoh: 20 tahun"
+              placeholder="Contoh: 20"
 
             />
 
@@ -2622,7 +2664,9 @@ lokasi_kecamatan_desa: [
 
               rows={5}
 
-              placeholder="Panduan: kapan diketahui, siapa yang terlibat, dan apa yang sudah dilakukan?"
+              minLength={100}
+
+              placeholder="Panduan: kapan diketahui, siapa yang terlibat, dan apa yang sudah dilakukan? Minimal 100 karakter."
 
             />
 
@@ -2655,64 +2699,6 @@ lokasi_kecamatan_desa: [
       <div className="space-y-5">
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-
-          {/* FOTO BUKTI */}
-
-          <div className="rounded-2xl border border-dashed border-blue-200 bg-blue-50/60 p-4">
-
-            <label className="mb-2 block text-sm font-medium text-slate-700">
-
-              Foto/bukti awal
-
-            </label>
-
-            <input
-
-              type="file"
-
-              accept="image/*,application/pdf"
-
-              onChange={(e) =>
-
-                handleFile(
-
-                  "foto_bukti",
-
-                  e.target.files?.[0] ||
-
-                    null
-
-                )
-
-              }
-
-              className="w-full text-sm text-slate-600 file:mr-3 file:rounded-full file:border-0 file:bg-blue-600 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white"
-
-            />
-
-            {form.foto_bukti && (
-
-              <p className="mt-2 text-xs font-medium text-emerald-600">
-
-                File dipilih:{" "}
-
-                {form.foto_bukti.name}
-
-              </p>
-
-            )}
-
-            {errors.foto_bukti && (
-
-              <p className={errorClass}>
-
-                {errors.foto_bukti}
-
-              </p>
-
-            )}
-
-          </div>
 
           {/* DOKUMEN */}
 

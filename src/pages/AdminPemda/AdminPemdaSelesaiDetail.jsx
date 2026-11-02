@@ -184,29 +184,45 @@ function InfoItem({ label, value }) {
 // ======================================================
 
 function getFileUrl(file) {
-  if (!file) return "";
+  if (!file) return null;
 
-  if (
-    typeof file === "string" &&
-    (file.startsWith("http://") ||
-      file.startsWith("https://"))
-  ) {
-    return file;
-  }
-
-  const apiBase =
+  const backendRoot = (
     import.meta.env.VITE_API_BASE_URL ||
-    "http://localhost:8000/api";
+    "http://localhost:8000/api"
+  )
+    .replace(/\/+$/, "")
+    .replace(/\/api$/, "");
 
-  const cleanBase = apiBase.replace(/\/+$/, "");
+  const toAbsoluteUrl = (value) => {
+    if (!value) return null;
 
-  const cleanFile = String(file).replace(/^\/+/, "");
+    if (
+      value.startsWith("http://") ||
+      value.startsWith("https://")
+    ) {
+      return value;
+    }
 
-  if (cleanFile.startsWith("uploads/")) {
-    return `${cleanBase.replace(/\/api$/, "")}/${cleanFile}`;
+    const cleanValue = String(value).replace(/^\/+/, "");
+    return `${backendRoot}/${cleanValue}`;
+  };
+
+  if (typeof file === "string") {
+    return toAbsoluteUrl(file);
   }
 
-  return `${cleanBase.replace(/\/api$/, "")}/uploads/${cleanFile}`;
+  if (typeof file === "object") {
+    const value =
+      file.url ||
+      file.path ||
+      file.file_url ||
+      file.filename ||
+      file.name;
+
+    return toAbsoluteUrl(value);
+  }
+
+  return null;
 }
 
 // ======================================================
@@ -263,40 +279,36 @@ export default function AdminPemdaSelesaiDetail() {
   // ====================================================
 
   useEffect(() => {
-    let mounted = true;
+  let mounted = true;
 
-    async function loadDetail() {
-      try {
-        setLoading(true);
-        setError("");
+  async function loadDetail() {
+    try {
+      setLoading(true);
+      setError("");
 
-        const data = await getReportDetail(reportId);
+      const data = await getReportDetail(reportId);
 
-        if (mounted) {
-          setReport(data);
-        }
-      } catch (err) {
-        if (mounted) {
-          setError(
-            err?.message ||
-              "Gagal mengambil detail laporan."
-          );
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
+      if (mounted) setReport(data);
+    } catch (err) {
+      if (mounted) {
+        setError(err?.message || "Gagal mengambil detail laporan.");
       }
+    } finally {
+      if (mounted) setLoading(false);
     }
+  }
 
-    if (reportId) {
-      loadDetail();
-    }
+  if (reportId) {
+    loadDetail();
+  } else {
+    setError("ID laporan tidak ditemukan di URL.");
+    setLoading(false);
+  }
 
-    return () => {
-      mounted = false;
-    };
-  }, [reportId]);
+  return () => {
+    mounted = false;
+  };
+}, [reportId]);
 
   // ====================================================
   // PRINT
