@@ -123,6 +123,15 @@ function formatDateShort(dateString) {
   });
 }
 
+function getFirstDefined(...values) {
+  for (const value of values) {
+    if (value !== undefined && value !== null && value !== "") {
+      return String(value).trim();
+    }
+  }
+  return "-";
+}
+
 // ============================================================
 // HALAMAN TRACKING
 // ============================================================
@@ -580,6 +589,45 @@ export default function TrackingPage() {
                 const reportTitle = report.title || report.kasus || "Laporan";
                 const displayNumber = (safeCurrentPage - 1) * ITEMS_PER_PAGE + index + 1;
 
+                const namaPerempuan = getFirstDefined(
+                  report.nama_perempuan,
+                  report.nama_korban,
+                  report.nama_korban_perempuan,
+                  report.calon_mempelai_perempuan,
+                  report.nama_pasangan_perempuan,
+                  report.perempuan_nama,
+                  "-"
+                );
+
+                const namaLaki = getFirstDefined(
+                  report.nama_laki_laki,
+                  report.nama_laki,
+                  report.nama_korban_laki,
+                  report.calon_mempelai_laki,
+                  report.nama_pasangan_laki,
+                  report.laki_laki_nama,
+                  "-"
+                );
+
+                const pendidikanPerempuan = getFirstDefined(
+                  report.pendidikan_perempuan,
+                  report.pendidikan_korban_perempuan,
+                  report.pendidikan_pasangan_perempuan,
+                  report.status_pendidikan_perempuan,
+                  report.status_pendidikan,
+                  "-"
+                );
+
+                const pendidikanLaki = getFirstDefined(
+                  report.pendidikan_laki,
+                  report.pendidikan_laki_laki,
+                  report.pendidikan_korban_laki,
+                  report.pendidikan_pasangan_laki,
+                  report.status_pendidikan_laki,
+                  report.status_pendidikan,
+                  "-"
+                );
+
                 return (
                   <motion.div
                     key={reportId || index}
@@ -613,6 +661,26 @@ export default function TrackingPage() {
                         </span>
                         <span className="text-sm font-medium text-slate-500">
                           {location}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 space-y-2">
+                      <div className="flex flex-wrap gap-2 text-xs text-slate-600">
+                        <span className="rounded-full border border-sky-200 bg-white/80 px-2.5 py-1">
+                          Perempuan: {namaPerempuan}
+                        </span>
+                        <span className="rounded-full border border-sky-200 bg-white/80 px-2.5 py-1">
+                          Laki-laki: {namaLaki}
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2 text-xs text-slate-600">
+                        <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-emerald-700">
+                          Pendidikan P: {pendidikanPerempuan}
+                        </span>
+                        <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-emerald-700">
+                          Pendidikan L: {pendidikanLaki}
                         </span>
                       </div>
                     </div>

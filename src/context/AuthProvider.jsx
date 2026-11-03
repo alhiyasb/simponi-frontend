@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { login as apiLogin } from '../services/api';
+import { login as apiLogin, getProfile as apiGetProfile } from '../services/api';
 import { roleMap } from '../constants/roles';
 import { AuthContext } from './AuthContext';
 
@@ -80,11 +80,29 @@ export function AuthProvider({ children }) {
         setToken(storedToken);
         setIsAuthenticated(true);
 
-        // TEMPORARY: Skip /auth/me validation due to backend CORS issue
-        // TODO: Remove after backend CORS fixed - uncomment below
-        // const freshUser = await apiGetProfile();
-        // setUser(freshUser);
-        // localStorage.setItem('user', JSON.stringify(freshUser));
+        try {
+          const freshUser = await apiGetProfile();
+
+          if (freshUser) {
+            const nextUser = {
+              ...userData,
+              ...freshUser,
+              name: freshUser.name || freshUser.full_name || freshUser.nama_lengkap || userData.name || 'Pengguna',
+            };
+
+            setUser(nextUser);
+            localStorage.setItem('user', JSON.stringify(nextUser));
+            localStorage.setItem(
+              'simponi-user-profile',
+              JSON.stringify({
+                ...buildProfileFromUser(userData),
+                ...buildProfileFromUser(nextUser),
+              })
+            );
+          }
+        } catch {
+          // fallback ke data lokal jika backend belum siap / gagal
+        }
       } catch {
         clearAuth();
       }

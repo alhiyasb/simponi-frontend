@@ -51,6 +51,15 @@ function formatFaktorPendorong(value) {
   return [];
 }
 
+function getFirstDefined(...values) {
+  for (const value of values) {
+    if (value !== undefined && value !== null && value !== "") {
+      return value;
+    }
+  }
+  return "-";
+}
+
 function getFileUrl(file) {
   if (!file) return "";
 
@@ -171,6 +180,46 @@ export default function ReportDetailPage() {
   const histories = Array.isArray(report.histories) ? report.histories : [];
   const dokumenPendukungUrl = getFileUrl(report.dokumen_pendukung);
 
+  const namaPerempuan = getFirstDefined(
+    report.nama_perempuan,
+    report.nama_korban,
+    report.nama_korban_perempuan,
+    report.nama_pasangan_perempuan,
+    report.calon_mempelai_perempuan,
+    report.perempuan_nama,
+    report.nama_pelapor_perempuan,
+    report.nama_laki_laki,
+    report.nama_laki,
+  );
+
+  const namaLaki = getFirstDefined(
+    report.nama_laki_laki,
+    report.nama_laki,
+    report.nama_korban_laki,
+    report.nama_pasangan_laki,
+    report.calon_mempelai_laki,
+    report.laki_laki_nama,
+    report.nama_pelapor_laki,
+    report.nama_perempuan,
+  );
+
+  const pendidikanPerempuan = getFirstDefined(
+    report.pendidikan_perempuan,
+    report.pendidikan_korban_perempuan,
+    report.pendidikan_pasangan_perempuan,
+    report.status_pendidikan_perempuan,
+    report.status_pendidikan,
+  );
+
+  const pendidikanLaki = getFirstDefined(
+    report.pendidikan_laki,
+    report.pendidikan_laki_laki,
+    report.pendidikan_korban_laki,
+    report.pendidikan_pasangan_laki,
+    report.status_pendidikan_laki,
+    report.status_pendidikan,
+  );
+
   return (
     <div className="report-detail-page min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(96,165,250,0.25),_transparent_22%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.18),_transparent_22%),linear-gradient(180deg,#edf6ff_0%,#f8fbff_28%,#eef6ff_100%)] text-slate-800">
       <style>{`
@@ -270,9 +319,12 @@ export default function ReportDetailPage() {
           <section className="print-card rounded-[30px] border border-white/60 bg-gradient-to-br from-white/90 via-sky-50/90 to-blue-50/90 p-6 shadow-[0_18px_50px_rgba(59,130,246,0.08)] backdrop-blur-xl">
             <h2 className="mb-4 text-lg font-bold text-slate-900">Detail Kasus</h2>
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3 min-w-0">
+              <Field label="Nama Perempuan">{namaPerempuan}</Field>
+              <Field label="Nama Laki-laki">{namaLaki}</Field>
               <Field label="Usia Perempuan">{report.usia_perempuan}</Field>
               <Field label="Usia Laki-laki">{report.usia_laki_laki}</Field>
-              <Field label="Status Pendidikan" wide>{report.status_pendidikan}</Field>
+              <Field label="Pendidikan Perempuan">{pendidikanPerempuan}</Field>
+              <Field label="Pendidikan Laki-laki">{pendidikanLaki}</Field>
               <Field label="Waktu Rencana Akad">{report.waktu_rencana_akad ? formatDateShort(report.waktu_rencana_akad) : "-"}</Field>
               <Field label="Faktor Pendorong">
                 <div className="flex flex-wrap gap-2">

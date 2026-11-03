@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Navbar from '../../components/layout/Navbar';
+import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile } from '../../services/api';
 
 const kabupatenKotaJawaBarat = [
   'Kabupaten Bandung',
@@ -39,6 +40,37 @@ const defaultProfile = {
   wilayah: 'Kota Bandung',
   status: 'Aktif',
   photo: '',
+};
+
+const buildProfileFromUser = (userData = {}) => ({
+  name: userData.name || userData.full_name || userData.nama_lengkap || defaultProfile.name,
+  nik: userData.nik || userData.NIK || defaultProfile.nik,
+  email: userData.email || defaultProfile.email,
+  phone: userData.phone || userData.no_telepon || userData.telepon || defaultProfile.phone,
+  wilayah: userData.wilayah || userData.kabupaten || userData.kota || defaultProfile.wilayah,
+  status: userData.status || defaultProfile.status,
+  photo: userData.photo || '',
+});
+
+const persistProfile = (nextProfile) => {
+  localStorage.setItem('simponi-user-profile', JSON.stringify(nextProfile));
+
+  const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+
+  const nextUser = {
+    ...storedUser,
+    ...nextProfile,
+    name: nextProfile.name,
+    full_name: nextProfile.name,
+    email: nextProfile.email,
+    phone: nextProfile.phone,
+    wilayah: nextProfile.wilayah,
+    status: nextProfile.status,
+    photo: nextProfile.photo,
+  };
+
+  localStorage.setItem('user', JSON.stringify(nextUser));
+  window.dispatchEvent(new Event('profile-updated'));
 };
 
 /* =========================================================
@@ -110,6 +142,24 @@ function ProfilePage() {
   const fileInputRef = useRef(null);
 
   useEffect(() => {
+    const syncProfileFromServer = async () => {
+      try {
+        const serverUser = await apiGetProfile();
+        const nextProfile = buildProfileFromUser(serverUser);
+
+        setProfile((prev) => ({
+          ...prev,
+          ...nextProfile,
+        }));
+      } catch {
+        // fallback ke data lokal jika backend belum tersedia
+      }
+    };
+
+    syncProfileFromServer();
+  }, []);
+
+  useEffect(() => {
     try {
       localStorage.setItem(
         'simponi-user-profile',
@@ -168,20 +218,48 @@ function ProfilePage() {
   // SIMPAN
   // =========================================================
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      localStorage.setItem(
-        'simponi-user-profile',
-        JSON.stringify(profile)
-      );
+      const payload = {
+        full_name: profile.name,
+        email: profile.email,
+        phone: profile.phone,
+        wilayah: profile.wilayah,
+      };
 
-      window.dispatchEvent(new Event('profile-updated'));
+      try {
+        const serverResponse = await apiUpdateProfile(payload);
+        const remoteProfile = buildProfileFromUser(serverResponse?.user || serverResponse || profile);
+        const nextProfile = {
+          ...profile,
+          ...remoteProfile,
+        };
 
+        setProfile(nextProfile);
+        persistProfile(nextProfile);
+        setIsEditing(false);
+        return;
+      } catch (backendError) {
+        if (!String(backendError?.message || '').includes('Endpoint profil belum tersedia')) {
+          throw backendError;
+        }
+
+        console.info('Backend belum menyediakan endpoint update profil, memakai penyimpanan lokal.');
+      }
+
+      persistProfile(profile);
       setIsEditing(false);
     } catch (error) {
       console.error('Gagal menyimpan profil:', error);
+
+      try {
+        persistProfile(profile);
+        setIsEditing(false);
+      } catch (saveError) {
+        console.error('Gagal menyimpan profil:', saveError);
+      }
     }
   };
 

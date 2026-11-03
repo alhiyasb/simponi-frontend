@@ -352,6 +352,114 @@ export async function getProfile() {
   return data;
 }
 
+/* PATCH /api/v1/auth/me */
+/* Compat: backend lama masih mendukung PUT /api/v1/auth/profile */
+export async function updateProfile(payload) {
+  const base = payload || {};
+  const nameValue = base.full_name || base.name || "";
+  const emailValue = base.email || "";
+  const phoneValue = base.phone || "";
+  const wilayahValue = base.wilayah || "";
+  const statusValue = base.status || "";
+  const photoValue = base.photo || "";
+
+  const payloadCandidates = [
+    {
+      full_name: nameValue,
+      name: nameValue,
+      email: emailValue,
+      phone: phoneValue,
+      wilayah: wilayahValue,
+      status: statusValue,
+      photo: photoValue,
+    },
+    {
+      name: nameValue,
+      email: emailValue,
+      phone: phoneValue,
+      wilayah: wilayahValue,
+      status: statusValue,
+      photo: photoValue,
+    },
+    {
+      full_name: nameValue,
+      email: emailValue,
+      phone: phoneValue,
+      wilayah: wilayahValue,
+    },
+    {
+      name: nameValue,
+      email: emailValue,
+      phone: phoneValue,
+      wilayah: wilayahValue,
+    },
+    {
+      phone: phoneValue,
+      wilayah: wilayahValue,
+      email: emailValue,
+    },
+  ].map((item) => {
+    return Object.fromEntries(
+      Object.entries(item).filter(([, value]) => {
+        if (value === null || value === undefined) return false;
+        if (typeof value === "string" && value.trim() === "") return false;
+        return true;
+      })
+    );
+  });
+
+  const requests = [
+    { method: "PATCH", url: `${AUTH_BASE_URL}/me` },
+    { method: "PUT", url: `${AUTH_BASE_URL}/profile` },
+  ];
+
+  let lastError = null;
+
+  for (const request of requests) {
+    for (const candidatePayload of payloadCandidates) {
+      try {
+        const response = await authFetch(request.url, {
+          method: request.method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(candidatePayload),
+        });
+
+        let data = null;
+
+        try {
+          data = await response.json();
+        } catch {
+          data = null;
+        }
+
+        if (response.ok) {
+          return data;
+        }
+
+        lastError = new Error(
+          getErrorMessage(data, "Gagal memperbarui profil.")
+        );
+
+        if (response.status === 404 || response.status === 405) {
+          continue;
+        }
+
+        if (response.status === 422) {
+          continue;
+        }
+
+        throw lastError;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+  }
+
+  throw lastError || new Error("Gagal memperbarui profil.");
+}
+
 
 /* POST /api/v1/auth/logout */
 export async function logout() {
