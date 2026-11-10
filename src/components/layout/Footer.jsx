@@ -5,13 +5,11 @@ return (
 <footer className="
 relative
 overflow-hidden
-bg-gradient-to-br
-from-blue-800
-via-blue-700
-to-cyan-600
+bg-[#111827]
 text-white
 pt-20
 pb-8
+shadow-[0_-1px_0_rgba(15,23,42,0.08)]
 ">
 
 
@@ -61,6 +59,7 @@ gap-12
 <h2 className="
 text-3xl
 font-bold
+text-white
 ">
 
 SIMPONI
@@ -72,7 +71,7 @@ SIMPONI
 mt-4
 text-sm
 leading-relaxed
-text-blue-100
+text-white/80
 ">
 
 Sistem Informasi Pemerintah Digital
@@ -100,13 +99,12 @@ className="
 w-10
 h-10
 rounded-full
-bg-white/15
-backdrop-blur
+bg-white
+text-[#111827]
 flex
 items-center
 justify-center
-hover:bg-white
-hover:text-blue-700
+hover:bg-slate-100
 transition
 cursor-pointer
 "
@@ -142,6 +140,7 @@ cursor-pointer
 <h3 className="
 text-lg
 font-semibold
+text-white
 ">
 
 Menu
@@ -153,7 +152,7 @@ Menu
 mt-5
 space-y-3
 text-sm
-text-blue-100
+text-white/80
 ">
 
 
@@ -194,6 +193,7 @@ Kontak
 <h3 className="
 text-lg
 font-semibold
+text-white
 ">
 
 Layanan
@@ -205,7 +205,7 @@ Layanan
 mt-5
 space-y-3
 text-sm
-text-blue-100
+text-white/80
 ">
 
 
@@ -246,6 +246,7 @@ Data Publik
 <h3 className="
 text-lg
 font-semibold
+text-white
 ">
 
 Kontak
@@ -257,7 +258,7 @@ Kontak
 mt-5
 space-y-4
 text-sm
-text-blue-100
+text-white/80
 ">
 
 
@@ -305,7 +306,7 @@ md:flex-row
 justify-between
 gap-4
 text-sm
-text-blue-100
+text-white/70
 ">
 
 

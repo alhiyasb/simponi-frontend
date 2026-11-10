@@ -19,6 +19,7 @@ import TrackingPage from "./pages/Tracking/Tracking";
 import ReportDetailPage from "./pages/Tracking/ReportDetail";
 import Unauthorized from "./pages/Unauthorized";
 import StatistikPublikPage from "./pages/Statistik/StatistikPublikPage";
+import BeritaPage from "./pages/Berita/BeritaPage";
 
 // ================================
 // ADMIN PEMPROV
@@ -53,6 +54,7 @@ function AppRoutes() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="/statistik" element={<StatistikPublikPage />} />
+      <Route path="/berita" element={<BeritaPage />} />
 
       {/* ================================
           MASYARAKAT

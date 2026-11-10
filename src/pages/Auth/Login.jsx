@@ -226,65 +226,45 @@ export default function Login() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.25),_transparent_22%),radial-gradient(circle_at_bottom_right,_rgba(6,182,212,0.18),_transparent_26%),linear-gradient(135deg,#edf6ff_0%,#f4f8ff_28%,#eef2ff_58%,#f8fafc_100%)] px-4 py-10 sm:px-6 lg:px-8">
-
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-16 top-8 h-72 w-72 rounded-full bg-[#155DFC]/12 blur-3xl" />
-        <div className="absolute left-1/3 top-1/4 h-80 w-80 rounded-full bg-cyan-400/10 blur-3xl" />
-        <div className="absolute -right-10 bottom-0 h-96 w-96 rounded-full bg-indigo-500/10 blur-3xl" />
-        <div className="absolute right-[8%] top-[12%] h-32 w-32 rounded-full border border-white/60 bg-white/20 backdrop-blur-sm" />
-        <div className="absolute left-[12%] bottom-[18%] h-20 w-20 rounded-full border border-white/50 bg-blue-100/40 backdrop-blur-sm" />
-
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.25)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.2)_1px,transparent_1px)] bg-[size:56px_56px] opacity-30" />
-      </div>
-
+    <div className="min-h-screen bg-[#EAEAEA] px-4 py-8 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 18, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.45, ease: 'easeOut' }}
-        className="relative mx-auto max-w-6xl overflow-hidden rounded-[32px] border border-slate-200/80 bg-white/80 shadow-[0_30px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl"
+        className="relative mx-auto max-w-6xl overflow-hidden rounded-[30px] border border-[#1A1A1A]/10 bg-white shadow-[0_30px_80px_rgba(0,0,0,0.10)]"
       >
         <div className="grid lg:grid-cols-[1.12fr_0.88fr]">
-
-          {/* LEFT SIDE */}
           <motion.div
             initial={{ opacity: 0, x: -18 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
-            className="relative overflow-hidden bg-[linear-gradient(135deg,#155DFC_0%,#0d47d6_100%)] p-6 text-white md:p-8 lg:p-10"
+            className="relative overflow-hidden bg-[#0A0A0A] p-6 text-white md:p-8 lg:p-10"
           >
-            <div className="absolute -left-12 top-10 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
-            <div className="absolute -right-10 bottom-0 h-48 w-48 rounded-full bg-cyan-300/15 blur-3xl" />
+            <div className="absolute -left-16 top-12 h-44 w-44 rounded-full bg-white/5 blur-3xl" />
+            <div className="absolute -right-12 bottom-12 h-52 w-52 rounded-full bg-white/5 blur-3xl" />
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
 
-            <div className="relative z-10">
-
-              <div className="flex items-center justify-between gap-4">
+            <div className="relative z-10 flex h-full flex-col">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/5 text-lg font-bold">
+                  S
+                </div>
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-blue-100">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#D9D9D9]">
                     SIMPONI
                   </p>
-
-                  <h1 className="mt-4 text-3xl font-black tracking-tight md:text-4xl">
-                    Selamat datang
-                  </h1>
-                </div>
-
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-white/10 shadow-lg shadow-blue-950/10">
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="h-8 w-8 fill-current text-white"
-                    aria-hidden="true"
-                  >
-                    <path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Zm0 9.5A2.5 2.5 0 1 0 12 6a2.5 2.5 0 0 0 0 5.5Z" />
-                  </svg>
                 </div>
               </div>
 
-              <p className="mt-5 max-w-md text-sm leading-7 text-blue-50 md:text-base">
-                Sistem Informasi Pelaporan dan Monitoring untuk mendukung
-                penanganan kasus secara cepat, aman, dan terdokumentasi
-                dengan baik.
-              </p>
+              <div className="mt-12 max-w-md">
+                <h1 className="text-4xl font-black tracking-[-0.06em] text-white md:text-5xl">
+                  Selamat Datang
+                </h1>
+                <p className="mt-5 text-sm leading-7 text-[#D9D9D9] md:text-base">
+                  Sistem Informasi Pelaporan dan Monitoring untuk mendukung penanganan kasus secara cepat,
+                  aman, dan terdokumentasi dengan baik.
+                </p>
+              </div>
 
               <div className="mt-8 grid gap-3">
                 {mode === 'login' &&
@@ -300,39 +280,33 @@ export default function Login() {
                       }}
                       className={`flex w-full items-center justify-between rounded-[22px] border p-4 text-left transition-all duration-200 ${
                         selectedRole === role.id
-                          ? 'border-white/60 bg-white/12 shadow-[0_18px_36px_rgba(15,23,42,0.12)]'
+                          ? 'border-white/35 bg-white/10 shadow-[0_16px_32px_rgba(255,255,255,0.05)]'
                           : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/8'
                       }`}
                     >
                       <div>
-                        <p className="text-base font-bold text-white">
-                          {role.label}
-                        </p>
-
-                        <p className="mt-1 text-sm text-blue-100">
-                          {role.description}
-                        </p>
+                        <p className="text-base font-bold text-white">{role.label}</p>
+                        <p className="mt-1 text-sm text-[#D9D9D9]">{role.description}</p>
                       </div>
 
-                      <span className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-100">
+                      <span className="rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#EAEAEA]">
                         {role.badge}
                       </span>
                     </button>
                   ))}
               </div>
 
-              <div className="mt-8 rounded-[24px] border border-white/15 bg-white/5 p-4 backdrop-blur-sm">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-100">
+              <div className="mt-8 rounded-[24px] border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#D9D9D9]">
                   Keunggulan
                 </p>
 
-                <ul className="mt-4 space-y-3 text-sm text-blue-50">
+                <ul className="mt-4 space-y-3 text-sm text-[#F2F2F2]">
                   {featureList.map((item) => (
                     <li key={item} className="flex items-center gap-3">
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-400/20 text-xs text-emerald-200">
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-xs text-white">
                         ✓
                       </span>
-
                       <span>{item}</span>
                     </li>
                   ))}
@@ -341,23 +315,20 @@ export default function Login() {
             </div>
           </motion.div>
 
-          {/* RIGHT SIDE */}
           <motion.div
             initial={{ opacity: 0, x: 18 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
-            className="bg-white p-6 md:p-8 lg:p-10"
+            className="bg-[#FFFFFF] p-6 md:p-8 lg:p-10"
           >
-
             <div className="mb-7">
               <div className="flex items-center justify-between gap-4">
-
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#155DFC]">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#555555]">
                     Autentikasi
                   </p>
 
-                  <h2 className="mt-3 text-3xl font-black text-slate-800">
+                  <h2 className="mt-3 text-3xl font-black tracking-[-0.05em] text-[#111111]">
                     {mode === 'login'
                       ? selectedRole === 'masyarakat'
                         ? 'Login Masyarakat'
@@ -372,21 +343,19 @@ export default function Login() {
                   <button
                     type="button"
                     onClick={() => {
-                      setMode((prev) =>
-                        prev === 'login' ? 'register' : 'login'
-                      );
+                      setMode((prev) => (prev === 'login' ? 'register' : 'login'));
                       setError('');
                       setRegisterSuccess(false);
                       setShowResendForm(false);
                     }}
-                    className="rounded-full border border-[#155DFC]/20 bg-[#155DFC]/5 px-3 py-1.5 text-xs font-semibold text-[#155DFC] transition hover:bg-[#155DFC]/10"
+                    className="rounded-full border border-[#111111]/15 bg-[#F3F3F3] px-3 py-1.5 text-xs font-semibold text-[#111111] transition hover:bg-[#111111] hover:text-white"
                   >
                     {mode === 'login' ? 'Daftar' : 'Masuk'}
                   </button>
                 )}
               </div>
 
-              <p className="mt-2 text-sm text-slate-500">
+              <p className="mt-2 text-sm text-[#666666]">
                 {mode === 'login'
                   ? selectedRole === 'masyarakat'
                     ? 'Masuk untuk mengajukan dan memantau laporan Anda.'
@@ -395,7 +364,6 @@ export default function Login() {
               </p>
             </div>
 
-            {/* REGISTER */}
             {mode === 'register' ? (
               registerSuccess ? (
                 <motion.div
@@ -403,55 +371,31 @@ export default function Login() {
                   animate={{ opacity: 1, y: 0 }}
                   className="py-4 text-center"
                 >
-                  <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-                    <svg
-                      className="h-10 w-10 text-green-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
+                  <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#111111] text-white">
+                    <svg className="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
 
-                  <h3 className="text-xl font-bold text-slate-900">
-                    Periksa Email Anda
-                  </h3>
+                  <h3 className="text-xl font-bold text-[#111111]">Periksa Email Anda</h3>
 
-                  <p className="mt-2 text-slate-600">
-                    Kami telah mengirim link verifikasi ke{' '}
-                    <strong>{registerEmail}</strong>.
-                    Silakan cek inbox dan folder spam lalu klik link tersebut.
+                  <p className="mt-2 text-[#555555]">
+                    Kami telah mengirim link verifikasi ke <strong>{registerEmail}</strong>. Silakan cek inbox dan folder spam lalu klik link tersebut.
                   </p>
 
                   <div className="mt-6 space-y-3">
-                    <form
-                      onSubmit={handleResendVerification}
-                      className="w-full"
-                    >
+                    <form onSubmit={handleResendVerification} className="w-full">
                       <button
                         type="submit"
                         disabled={resendLoading}
                         onClick={() => setResendEmail(registerEmail)}
-                        className="w-full px-4 py-2 text-sm font-semibold text-[#155DFC] hover:underline disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                        className="w-full px-4 py-2 text-sm font-semibold text-[#111111] hover:underline disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
                       >
-                        {resendLoading
-                          ? 'Mengirim...'
-                          : 'Kirim Ulang Email Verifikasi'}
+                        {resendLoading ? 'Mengirim...' : 'Kirim Ulang Email Verifikasi'}
                       </button>
                     </form>
 
-                    {resendMessage && (
-                      <p className="text-sm text-green-700">
-                        {resendMessage}
-                      </p>
-                    )}
+                    {resendMessage && <p className="text-sm text-[#111111]">{resendMessage}</p>}
 
                     <button
                       type="button"
@@ -460,7 +404,7 @@ export default function Login() {
                         resetRegisterForm();
                         setIdentifier(registerEmail);
                       }}
-                      className="w-full px-4 py-2 text-sm font-semibold text-[#155DFC] hover:underline sm:w-auto"
+                      className="w-full px-4 py-2 text-sm font-semibold text-[#111111] hover:underline sm:w-auto"
                     >
                       Kembali ke Login
                     </button>
@@ -468,113 +412,74 @@ export default function Login() {
                 </motion.div>
               ) : (
                 <form onSubmit={handleRegister} className="space-y-4">
-
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
-                      Nama lengkap
-                    </label>
-
+                    <label className="mb-2 block text-sm font-semibold text-[#111111]">Nama lengkap</label>
                     <input
                       type="text"
                       value={fullName}
-                      onChange={(event) =>
-                        setFullName(event.target.value)
-                      }
+                      onChange={(event) => setFullName(event.target.value)}
                       placeholder="Masukkan nama lengkap"
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 outline-none transition focus:border-[#155DFC] focus:bg-white focus:ring-4 focus:ring-[#155DFC]/10"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
                     />
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
-                      Email
-                    </label>
-
+                    <label className="mb-2 block text-sm font-semibold text-[#111111]">Email</label>
                     <input
                       type="email"
                       value={registerEmail}
-                      onChange={(event) =>
-                        setRegisterEmail(event.target.value)
-                      }
+                      onChange={(event) => setRegisterEmail(event.target.value)}
                       placeholder="nama@email.com"
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 outline-none transition focus:border-[#155DFC] focus:bg-white focus:ring-4 focus:ring-[#155DFC]/10"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
                     />
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
-                      NIK
-                    </label>
-
+                    <label className="mb-2 block text-sm font-semibold text-[#111111]">NIK</label>
                     <input
                       type="text"
                       value={registerNik}
-                      onChange={(event) =>
-                        setRegisterNik(event.target.value)
-                      }
+                      onChange={(event) => setRegisterNik(event.target.value)}
                       placeholder="3201xxxxxxxxxxxx (16 digit)"
                       maxLength={16}
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 outline-none transition focus:border-[#155DFC] focus:bg-white focus:ring-4 focus:ring-[#155DFC]/10"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
                     />
-
-                    <p className="mt-1 text-xs text-slate-500">
-                      NIK 16 digit, kode wilayah Jawa Barat (3201-3279)
-                    </p>
+                    <p className="mt-1 text-xs text-[#666666]">NIK 16 digit, kode wilayah Jawa Barat (3201-3279)</p>
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
-                      Password
-                    </label>
-
+                    <label className="mb-2 block text-sm font-semibold text-[#111111]">Password</label>
                     <input
                       type="password"
                       value={registerPassword}
-                      onChange={(event) =>
-                        setRegisterPassword(event.target.value)
-                      }
+                      onChange={(event) => setRegisterPassword(event.target.value)}
                       placeholder="Minimal 8 karakter"
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 outline-none transition focus:border-[#155DFC] focus:bg-white focus:ring-4 focus:ring-[#155DFC]/10"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
                     />
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
-                      Konfirmasi password
-                    </label>
-
+                    <label className="mb-2 block text-sm font-semibold text-[#111111]">Konfirmasi password</label>
                     <input
                       type="password"
                       value={confirmPassword}
-                      onChange={(event) =>
-                        setConfirmPassword(event.target.value)
-                      }
+                      onChange={(event) => setConfirmPassword(event.target.value)}
                       placeholder="Ulangi password"
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 outline-none transition focus:border-[#155DFC] focus:bg-white focus:ring-4 focus:ring-[#155DFC]/10"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
                     />
                   </div>
 
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3.5">
-                    <label className="flex items-start gap-3 text-sm text-slate-700">
+                  <div className="rounded-2xl border border-[#E5E5E5] bg-[#F3F3F3] p-3.5">
+                    <label className="flex items-start gap-3 text-sm text-[#111111]">
                       <input
                         type="checkbox"
                         checked={acceptedTerms}
-                        onChange={(event) =>
-                          setAcceptedTerms(event.target.checked)
-                        }
-                        className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#155DFC] focus:ring-[#155DFC]"
+                        onChange={(event) => setAcceptedTerms(event.target.checked)}
+                        className="mt-0.5 h-4 w-4 rounded border-[#B0B0B0] text-[#111111] focus:ring-[#111111]"
                       />
-
                       <span>
-                        Saya menyetujui{' '}
-                        <span className="font-semibold text-[#155DFC]">
-                          Syarat & Ketentuan
-                        </span>{' '}
-                        dan{' '}
-                        <span className="font-semibold text-[#155DFC]">
-                          Kebijakan Privasi
-                        </span>
-                        .
+                        Saya menyetujui <span className="font-semibold text-[#111111]">Syarat & Ketentuan</span> dan{' '}
+                        <span className="font-semibold text-[#111111]">Kebijakan Privasi</span>.
                       </span>
                     </label>
                   </div>
@@ -588,12 +493,12 @@ export default function Login() {
                   <button
                     type="submit"
                     disabled={!acceptedTerms || isLoading}
-                    className="w-full rounded-full bg-[linear-gradient(135deg,#155DFC_0%,#2f7bff_100%)] px-5 py-3.5 text-base font-semibold text-white shadow-[0_18px_36px_rgba(21,93,252,0.28)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_42px_rgba(21,93,252,0.34)] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="w-full rounded-full bg-[#111111] px-5 py-3.5 text-base font-semibold text-white shadow-[0_18px_32px_rgba(17,17,17,0.20)] transition hover:translate-y-[-1px] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {isLoading ? 'Memproses...' : 'Daftar Sekarang'}
                   </button>
 
-                  <p className="text-center text-sm text-slate-500">
+                  <p className="text-center text-sm text-[#666666]">
                     Sudah punya akun?{' '}
                     <button
                       type="button"
@@ -602,7 +507,7 @@ export default function Login() {
                         resetRegisterForm();
                         setError('');
                       }}
-                      className="font-semibold text-[#155DFC] hover:underline"
+                      className="font-semibold text-[#111111] hover:underline"
                     >
                       Masuk di sini
                     </button>
@@ -610,24 +515,15 @@ export default function Login() {
                 </form>
               )
             ) : (
-
-              /* LOGIN */
               <form onSubmit={handleSubmit} className="space-y-5">
-
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
-                    {selectedRole === 'masyarakat'
-                      ? 'Email / NIK'
-                      : 'NIP / Email'}
+                  <label className="mb-2 block text-sm font-semibold text-[#111111]">
+                    {selectedRole === 'masyarakat' ? 'Email / NIK' : 'NIP / Email'}
                   </label>
 
                   <div className="relative">
-                    <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="h-5 w-5 fill-none stroke-current stroke-2"
-                        aria-hidden="true"
-                      >
+                    <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-[#777777]">
+                      <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2" aria-hidden="true">
                         <path d="M16 19v-1a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v1" />
                         <circle cx="10" cy="7" r="3.5" />
                         <path d="M20 19v-1a4 4 0 0 0-3-3.87" />
@@ -638,31 +534,19 @@ export default function Login() {
                     <input
                       type="text"
                       value={identifier}
-                      onChange={(event) =>
-                        setIdentifier(event.target.value)
-                      }
-                      placeholder={
-                        selectedRole === 'masyarakat'
-                          ? 'Masukkan email atau NIK'
-                          : 'Masukkan NIP atau email'
-                      }
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-slate-800 outline-none transition focus:border-[#155DFC] focus:bg-white focus:ring-4 focus:ring-[#155DFC]/10"
+                      onChange={(event) => setIdentifier(event.target.value)}
+                      placeholder={selectedRole === 'masyarakat' ? 'Masukkan email atau NIK' : 'Masukkan NIP atau email'}
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] py-3.5 pl-12 pr-4 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
-                    Password
-                  </label>
+                  <label className="mb-2 block text-sm font-semibold text-[#111111]">Password</label>
 
                   <div className="relative">
-                    <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="h-5 w-5 fill-none stroke-current stroke-2"
-                        aria-hidden="true"
-                      >
+                    <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-[#777777]">
+                      <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2" aria-hidden="true">
                         <rect x="4" y="11" width="16" height="9" rx="2" />
                         <path d="M8 11V8a4 4 0 1 1 8 0v3" />
                       </svg>
@@ -671,19 +555,15 @@ export default function Login() {
                     <input
                       type={showPassword ? 'text' : 'password'}
                       value={password}
-                      onChange={(event) =>
-                        setPassword(event.target.value)
-                      }
+                      onChange={(event) => setPassword(event.target.value)}
                       placeholder="Masukkan password"
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-11 text-slate-800 outline-none transition focus:border-[#155DFC] focus:bg-white focus:ring-4 focus:ring-[#155DFC]/10"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] py-3.5 pl-12 pr-11 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
                     />
 
                     <button
                       type="button"
-                      onClick={() =>
-                        setShowPassword((prev) => !prev)
-                      }
-                      className="absolute inset-y-0 right-0 flex items-center pr-4 text-sm font-medium text-slate-500 hover:text-slate-700"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className="absolute inset-y-0 right-0 flex items-center pr-4 text-sm font-medium text-[#666666] hover:text-[#111111]"
                     >
                       {showPassword ? 'Sembunyikan' : 'Tampil'}
                     </button>
@@ -691,7 +571,7 @@ export default function Login() {
                 </div>
 
                 {selectedRole === 'masyarakat' && !showResendForm && (
-                  <div className="pt-1 text-center text-sm text-slate-500">
+                  <div className="pt-1 text-center text-sm text-[#666666]">
                     <button
                       type="button"
                       onClick={() => {
@@ -699,7 +579,7 @@ export default function Login() {
                         setResendEmail('');
                         setResendMessage('');
                       }}
-                      className="font-semibold text-[#155DFC] hover:underline"
+                      className="font-semibold text-[#111111] hover:underline"
                     >
                       Belum verifikasi email? Kirim ulang
                     </button>
@@ -707,28 +587,17 @@ export default function Login() {
                 )}
 
                 {selectedRole === 'masyarakat' && showResendForm && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    className="space-y-3"
-                  >
-                    <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
-                      <p className="mb-3 text-sm font-medium text-blue-800">
-                        Kirim Ulang Email Verifikasi
-                      </p>
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-3">
+                    <div className="rounded-xl border border-[#E5E5E5] bg-[#F3F3F3] p-4">
+                      <p className="mb-3 text-sm font-medium text-[#111111]">Kirim Ulang Email Verifikasi</p>
 
-                      <form
-                        onSubmit={handleResendVerification}
-                        className="space-y-2"
-                      >
+                      <form onSubmit={handleResendVerification} className="space-y-2">
                         <input
                           type="email"
                           value={resendEmail}
-                          onChange={(e) =>
-                            setResendEmail(e.target.value)
-                          }
+                          onChange={(e) => setResendEmail(e.target.value)}
                           placeholder="Masukkan email yang terdaftar"
-                          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-[#155DFC] focus:ring-2 focus:ring-[#155DFC]/10"
+                          className="w-full rounded-xl border border-[#D9D9D9] bg-white px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111]"
                           required
                           autoFocus
                         />
@@ -736,18 +605,12 @@ export default function Login() {
                         <button
                           type="submit"
                           disabled={resendLoading}
-                          className="w-full rounded-full bg-[#155DFC] px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+                          className="w-full rounded-full bg-[#111111] px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                          {resendLoading
-                            ? 'Mengirim...'
-                            : 'Kirim Ulang'}
+                          {resendLoading ? 'Mengirim...' : 'Kirim Ulang'}
                         </button>
 
-                        {resendMessage && (
-                          <p className="text-center text-sm text-green-700">
-                            {resendMessage}
-                          </p>
-                        )}
+                        {resendMessage && <p className="text-center text-sm text-[#111111]">{resendMessage}</p>}
                       </form>
 
                       <button
@@ -756,7 +619,7 @@ export default function Login() {
                           setShowResendForm(false);
                           setResendMessage('');
                         }}
-                        className="mt-2 text-sm font-semibold text-[#155DFC] hover:underline"
+                        className="mt-2 text-sm font-semibold text-[#111111] hover:underline"
                       >
                         Batal
                       </button>
@@ -765,19 +628,15 @@ export default function Login() {
                 )}
 
                 <div className="flex items-center justify-between gap-3 pt-1">
-                  <label className="inline-flex items-center gap-2 text-sm text-slate-600">
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-slate-300 text-[#155DFC] focus:ring-[#155DFC]"
-                    />
-
+                  <label className="inline-flex items-center gap-2 text-sm text-[#666666]">
+                    <input type="checkbox" className="h-4 w-4 rounded border-[#B0B0B0] text-[#111111] focus:ring-[#111111]" />
                     Ingat saya
                   </label>
 
                   <button
                     type="button"
                     onClick={() => navigate('/forgot-password')}
-                    className="text-sm font-semibold text-[#155DFC] hover:underline"
+                    className="text-sm font-semibold text-[#111111] hover:underline"
                   >
                     Lupa password?
                   </button>
@@ -792,7 +651,7 @@ export default function Login() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full rounded-full bg-[linear-gradient(135deg,#155DFC_0%,#2f7bff_100%)] px-5 py-3.5 text-base font-semibold text-white shadow-[0_18px_36px_rgba(21,93,252,0.28)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_42px_rgba(21,93,252,0.34)] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="w-full rounded-full bg-[#111111] px-5 py-3.5 text-base font-semibold text-white shadow-[0_18px_32px_rgba(17,17,17,0.20)] transition hover:translate-y-[-1px] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isLoading
                     ? 'Memproses...'
@@ -802,7 +661,7 @@ export default function Login() {
                 </button>
 
                 {selectedRole === 'masyarakat' && (
-                  <p className="text-center text-sm text-slate-500">
+                  <p className="text-center text-sm text-[#666666]">
                     Belum punya akun?{' '}
                     <button
                       type="button"
@@ -811,7 +670,7 @@ export default function Login() {
                         resetRegisterForm();
                         setError('');
                       }}
-                      className="font-semibold text-[#155DFC] hover:underline"
+                      className="font-semibold text-[#111111] hover:underline"
                     >
                       Daftar sekarang
                     </button>

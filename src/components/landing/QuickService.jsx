@@ -77,7 +77,7 @@ text-slate-500
 max-w-xl
 mx-auto
 ">
-
+lan
 Layanan digital untuk mendukung pelaporan,
 pemantauan, dan pendampingan masyarakat.
 
