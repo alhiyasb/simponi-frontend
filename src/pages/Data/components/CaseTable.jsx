@@ -10,25 +10,25 @@ const TH_STYLE = {
   fontSize: 11,
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
-  color: '#FFFFFF',
+  color: '#000000',
   borderBottom: 'none',
-  background: 'linear-gradient(90deg, #155DFC, #3B82F6)',
+  background: 'linear-gradient(90deg, #FFFFFF, #E5E7EB)',
   fontWeight: 700,
 };
 
 const TD_STYLE = {
   padding: '15px 16px',
   fontSize: 14,
-  color: '#1E293B',
+  color: '#F8FAFC',
   whiteSpace: 'nowrap',
-  borderBottom: '1px solid #E8F0FF',
+  borderBottom: '1px solid rgba(255,255,255,0.08)',
 };
 
 const TABLE_WRAPPER_STYLE = {
   overflowX: 'auto',
   borderRadius: 16,
-  border: '1px solid #DCE7FF',
-  boxShadow: '0 6px 24px rgba(21, 93, 252, 0.05)',
+  border: '1px solid rgba(255,255,255,0.08)',
+  boxShadow: '0 6px 24px rgba(0, 0, 0, 0.25)',
 };
 
 const TABLE_STYLE = {
@@ -44,22 +44,22 @@ const PAGINATION_STYLE = {
   alignItems: 'center',
   marginTop: 16,
   paddingTop: 16,
-  borderTop: '1px solid #E2E8F0',
+  borderTop: '1px solid rgba(255,255,255,0.08)',
   flexWrap: 'wrap',
   gap: 12,
 };
 
 const PAGE_INFO_STYLE = {
-  color: '#475569',
+  color: '#E5E7EB',
   fontSize: 14,
 };
 
 const BUTTON_STYLE = (disabled) => ({
   padding: '8px 12px',
   borderRadius: 8,
-  border: '1px solid #E2E8F0',
-  background: disabled ? '#F1F5F9' : '#FFFFFF',
-  color: disabled ? '#94A3B8' : '#0F172A',
+  border: '1px solid rgba(255,255,255,0.12)',
+  background: disabled ? '#1F1F1F' : '#FFFFFF',
+  color: disabled ? '#9CA3AF' : '#000000',
   fontSize: 13,
   fontWeight: 500,
   cursor: disabled ? 'not-allowed' : 'pointer',
@@ -71,10 +71,10 @@ const SELECT_STYLE = {
   marginLeft: 8,
   padding: '8px 12px',
   borderRadius: 8,
-  border: '1px solid #CBD5E1',
-  background: '#FFFFFF',
+  border: '1px solid rgba(255,255,255,0.12)',
+  background: '#111111',
   fontSize: 13,
-  color: '#0F172A',
+  color: '#FFFFFF',
   outline: 'none',
   cursor: 'pointer',
 };
@@ -84,7 +84,7 @@ export function CaseTable({ data, pagination }) {
 
   if (!data || data.length === 0) {
     return (
-      <div style={{ padding: 32, textAlign: 'center', color: '#64748B' }}>
+      <div style={{ padding: 32, textAlign: 'center', color: '#E5E7EB' }}>
         Tidak ada data untuk ditampilkan
       </div>
     );
@@ -112,15 +112,15 @@ export function CaseTable({ data, pagination }) {
             style={{
               background:
                 index % 2 === 0
-                  ? '#FFFFFF'
-                  : '#F8FBFF',
+                  ? '#111111'
+                  : '#181818',
             }}
           >
                 <td style={TD_STYLE}>{item.id || '-'}</td>
                 <td style={TD_STYLE}>{item.nama_provinsi || '-'}</td>
                 <td style={TD_STYLE}>{getStatistikRegion(item) || '-'}</td>
                 <td style={TD_STYLE}>{item.jenis_kelamin || '-'}</td>
-                <td style={{ ...TD_STYLE, fontWeight: 700, color: '#0F172A' }}>
+                <td style={{ ...TD_STYLE, fontWeight: 700, color: '#FFFFFF' }}>
                   {getStatistikValue(item).toLocaleString('id-ID')}
                 </td>
                 <td style={TD_STYLE}>{item.satuan || '-'}</td>
@@ -148,7 +148,7 @@ export function CaseTable({ data, pagination }) {
           >
             Prev
           </button>
-          <div style={{ fontWeight: 700, fontSize: 14, color: '#0F172A' }}>
+          <div style={{ fontWeight: 700, fontSize: 14, color: '#FFFFFF' }}>
             {page} / {totalPages}
           </div>
           <button

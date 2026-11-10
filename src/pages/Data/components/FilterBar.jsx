@@ -1,16 +1,16 @@
 const SELECT_STYLE = {
   width: '100%',
-  border: '1px solid #D9E5FF',
+  border: '1px solid rgba(255,255,255,0.12)',
   borderRadius: 14,
   padding: '12px 42px 12px 14px',
-  background: 'rgba(255,255,255,0.92)',
+  background: 'rgba(255,255,255,0.06)',
   fontSize: 14,
   fontWeight: 500,
-  color: '#172554',
+  color: '#FFFFFF',
   outline: 'none',
   cursor: 'pointer',
   appearance: 'auto',
-  boxShadow: '0 4px 14px rgba(21,93,252,0.05)',
+  boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
   transition: 'all 0.2s ease',
 };
 
@@ -18,7 +18,7 @@ const LABEL_STYLE = {
   display: 'block',
   fontSize: 12,
   fontWeight: 700,
-  color: '#475569',
+  color: 'rgba(255,255,255,0.72)',
   marginBottom: 7,
 };
 
@@ -47,14 +47,13 @@ export function FilterBar({
         padding: '20px 22px',
         marginBottom: 24,
         background:
-          'linear-gradient(135deg, rgba(255,255,255,0.98), rgba(239,246,255,0.92))',
-        border: '1px solid #D9E5FF',
+          'linear-gradient(135deg, rgba(17,17,17,0.98), rgba(29,29,29,0.96))',
+        border: '1px solid rgba(255,255,255,0.08)',
         borderRadius: 20,
-        boxShadow: '0 12px 35px rgba(21,93,252,0.08)',
+        boxShadow: '0 12px 35px rgba(0,0,0,0.3)',
         overflow: 'hidden',
       }}
     >
-      {/* Decorative gradient */}
       <div
         style={{
           position: 'absolute',
@@ -62,7 +61,7 @@ export function FilterBar({
           left: 0,
           width: 4,
           height: '100%',
-          background: 'linear-gradient(180deg, #155DFC, #38BDF8)',
+          background: 'linear-gradient(180deg, #FFFFFF, #D1D5DB)',
           borderRadius: '20px 0 0 20px',
         }}
       />
@@ -80,14 +79,14 @@ export function FilterBar({
           disabled={loading}
           style={SELECT_STYLE}
           onFocus={(e) => {
-            e.target.style.borderColor = '#155DFC';
+            e.target.style.borderColor = '#FFFFFF';
             e.target.style.boxShadow =
-              '0 0 0 4px rgba(21,93,252,0.10)';
+              '0 0 0 4px rgba(255,255,255,0.12)';
           }}
           onBlur={(e) => {
-            e.target.style.borderColor = '#D9E5FF';
+            e.target.style.borderColor = 'rgba(255,255,255,0.12)';
             e.target.style.boxShadow =
-              '0 4px 14px rgba(21,93,252,0.05)';
+              '0 4px 14px rgba(0,0,0,0.18)';
           }}
         >
           <option value="ALL">Semua Tahun</option>
@@ -113,14 +112,14 @@ export function FilterBar({
           disabled={loading}
           style={SELECT_STYLE}
           onFocus={(e) => {
-            e.target.style.borderColor = '#155DFC';
+            e.target.style.borderColor = '#FFFFFF';
             e.target.style.boxShadow =
-              '0 0 0 4px rgba(21,93,252,0.10)';
+              '0 0 0 4px rgba(255,255,255,0.12)';
           }}
           onBlur={(e) => {
-            e.target.style.borderColor = '#D9E5FF';
+            e.target.style.borderColor = 'rgba(255,255,255,0.12)';
             e.target.style.boxShadow =
-              '0 4px 14px rgba(21,93,252,0.05)';
+              '0 4px 14px rgba(0,0,0,0.18)';
           }}
         >
           <option value="ALL">Semua Kabupaten</option>
@@ -146,14 +145,14 @@ export function FilterBar({
           disabled={loading}
           style={SELECT_STYLE}
           onFocus={(e) => {
-            e.target.style.borderColor = '#155DFC';
+            e.target.style.borderColor = '#FFFFFF';
             e.target.style.boxShadow =
-              '0 0 0 4px rgba(21,93,252,0.10)';
+              '0 0 0 4px rgba(255,255,255,0.12)';
           }}
           onBlur={(e) => {
-            e.target.style.borderColor = '#D9E5FF';
+            e.target.style.borderColor = 'rgba(255,255,255,0.12)';
             e.target.style.boxShadow =
-              '0 4px 14px rgba(21,93,252,0.05)';
+              '0 4px 14px rgba(0,0,0,0.18)';
           }}
         >
           <option value="kabupaten">Kabupaten/Kota</option>
@@ -170,7 +169,7 @@ export function FilterBar({
             alignItems: 'center',
             gap: 8,
             height: 44,
-            color: '#155DFC',
+            color: '#FFFFFF',
             fontSize: 13,
             fontWeight: 600,
           }}
@@ -179,8 +178,8 @@ export function FilterBar({
             style={{
               width: 16,
               height: 16,
-              border: '2px solid #D9E5FF',
-              borderTopColor: '#155DFC',
+              border: '2px solid rgba(255,255,255,0.18)',
+              borderTopColor: '#FFFFFF',
               borderRadius: '50%',
               animation: 'filterSpin 0.8s linear infinite',
             }}

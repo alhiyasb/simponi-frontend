@@ -7,7 +7,7 @@ export function Card({
 }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-[22px] border border-[#D9E5FF] bg-white/95 shadow-[0_12px_40px_rgba(21,93,252,0.08)] ${className}`}
+      className={`relative overflow-hidden rounded-[22px] border border-white/10 bg-[#111111]/95 shadow-[0_12px_40px_rgba(0,0,0,0.35)] ${className}`}
       style={{
         marginBottom: 28,
       }}
@@ -17,9 +17,9 @@ export function Card({
           className="flex items-start justify-between gap-4"
           style={{
             padding: '20px 24px',
-            borderBottom: '1px solid #EAF0FA',
+            borderBottom: '1px solid rgba(255,255,255,0.08)',
             background:
-              'linear-gradient(135deg, rgba(255,255,255,0.98), rgba(248,251,255,0.95))',
+              'linear-gradient(135deg, rgba(17,17,17,0.98), rgba(32,32,32,0.96))',
           }}
         >
           <div
@@ -28,7 +28,6 @@ export function Card({
               paddingLeft: 14,
             }}
           >
-            {/* Blue accent */}
             <div
               style={{
                 position: 'absolute',
@@ -39,13 +38,13 @@ export function Card({
                 minHeight: 30,
                 borderRadius: 999,
                 background:
-                  'linear-gradient(180deg, #155DFC, #38BDF8)',
+                  'linear-gradient(180deg, #FFFFFF, #9CA3AF)',
               }}
             />
 
             {title && (
               <h2
-                className="text-lg font-bold text-slate-800"
+                className="text-lg font-bold text-white"
                 style={{
                   margin: 0,
                   fontSize: 18,
@@ -61,7 +60,7 @@ export function Card({
                 style={{
                   margin: '5px 0 0',
                   fontSize: 13,
-                  color: '#64748B',
+                  color: '#D1D5DB',
                   lineHeight: 1.5,
                 }}
               >

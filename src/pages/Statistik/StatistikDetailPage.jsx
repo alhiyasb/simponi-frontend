@@ -151,13 +151,13 @@ export default function StatistikDetailPage({ endpointKey }) {
     return (
       <>
         <Navbar />
-        <div className="min-h-screen bg-[linear-gradient(180deg,#edf5ff_0%,#f8fbff_30%,#ffffff_100%)] px-4 py-10">
+        <div className="min-h-screen bg-[#050505] px-4 py-10 text-white">
           <div className="mx-auto max-w-7xl">
-            <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
-              <p className="text-red-700 font-semibold">{error}</p>
+            <div className="rounded-2xl border border-white/10 bg-[#111111] p-8 text-center shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
+              <p className="font-semibold text-white">{error}</p>
               <button
                 onClick={refetch}
-                className="mt-4 rounded-full bg-[#155DFC] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#0f47d6]"
+                className="mt-4 rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-black hover:bg-slate-200"
               >
                 Coba Lagi
               </button>
@@ -172,18 +172,18 @@ export default function StatistikDetailPage({ endpointKey }) {
     <>
       <Navbar />
 
-      <div className="min-h-screen bg-[linear-gradient(180deg,#edf5ff_0%,#f8fbff_30%,#ffffff_100%)] px-4 py-10">
+      <div className="min-h-screen bg-[#050505] px-4 py-10 text-white">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8">
             <Link
               to="/statistik"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#155DFC] hover:underline mb-4"
+              className="mb-4 inline-flex items-center gap-2 text-sm font-semibold text-white hover:underline"
             >
               ← Kembali ke Statistik
             </Link>
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#155DFC]">Statistik Publik</p>
-              <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-900 md:text-4xl">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">Statistik Publik</p>
+              <h1 className="mt-2 text-3xl font-black tracking-tight text-white md:text-4xl">
                 {config.title}
               </h1>
             </div>
@@ -215,10 +215,10 @@ export default function StatistikDetailPage({ endpointKey }) {
             subtitle={`${filteredData.length} total record${filteredData.length !== 1 ? 's' : ''}${hasActiveFilters ? ' (terfilter)' : ''}`}
           >
             {loading ? (
-              <div className="py-8 text-center text-slate-500">Memuat data...</div>
+              <div className="py-8 text-center text-slate-300">Memuat data...</div>
             ) : filteredData.length === 0 ? (
-              <div className="py-12 text-center text-slate-500">
-                <svg className="mx-auto h-12 w-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="py-12 text-center text-slate-300">
+                <svg className="mx-auto h-12 w-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2H7a2 2 0 01-2-2v-9" />
                 </svg>
                 <p className="mt-4 text-lg font-semibold">Tidak ada data untuk filter ini</p>
@@ -226,7 +226,7 @@ export default function StatistikDetailPage({ endpointKey }) {
                 {hasActiveFilters && (
                   <button
                     onClick={resetFilters}
-                    className="mt-4 rounded-full bg-[#155DFC] px-5 py-2 text-sm font-semibold text-white hover:bg-[#0f47d6]"
+                    className="mt-4 rounded-full bg-white px-5 py-2 text-sm font-semibold text-black hover:bg-slate-200"
                   >
                     Reset Filter
                   </button>

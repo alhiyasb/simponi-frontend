@@ -25,17 +25,7 @@ const getMenuItems = (user, logout) => {
   }
 
   const roleMenus = {
-    public: [
-      {
-        label: 'Layanan',
-        hasDropdown: true,
-        items: [
-          { label: 'Pelaporan Kasus', to: '/pelaporan' },
-          { label: 'Tracking Laporan', to: '/tracking' },
-        ],
-      },
-      { label: 'Statistik', to: '/statistik' },
-    ],
+    public: [],
     admin_pemda: [{ label: 'Data', to: '/data' }],
     admin_pemprov: [{ label: 'Data Provinsi', to: '/data-provinsi' }],
   };

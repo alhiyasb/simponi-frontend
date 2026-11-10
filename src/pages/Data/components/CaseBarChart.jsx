@@ -11,25 +11,25 @@ import {
 } from 'recharts';
 
 const COLORS = [
-  '#155DFC',
-  '#2874F0',
-  '#3987F4',
-  '#4B9AF5',
-  '#5DADF6',
+  '#FFFFFF',
+  '#E5E7EB',
+  '#D1D5DB',
+  '#9CA3AF',
+  '#6B7280',
 ];
 
 const TOOLTIP_STYLE = {
-  backgroundColor: '#FFFFFF',
-  border: '1px solid #D9E5FF',
+  backgroundColor: '#111111',
+  border: '1px solid rgba(255,255,255,0.12)',
   borderRadius: 14,
-  boxShadow: '0 12px 30px rgba(21, 93, 252, 0.14)',
+  boxShadow: '0 12px 30px rgba(0, 0, 0, 0.28)',
   padding: '12px 16px',
 };
 
 const LABEL_STYLE = {
   fontSize: 11,
   fontWeight: 700,
-  fill: '#334155',
+  fill: '#F8FAFC',
   dx: 8,
 };
 
@@ -54,7 +54,7 @@ function CustomTooltip({ active, payload }) {
           style={{
             margin: '0 0 5px',
             fontSize: 12,
-            color: '#64748B',
+            color: '#D1D5DB',
             fontWeight: 600,
           }}
         >
@@ -66,7 +66,7 @@ function CustomTooltip({ active, payload }) {
             margin: 0,
             fontSize: 18,
             fontWeight: 800,
-            color: '#155DFC',
+            color: '#FFFFFF',
           }}
         >
           {Number(item.jumlah).toLocaleString('id-ID')} kasus
@@ -109,7 +109,7 @@ export function CaseBarChart({
                 width: 34,
                 height: `${h}%`,
                 background:
-                  'linear-gradient(180deg, #E8F0FF, #D9E5FF)',
+                  'linear-gradient(180deg, #3A3A3A, #1A1A1A)',
                 borderRadius: '8px 8px 0 0',
                 animation:
                   'chartShimmer 1.5s ease-in-out infinite',
@@ -216,19 +216,19 @@ export function CaseBarChart({
             >
               <stop
                 offset="0%"
-                stopColor="#155DFC"
+                stopColor="#FFFFFF"
               />
 
               <stop
                 offset="100%"
-                stopColor="#38BDF8"
+                stopColor="#9CA3AF"
               />
             </linearGradient>
           </defs>
 
           <CartesianGrid
             strokeDasharray="3 3"
-            stroke="#EAF0FA"
+            stroke="rgba(255,255,255,0.12)"
             vertical={false}
             horizontal={true}
           />
@@ -237,10 +237,10 @@ export function CaseBarChart({
             type="number"
             tick={{
               fontSize: 11,
-              fill: '#64748B',
+              fill: '#E5E7EB',
             }}
             axisLine={{
-              stroke: '#D9E5FF',
+              stroke: 'rgba(255,255,255,0.18)',
             }}
             tickLine={false}
             interval={0}
@@ -256,7 +256,7 @@ export function CaseBarChart({
             width={190}
             tick={{
               fontSize: 11,
-              fill: '#334155',
+              fill: '#F8FAFC',
               fontWeight: 600,
             }}
             axisLine={false}

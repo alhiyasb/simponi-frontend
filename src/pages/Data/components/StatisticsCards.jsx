@@ -2,11 +2,11 @@ const CARD_STYLE = {
   position: 'relative',
   overflow: 'hidden',
   background:
-    'linear-gradient(135deg, rgba(255,255,255,0.98), rgba(239,246,255,0.9))',
-  border: '1px solid #D9E5FF',
+    'linear-gradient(135deg, rgba(17,17,17,0.98), rgba(28,28,28,0.96))',
+  border: '1px solid rgba(255,255,255,0.1)',
   borderRadius: 22,
   padding: '20px 20px 18px',
-  boxShadow: '0 12px 35px rgba(21,93,252,0.08)',
+  boxShadow: '0 12px 35px rgba(0,0,0,0.35)',
   minHeight: 145,
 };
 
@@ -14,7 +14,7 @@ const LABEL_STYLE = {
   fontSize: 11,
   textTransform: 'uppercase',
   letterSpacing: '0.09em',
-  color: '#64748B',
+  color: '#D1D5DB',
   fontWeight: 700,
   marginBottom: 8,
 };
@@ -22,7 +22,7 @@ const LABEL_STYLE = {
 const VALUE_STYLE = {
   fontSize: 32,
   fontWeight: 800,
-  color: '#155DFC',
+  color: '#FFFFFF',
   lineHeight: 1.2,
 };
 
@@ -67,8 +67,8 @@ export function StatisticsCards({ stats }) {
               borderRadius: '50%',
               background:
                 index === 0
-                  ? 'radial-gradient(circle, rgba(21,93,252,0.16), transparent 70%)'
-                  : 'radial-gradient(circle, rgba(14,165,233,0.16), transparent 70%)',
+                  ? 'radial-gradient(circle, rgba(255,255,255,0.12), transparent 70%)'
+                  : 'radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%)',
               pointerEvents: 'none',
             }}
           />
@@ -83,9 +83,9 @@ export function StatisticsCards({ stats }) {
               height: 44,
               borderRadius: 14,
               background:
-                'linear-gradient(135deg, #E8F0FF, #FFFFFF)',
-              border: '1px solid #D5E3FF',
-              boxShadow: '0 6px 16px rgba(21,93,252,0.10)',
+                'linear-gradient(135deg, #1A1A1A, #0E0E0E)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              boxShadow: '0 6px 16px rgba(0,0,0,0.25)',
               marginBottom: 15,
               fontSize: 21,
             }}
@@ -109,7 +109,7 @@ export function StatisticsCards({ stats }) {
               marginTop: 12,
               borderRadius: 999,
               background:
-                'linear-gradient(90deg, #155DFC, #38BDF8)',
+                'linear-gradient(90deg, #FFFFFF, #D1D5DB)',
             }}
           />
         </div>
