@@ -1,40 +1,41 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { NewsCardGrid } from "../../components/landing/StatisticSection";
+import { getNews } from "../../services/api";
 
 export default function BeritaPage() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
 
-  const loadNews = async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      const response = await fetch("/api/v1/news?limit=12");
-      if (!response.ok) {
-        throw new Error("Gagal memuat daftar berita.");
-      }
-
-      const data = await response.json();
-      const newsItems = Array.isArray(data)
-        ? data
-        : Array.isArray(data?.items)
-          ? data.items
-          : [];
-      setItems(newsItems);
-    } catch (err) {
-      setError(err.message || "Terjadi kesalahan saat memuat berita.");
-      setItems([]);
-    } finally {
-      setLoading(false);
-    }
+  const retryNews = () => {
+    setLoading(true);
+    setError("");
+    setReloadKey((key) => key + 1);
   };
 
   useEffect(() => {
-    loadNews();
-  }, []);
+    let cancelled = false;
+
+    getNews({ limit: 6 })
+      .then((newsItems) => {
+        if (!cancelled) setItems(newsItems);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setError(err.message || "Terjadi kesalahan saat memuat berita.");
+          setItems([]);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [reloadKey]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -45,7 +46,7 @@ export default function BeritaPage() {
               Berita terkini
             </p>
             <h1 className="mt-2 text-3xl font-extrabold text-[#111827]">
-              Seputar Pernikahan Dini di Indonesia
+              Seputar Pernikahan Dini di Jawa Barat
             </h1>
           </div>
 
@@ -57,7 +58,7 @@ export default function BeritaPage() {
           </Link>
         </div>
 
-        <NewsCardGrid items={items} loading={loading} error={error} onRetry={loadNews} />
+        <NewsCardGrid items={items} loading={loading} error={error} onRetry={retryNews} />
       </div>
     </div>
   );

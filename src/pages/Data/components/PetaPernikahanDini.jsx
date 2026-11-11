@@ -61,7 +61,7 @@ function featureStyle(feature, zoom = 8) {
   };
 }
 
-function RiskGeoJSON({ data, layerKey }) {
+function RiskGeoJSON({ data }) {
   const map = useMap();
   const layerRef = useRef(null);
 
@@ -99,7 +99,6 @@ function RiskGeoJSON({ data, layerKey }) {
     <LayersControl.Overlay checked name="Tingkat risiko wilayah">
       <GeoJSON
         ref={layerRef}
-        key={layerKey}
         data={data}
         style={(feature) => featureStyle(feature, map.getZoom())}
         onEachFeature={onEachFeature}
@@ -140,26 +139,50 @@ function buildPopupHtml(props) {
   `;
 }
 
-export default function PetaPernikahanDini({ availableYears = [] }) {
+export default function PetaPernikahanDini({ data = [] }) {
   const [tahun, setTahun] = useState('');
   const [geoData, setGeoData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [reloadKey, setReloadKey] = useState(0);
+  const requestIdRef = useRef(0);
+
+  const availableYears = useMemo(
+    () =>
+      [...new Set(data.map((row) => Number(row?.tahun)).filter(Number.isInteger))]
+        .sort((a, b) => b - a),
+    [data]
+  );
+
+  const handleYearChange = (event) => {
+    requestIdRef.current += 1;
+    setGeoData(null);
+    setError('');
+    setLoading(true);
+    setTahun(event.target.value);
+  };
+
+  const retryMap = () => {
+    requestIdRef.current += 1;
+    setGeoData(null);
+    setError('');
+    setLoading(true);
+    setReloadKey((key) => key + 1);
+  };
 
   useEffect(() => {
     let cancelled = false;
+    const requestId = ++requestIdRef.current;
+    const controller = new AbortController();
 
     async function load() {
       try {
-        setLoading(true);
-        setError('');
-
         const geojson = await getPetaPernikahanDini({
           tahun: tahun || undefined,
+          signal: controller.signal,
         });
 
-        if (!cancelled) {
+        if (!cancelled && requestId === requestIdRef.current) {
           if (!geojson || !Array.isArray(geojson.features)) {
             throw new Error('Format respons bukan GeoJSON.');
           }
@@ -167,13 +190,16 @@ export default function PetaPernikahanDini({ availableYears = [] }) {
           setGeoData(geojson);
         }
       } catch (err) {
-        console.error(err);
-
-        if (!cancelled) {
+        if (
+          !cancelled &&
+          requestId === requestIdRef.current &&
+          err.name !== 'AbortError'
+        ) {
+          console.error(err);
           setError('Gagal memuat data peta pernikahan dini.');
         }
       } finally {
-        if (!cancelled) {
+        if (!cancelled && requestId === requestIdRef.current) {
           setLoading(false);
         }
       }
@@ -183,6 +209,7 @@ export default function PetaPernikahanDini({ availableYears = [] }) {
 
     return () => {
       cancelled = true;
+      controller.abort();
     };
   }, [tahun, reloadKey]);
 
@@ -227,7 +254,7 @@ export default function PetaPernikahanDini({ availableYears = [] }) {
           <select
             id="peta-tahun"
             value={tahun}
-            onChange={(e) => setTahun(e.target.value)}
+            onChange={handleYearChange}
             className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 outline-none transition focus:border-[#155DFC] focus:ring-2 focus:ring-[#155DFC]/20"
           >
             <option value="">Semua tahun</option>
@@ -248,7 +275,7 @@ export default function PetaPernikahanDini({ availableYears = [] }) {
             <p className="font-semibold text-red-700">{error}</p>
 
             <button
-              onClick={() => setReloadKey((k) => k + 1)}
+              onClick={retryMap}
               className="mt-4 rounded-full bg-[#155DFC] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#0f47d6]"
             >
               Coba Lagi
@@ -267,6 +294,7 @@ export default function PetaPernikahanDini({ availableYears = [] }) {
               zoom={8}
               minZoom={6}
               maxZoom={19}
+              preferCanvas
               dragging
               scrollWheelZoom
               style={{ height: 520, width: '100%' }}
@@ -310,7 +338,7 @@ export default function PetaPernikahanDini({ availableYears = [] }) {
 
                 {geoData?.features?.length > 0 && (
                   <RiskGeoJSON
-                    layerKey={`${tahun || 'semua'}-${reloadKey}`}
+                    key={`${tahun || 'semua'}-${reloadKey}`}
                     data={geoData}
                   />
                 )}

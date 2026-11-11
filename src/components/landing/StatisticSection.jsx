@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getNews } from "../../services/api";
 
 const formatDate = (dateString) => {
   if (!dateString) return "Baru-baru ini";
@@ -132,42 +133,42 @@ export default function StatisticSection() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
 
-  const loadNews = async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      const response = await fetch("/api/v1/news?limit=6");
-      if (!response.ok) {
-        throw new Error("Gagal mengambil data berita");
-      }
-
-      const data = await response.json();
-      const newsItems = Array.isArray(data)
-        ? data
-        : Array.isArray(data?.items)
-          ? data.items
-          : [];
-      setItems(newsItems);
-    } catch (err) {
-      setError(err.message || "Terjadi kesalahan saat mengambil berita.");
-      setItems([]);
-    } finally {
-      setLoading(false);
-    }
+  const retryNews = () => {
+    setLoading(true);
+    setError("");
+    setReloadKey((key) => key + 1);
   };
 
   useEffect(() => {
-    loadNews();
-  }, []);
+    let cancelled = false;
+
+    getNews({ limit: 3 })
+      .then((newsItems) => {
+        if (!cancelled) setItems(newsItems);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setError(err.message || "Terjadi kesalahan saat mengambil berita.");
+          setItems([]);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [reloadKey]);
 
   return (
     <section className="bg-white py-24">
       <div className="mx-auto max-w-[1100px] px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
           <h2 className="text-[30px] font-extrabold tracking-[-0.03em] text-[#111827]">
-            Berita Terkini
+            Berita Terkini Jawa Barat
           </h2>
 
           <Link
@@ -178,7 +179,7 @@ export default function StatisticSection() {
           </Link>
         </div>
 
-        <NewsCardGrid items={items} loading={loading} error={error} onRetry={loadNews} />
+        <NewsCardGrid items={items} loading={loading} error={error} onRetry={retryNews} />
       </div>
     </section>
   );

@@ -11,7 +11,7 @@
 
 const API_BASE_URL = (
   import.meta.env.VITE_API_BASE_URL ||
-  "http://localhost:8000/api"
+  "/api"
 ).replace(/\/+$/, "");
 
 const BASE_URL_V1 =
@@ -20,6 +20,7 @@ const BASE_URL_V1 =
 const AUTH_BASE_URL = BASE_URL_V1 + "/auth";
 const STATISTIK_BASE_URL = BASE_URL_V1 + "/statistik";
 const REPORTS_BASE_URL = BASE_URL_V1 + "/reports";
+const NEWS_BASE_URL = BASE_URL_V1 + "/news";
 
 /* Wajib untuk ngrok versi gratis */
 const NGROK_HEADERS = {
@@ -680,7 +681,7 @@ async function fetchStatistik(endpoint, params = {}) {
    STATISTIK - RAW
 ========================================================= */
 
-async function fetchStatistikRaw(endpoint, params = {}) {
+async function fetchStatistikRaw(endpoint, params = {}, options = {}) {
   const response = await fetch(
     buildStatistikUrl(endpoint, params),
     {
@@ -689,6 +690,7 @@ async function fetchStatistikRaw(endpoint, params = {}) {
         Accept: "application/json",
         ...NGROK_HEADERS,
       },
+      signal: options.signal,
     }
   );
 
@@ -704,12 +706,35 @@ async function fetchStatistikRaw(endpoint, params = {}) {
    STATISTIK ENDPOINTS
 ========================================================= */
 
+export async function getNews({ limit = 6 } = {}) {
+  const searchParams = new URLSearchParams({ limit: String(limit) });
+  const response = await fetch(`${NEWS_BASE_URL}?${searchParams}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      ...NGROK_HEADERS,
+    },
+  });
+
+  const payload = await response.json();
+
+  if (!response.ok) {
+    throw new Error(getErrorMessage(payload, "Gagal memuat berita."));
+  }
+
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+
+  return Array.isArray(payload?.items) ? payload.items : [];
+}
+
 export async function getPernikahanDini(params) {
   return fetchStatistik("pernikahan-dini", params);
 }
 
-export async function getPetaPernikahanDini({ tahun } = {}) {
-  return fetchStatistikRaw("peta-pernikahan-dini", { tahun });
+export async function getPetaPernikahanDini({ tahun, signal } = {}) {
+  return fetchStatistikRaw("peta-pernikahan-dini", { tahun }, { signal });
 }
 
 export async function getPutusSekolah(params) {
