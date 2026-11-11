@@ -123,7 +123,7 @@ const steps = [
 
 const inputClass =
 
-  "w-full rounded-2xl border border-slate-200 bg-white px-3 py-3 text-slate-800 shadow-sm outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100";
+  "w-full rounded-2xl border border-slate-200 bg-white px-3 py-3 text-slate-800 shadow-sm outline-none transition focus:border-red-400 focus:ring-4 focus:ring-red-100";
 
 const errorClass = "mt-1 text-sm text-red-500";
 
@@ -1436,7 +1436,7 @@ lokasi_kecamatan_desa: [
 
           <div className="sm:col-span-2">
 
-            <div className="mb-4 rounded-2xl bg-[#155DFC]/5 p-3 text-sm text-slate-700 ring-1 ring-[#155DFC]/15">
+            <div className="mb-4 rounded-2xl bg-[#111827]/5 p-3 text-sm text-slate-700 ring-1 ring-[#111827]/15">
 
               Pastikan data pelapor akurat agar proses
 
@@ -1764,7 +1764,7 @@ lokasi_kecamatan_desa: [
 
                 }
 
-                className="mt-1 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                className="mt-1 h-4 w-4 rounded border-slate-300 text-red-600 focus:ring-red-500"
 
               />
 
@@ -2106,7 +2106,7 @@ lokasi_kecamatan_desa: [
 
             </label>
 
-            <div className="flex h-[50px] items-center rounded-2xl border border-blue-200 bg-blue-50 px-4 text-sm font-semibold text-blue-700">
+            <div className="flex h-[50px] items-center rounded-2xl border border-red-200 bg-red-50 px-4 text-sm font-semibold text-red-700">
 
               Jawa Barat
 
@@ -2598,9 +2598,9 @@ lokasi_kecamatan_desa: [
 
                       selected
 
-                        ? "border-blue-500 bg-blue-50 text-blue-700"
+                        ? "border-red-500 bg-red-50 text-red-700"
 
-                        : "border-slate-200 bg-white text-slate-600 hover:border-blue-300"
+                        : "border-slate-200 bg-white text-slate-600 hover:border-red-300"
 
                     }`}
 
@@ -2804,7 +2804,7 @@ lokasi_kecamatan_desa: [
 
                   }
 
-                  className="mt-1 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  className="mt-1 h-4 w-4 rounded border-slate-300 text-red-600 focus:ring-red-500"
 
                 />
 
@@ -2862,7 +2862,7 @@ lokasi_kecamatan_desa: [
 
                   }
 
-                  className="mt-1 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  className="mt-1 h-4 w-4 rounded border-slate-300 text-red-600 focus:ring-red-500"
 
                 />
 
@@ -2950,9 +2950,9 @@ lokasi_kecamatan_desa: [
 
                         selected
 
-                          ? "border-blue-500 bg-blue-50 text-blue-700"
+                          ? "border-red-500 bg-red-50 text-red-700"
 
-                          : "border-slate-200 bg-white text-slate-600 hover:border-blue-300"
+                          : "border-slate-200 bg-white text-slate-600 hover:border-red-300"
 
                       }`}
 
@@ -3016,31 +3016,29 @@ lokasi_kecamatan_desa: [
 
   return (
 
-    <div className="relative min-h-screen overflow-hidden bg-[linear-gradient(135deg,#dff7ff_0%,#eaf9ff_18%,#f2fbff_42%,#ffffff_72%,#eff7ff_100%)] px-4 py-10">
+    <div className="relative min-h-screen overflow-hidden bg-[linear-gradient(135deg,#ffffff_0%,#f7f7f7_20%,#ffffff_50%,#f5f5f5_100%)] px-4 py-10">
 
       {/* BACKGROUND */}
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(125,211,252,0.9),transparent_18%),radial-gradient(circle_at_78%_12%,rgba(147,197,253,0.75),transparent_22%),radial-gradient(circle_at_68%_72%,rgba(186,230,253,0.9),transparent_28%),radial-gradient(circle_at_48%_42%,rgba(255,255,255,0.95),transparent_30%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(239,68,68,0.18),transparent_18%),radial-gradient(circle_at_78%_12%,rgba(17,24,39,0.12),transparent_22%),radial-gradient(circle_at_68%_72%,rgba(220,38,38,0.12),transparent_28%),radial-gradient(circle_at_48%_42%,rgba(255,255,255,0.95),transparent_30%)]" />
 
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(125,211,252,0.14)_1px,transparent_1px),linear-gradient(90deg,rgba(125,211,252,0.14)_1px,transparent_1px)] bg-[size:42px_42px]" />
+      <div className="absolute -left-20 top-20 h-80 w-80 rounded-full bg-red-200/60 blur-3xl" />
 
-      <div className="absolute -left-20 top-20 h-80 w-80 rounded-full bg-sky-300/55 blur-3xl" />
+      <div className="absolute right-0 top-4 h-96 w-96 rounded-full bg-black/5 blur-3xl" />
 
-      <div className="absolute right-0 top-4 h-96 w-96 rounded-full bg-cyan-200/45 blur-3xl" />
+      <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-red-200/45 blur-3xl" />
 
-      <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-blue-200/45 blur-3xl" />
-
-      <div className="relative mx-auto max-w-5xl">
+      <div className="relative mx-auto w-full max-w-[1400px]">
 
         {/* HERO */}
 
-        <div className="mb-8 overflow-hidden rounded-[32px] bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.2),_transparent_24%),linear-gradient(135deg,#155DFC_0%,#0f47d6_100%)] p-6 text-white shadow-[0_25px_70px_rgba(21,93,252,0.35)] md:p-8">
+        <div className="mb-8 overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#111827_0%,#1f2937_100%)] p-6 text-white shadow-[0_25px_70px_rgba(17,24,39,0.28)] md:p-8">
 
           <div className="relative isolate overflow-hidden rounded-[28px] border border-white/15 bg-white/5 p-4 md:p-6">
 
             <div className="absolute -left-10 top-6 h-32 w-32 rounded-full bg-white/10 blur-3xl" />
 
-            <div className="absolute -right-8 bottom-0 h-28 w-28 rounded-full bg-sky-300/20 blur-3xl" />
+            <div className="absolute -right-8 bottom-0 h-28 w-28 rounded-full bg-red-300/20 blur-3xl" />
 
             <div className="absolute right-8 top-10 h-16 w-16 rounded-2xl border border-white/15 bg-white/5" />
 
@@ -3062,7 +3060,7 @@ lokasi_kecamatan_desa: [
 
                 </h1>
 
-                <p className="mt-3 max-w-lg text-sm text-blue-50 md:text-base">
+                <p className="mt-3 max-w-lg text-sm text-red-50 md:text-base">
 
                   Simponi membantu masyarakat
 
@@ -3116,7 +3114,7 @@ lokasi_kecamatan_desa: [
 
                   <div className="space-y-3 text-center">
 
-                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-[#155DFC] shadow-lg">
+                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-[#dc2626] shadow-lg">
 
                       <svg
 
@@ -3136,7 +3134,7 @@ lokasi_kecamatan_desa: [
 
                     <div>
 
-                      <p className="text-[10px] uppercase tracking-[0.28em] text-blue-100">
+                      <p className="text-[10px] uppercase tracking-[0.28em] text-red-100">
 
                         Protected
 
@@ -3190,11 +3188,11 @@ lokasi_kecamatan_desa: [
 
                       isActive
 
-                        ? "bg-white text-[#155DFC] shadow-lg shadow-blue-900/20"
+                        ? "bg-white text-[#dc2626] shadow-lg shadow-red-900/20"
 
                         : isDone
 
-                          ? "bg-emerald-400 text-white"
+                          ? "bg-red-500 text-white"
 
                           : "bg-white/10 text-white/80"
 
@@ -3220,11 +3218,7 @@ lokasi_kecamatan_desa: [
 
                       className={`truncate text-sm font-semibold ${
 
-                        isActive
-
-                          ? "text-white"
-
-                          : "text-blue-100"
+                        isActive ? "text-white" : "text-red-100"
 
                       }`}
 
@@ -3234,7 +3228,7 @@ lokasi_kecamatan_desa: [
 
                     </p>
 
-                    <p className="truncate text-xs text-blue-100/80">
+                    <p className="truncate text-xs text-red-100/80">
 
                       {step.caption}
 
@@ -3258,17 +3252,17 @@ lokasi_kecamatan_desa: [
 
           onSubmit={handleSubmit}
 
-          className="relative overflow-hidden rounded-[30px] border border-sky-200 bg-[linear-gradient(135deg,#dff4ff_0%,#eefcff_28%,#ffffff_58%,#f0f9ff_100%)] p-4 shadow-[0_30px_90px_rgba(59,130,246,0.15)] backdrop-blur-2xl sm:p-6 lg:p-8"
+          className="relative overflow-hidden rounded-[30px] border border-slate-200 bg-white p-4 shadow-[0_30px_90px_rgba(17,24,39,0.08)] backdrop-blur-2xl sm:p-6 lg:p-8"
 
         >
 
-          <div className="absolute -right-16 top-10 h-40 w-40 rounded-full bg-sky-200/65 blur-3xl" />
+          <div className="absolute -right-16 top-10 h-40 w-40 rounded-full bg-red-200/60 blur-3xl" />
 
-          <div className="absolute -bottom-12 left-16 h-36 w-36 rounded-full bg-blue-100/80 blur-3xl" />
+          <div className="absolute -bottom-12 left-16 h-36 w-36 rounded-full bg-black/5 blur-3xl" />
 
-          <div className="absolute left-10 top-6 h-28 w-28 rounded-full bg-cyan-200/45 blur-3xl" />
+          <div className="absolute left-10 top-6 h-28 w-28 rounded-full bg-red-100/70 blur-3xl" />
 
-          <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-sky-400 to-transparent" />
+          <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-red-400 to-transparent" />
 
           {/* SUBMIT MESSAGE */}
 
@@ -3302,7 +3296,7 @@ lokasi_kecamatan_desa: [
 
             <motion.div
 
-              className="h-full rounded-full bg-[linear-gradient(90deg,#155DFC_0%,#3f7cff_48%,#7aa7ff_100%)]"
+              className="h-full rounded-full bg-[#111827]"
 
               initial={{ width: 0 }}
 
@@ -3404,7 +3398,7 @@ lokasi_kecamatan_desa: [
 
                 <div>
 
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#155DFC]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#111827]">
 
                     Langkah {currentStep + 1}
 
@@ -3418,7 +3412,7 @@ lokasi_kecamatan_desa: [
 
                 </div>
 
-                <div className="w-fit rounded-full bg-[#155DFC]/5 px-3 py-1 text-xs font-medium text-[#155DFC]">
+                <div className="w-fit rounded-full bg-[#111827]/5 px-3 py-1 text-xs font-medium text-[#dc2626]">
 
                   {
 
@@ -3468,7 +3462,7 @@ lokasi_kecamatan_desa: [
 
                 onClick={goNext}
 
-                className="rounded-full bg-[linear-gradient(135deg,#155DFC_0%,#2d6bff_100%)] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(21,93,252,0.35)] transition hover:scale-[1.01] hover:shadow-[0_16px_34px_rgba(21,93,252,0.42)]"
+                className="rounded-full bg-[#111827] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(17,24,39,0.18)] transition hover:scale-[1.01] hover:bg-[#1f2937]"
 
               >
 
@@ -3484,7 +3478,7 @@ lokasi_kecamatan_desa: [
 
                 disabled={isSubmitting}
 
-                className="rounded-full bg-[linear-gradient(135deg,#10b981_0%,#059669_100%)] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(5,150,105,0.35)] transition hover:scale-[1.01] hover:shadow-[0_16px_34px_rgba(5,150,105,0.42)] disabled:cursor-not-allowed disabled:opacity-70"
+                className="rounded-full bg-[#dc2626] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(220,38,38,0.2)] transition hover:scale-[1.01] hover:bg-[#b91c1c] disabled:cursor-not-allowed disabled:opacity-70"
 
               >
 

@@ -65,25 +65,6 @@ const HeroSection = () => {
               terarah melalui sistem digital terpadu.
             </p>
 
-            <form
-              onSubmit={handleTrackSubmit}
-              className="mt-8 flex max-w-[640px] overflow-hidden rounded-full border border-white/15 bg-white shadow-[0_10px_30px_rgba(15,23,42,0.18)]"
-            >
-              <input
-                type="text"
-                value={trackingCode}
-                onChange={(e) => setTrackingCode(e.target.value)}
-                placeholder="Cari layanan, informasi, atau statistik SIMPONI..."
-                className="flex-1 border-0 bg-transparent px-5 py-4 text-sm text-slate-700 placeholder:text-slate-500 focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="my-2 ml-2 mr-2 rounded-full bg-[#101827] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0b1220]"
-              >
-                Cari
-              </button>
-            </form>
-
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
                 to="/pelaporan"

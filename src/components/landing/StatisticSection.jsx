@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getNews } from "../../services/api";
+import defaultNewsImage from "../../assets/images/seminar.jpeg";
 
 const formatDate = (dateString) => {
   if (!dateString) return "Baru-baru ini";
@@ -66,24 +67,21 @@ export function NewsCardGrid({ items, loading, error, onRetry }) {
       {items.map((item) => (
         <article
           key={`${item.link}-${item.title}`}
-          className="group overflow-hidden rounded-[12px] border border-[#E5E7EB] bg-white shadow-[0_8px_20px_rgba(15,23,42,0.04)] transition duration-200 hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(15,23,42,0.08)]"
+          className="group overflow-hidden rounded-[12px] border border-[#E5E7EB] bg-white shadow-[0_8px_20px_rgba(15,23,42,0.04)] transition duration-200 hover:-translate-y-1 hover:border-[#DC2626] hover:shadow-[0_14px_30px_rgba(15,23,42,0.08)]"
         >
           <div className="relative h-[190px] overflow-hidden">
-            {item.image ? (
-              <img
-                src={item.image}
-                alt={item.title}
-                className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-              />
-            ) : (
-              <div className="flex h-full items-center justify-center bg-gradient-to-br from-neutral-100 to-neutral-200 text-sm font-semibold text-[#4B5563]">
-                Berita Pernikahan Dini
-              </div>
-            )}
+            <img
+              src={item.image || defaultNewsImage}
+              alt={item.title}
+              className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+              onError={(event) => {
+                event.currentTarget.src = defaultNewsImage;
+              }}
+            />
           </div>
 
           <div className="p-4">
-            <div className="flex items-center gap-2 text-[12px] text-[#6B7280]">
+            <div className="flex items-center gap-2 text-[12px] text-[#6B7280] transition-colors group-hover:text-[#DC2626]">
               <span className="inline-flex h-4 w-4 items-center justify-center text-[12px]">🗓️</span>
               <span>{formatDate(item.published_at)}</span>
               <span className="mx-1">•</span>
@@ -91,7 +89,7 @@ export function NewsCardGrid({ items, loading, error, onRetry }) {
             </div>
 
             <h3
-              className="mt-3 text-[17px] font-bold leading-[1.45] text-[#111827]"
+              className="mt-3 text-[17px] font-bold leading-[1.45] text-[#111827] transition-colors group-hover:text-[#DC2626]"
               style={{
                 display: "-webkit-box",
                 WebkitLineClamp: 2,
@@ -103,7 +101,7 @@ export function NewsCardGrid({ items, loading, error, onRetry }) {
             </h3>
 
             <p
-              className="mt-3 text-sm leading-[1.6] text-[#6B7280]"
+              className="mt-3 text-sm leading-[1.6] text-[#6B7280] transition-colors group-hover:text-[#DC2626]"
               style={{
                 display: "-webkit-box",
                 WebkitLineClamp: 3,
@@ -118,7 +116,7 @@ export function NewsCardGrid({ items, loading, error, onRetry }) {
               href={item.link}
               target="_blank"
               rel="noreferrer"
-              className="mt-5 inline-flex rounded-full border border-[#D1D5DB] px-4 py-2 text-sm font-medium text-[#111827] transition hover:border-[#111827] hover:bg-[#F3F4F6]"
+              className="mt-5 inline-flex rounded-full border border-[#D1D5DB] px-4 py-2 text-sm font-medium text-[#111827] transition hover:border-[#DC2626] hover:bg-[#FEE2E2] hover:text-[#DC2626]"
             >
               Lihat Detail
             </a>

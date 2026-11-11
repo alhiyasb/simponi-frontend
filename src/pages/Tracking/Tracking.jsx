@@ -12,25 +12,25 @@ import { useNavigate } from "react-router-dom";
 const statusConfig = {
   diajukan: {
     label: "Diajukan",
-    class: "border-blue-200 bg-blue-50 text-blue-700",
+    class: "border-slate-200 bg-slate-50 text-slate-700",
     progress: 25,
   },
 
   diverifikasi: {
     label: "Diverifikasi",
-    class: "border-violet-200 bg-violet-50 text-violet-700",
+    class: "border-slate-300 bg-slate-100 text-slate-800",
     progress: 50,
   },
 
   diproses: {
     label: "Diproses",
-    class: "border-amber-200 bg-amber-50 text-amber-700",
+    class: "border-red-200 bg-red-50 text-red-700",
     progress: 75,
   },
 
   selesai: {
     label: "Selesai",
-    class: "border-emerald-200 bg-emerald-50 text-emerald-700",
+    class: "border-black bg-black text-white",
     progress: 100,
   },
 
@@ -338,7 +338,7 @@ export default function TrackingPage() {
     {
       label: "Total Laporan",
       value: allReports.length,
-      color: "from-sky-500 to-blue-600",
+      color: "from-slate-900 to-slate-700",
     },
 
     {
@@ -347,7 +347,7 @@ export default function TrackingPage() {
         (report) =>
           normalizeStatus(report.status) === "diproses"
       ).length,
-      color: "from-amber-500 to-orange-500",
+      color: "from-red-500 to-red-600",
     },
 
     {
@@ -356,7 +356,7 @@ export default function TrackingPage() {
         (report) =>
           normalizeStatus(report.status) === "selesai"
       ).length,
-      color: "from-emerald-500 to-teal-500",
+      color: "from-slate-900 to-black",
     },
 
     {
@@ -366,7 +366,7 @@ export default function TrackingPage() {
           normalizeStatus(report.status)
         )
       ).length,
-      color: "from-blue-500 to-indigo-500",
+      color: "from-red-400 to-red-500",
     },
   ];
 
@@ -375,11 +375,11 @@ export default function TrackingPage() {
   // ==========================================================
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(96,165,250,0.25),_transparent_22%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.18),_transparent_22%),linear-gradient(180deg,#edf6ff_0%,#f8fbff_28%,#eef6ff_100%)] text-slate-800">
+    <div className="relative min-h-screen overflow-hidden bg-white text-slate-800">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-16 top-20 h-64 w-64 rounded-full bg-sky-300/30 blur-3xl" />
-        <div className="absolute right-0 top-10 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl" />
-        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-indigo-300/20 blur-3xl" />
+        <div className="absolute -left-16 top-20 h-64 w-64 rounded-full bg-red-100/50 blur-3xl" />
+        <div className="absolute right-0 top-10 h-72 w-72 rounded-full bg-slate-200/70 blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-red-100/40 blur-3xl" />
       </div>
 
       <Navbar />
@@ -389,24 +389,24 @@ export default function TrackingPage() {
           initial={{ opacity: 0, y: 26 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative overflow-hidden rounded-[36px] border border-white/50 bg-gradient-to-br from-[#0a5bd6] via-[#0a6fe5] to-[#71b4ff] p-6 shadow-[0_30px_80px_rgba(14,76,184,0.25)] sm:p-8 lg:p-10"
+          className="relative overflow-hidden rounded-[36px] border border-slate-200 bg-[#111827] p-6 shadow-[0_20px_50px_rgba(15,23,42,0.08)] sm:p-8 lg:p-10"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.24),_transparent_20%),radial-gradient(circle_at_bottom_left,_rgba(255,255,255,0.12),_transparent_18%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.08),_transparent_18%)]" />
 
           <div className="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <span className="inline-flex rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-blue-50 backdrop-blur-sm">
+              <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-100">
                 Tracking Laporan
               </span>
 
               <h1 className="mt-5 text-3xl font-black tracking-[-0.06em] text-white md:text-5xl">
                 Pantau perkembangan{" "}
-                <span className="text-blue-100">
+                <span className="text-red-200">
                   laporan Anda
                 </span>
               </h1>
 
-              <p className="mt-4 max-w-xl text-base leading-7 text-blue-50/90">
+              <p className="mt-4 max-w-xl text-base leading-7 text-slate-200">
                 Lihat status, tahapan penanganan, dan perkembangan
                 tindak lanjut laporan yang Anda ajukan dengan
                 tampilan yang lebih modern dan mudah dipantau.
@@ -417,7 +417,7 @@ export default function TrackingPage() {
               <button
                 onClick={doFetchReports}
                 disabled={loading}
-                className="rounded-full border border-white/25 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_12px_25px_rgba(10,91,214,0.15)] backdrop-blur-md transition hover:bg-white/15 disabled:opacity-50"
+                className="rounded-full border border-white/20 bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 shadow-[0_12px_25px_rgba(15,23,42,0.12)] transition hover:bg-slate-100 disabled:opacity-50"
               >
                 {loading ? "Memuat..." : "Refresh"}
               </button>
@@ -432,7 +432,7 @@ export default function TrackingPage() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.08, duration: 0.45 }}
-              className="group relative overflow-hidden rounded-[26px] border border-sky-100 bg-gradient-to-br from-sky-100/90 via-white to-blue-100/90 p-5 shadow-[0_20px_50px_rgba(37,99,235,0.12)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(37,99,235,0.18)]"
+              className="group relative overflow-hidden rounded-[26px] border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.04)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_35px_rgba(15,23,42,0.08)]"
             >
               <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${item.color}`} />
               <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500">
@@ -451,7 +451,7 @@ export default function TrackingPage() {
           transition={{ delay: 0.15, duration: 0.5 }}
           className="mt-8"
         >
-          <div className="mb-6 flex flex-col gap-4 rounded-[30px] border border-sky-100 bg-gradient-to-r from-sky-100/95 via-white to-blue-100/90 p-4 shadow-[0_18px_45px_rgba(37,99,235,0.08)] backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-5">
+          <div className="mb-6 flex flex-col gap-4 rounded-[30px] border border-slate-200 bg-white p-4 shadow-[0_12px_30px_rgba(15,23,42,0.04)] sm:flex-row sm:items-center sm:justify-between sm:p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <div className="relative">
                 <svg
@@ -477,7 +477,7 @@ export default function TrackingPage() {
                     setCurrentPage(1);
                   }}
                   placeholder="Cari ID, judul, lokasi, nama pelapor..."
-                  className="w-full rounded-2xl border border-sky-200/80 bg-white/80 py-2.5 pl-10 pr-4 text-slate-800 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 sm:w-[420px]"
+                  className="w-full rounded-2xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-slate-800 outline-none transition focus:border-red-400 focus:ring-4 focus:ring-red-100 sm:w-[420px]"
                 />
               </div>
 
@@ -487,7 +487,7 @@ export default function TrackingPage() {
                   setStatusFilter(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full rounded-2xl border border-sky-200/80 bg-white/80 px-4 py-2.5 text-slate-800 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 sm:w-52"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-slate-800 outline-none transition focus:border-red-400 focus:ring-4 focus:ring-red-100 sm:w-52"
               >
                 {statusOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -498,7 +498,7 @@ export default function TrackingPage() {
             </div>
 
             <div className="flex items-center gap-2 text-sm text-slate-500">
-              <span className="inline-flex rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-sky-700">
+              <span className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-700">
                 {filteredReports.length} hasil
               </span>
             </div>
@@ -512,13 +512,13 @@ export default function TrackingPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.08 }}
-                  className="animate-pulse rounded-[28px] border border-white/70 bg-white/70 p-5 shadow-[0_16px_38px_rgba(15,23,42,0.04)] backdrop-blur-xl"
+                  className="animate-pulse rounded-[28px] border border-slate-200 bg-white p-5 shadow-[0_16px_38px_rgba(15,23,42,0.04)]"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-2xl bg-sky-100" />
+                    <div className="h-12 w-12 rounded-2xl bg-slate-200" />
                     <div className="flex-1 space-y-2">
-                      <div className="h-4 w-3/4 rounded bg-sky-100" />
-                      <div className="h-3 w-1/2 rounded bg-sky-100" />
+                      <div className="h-4 w-3/4 rounded bg-slate-200" />
+                      <div className="h-3 w-1/2 rounded bg-slate-200" />
                     </div>
                   </div>
                 </motion.div>
@@ -535,10 +535,10 @@ export default function TrackingPage() {
               </button>
             </div>
           ) : filteredReports.length === 0 ? (
-            <div className="rounded-[30px] border border-dashed border-sky-200 bg-white/60 p-12 text-center shadow-[0_18px_40px_rgba(59,130,246,0.04)] backdrop-blur-xl">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-sky-100 to-blue-100">
+            <div className="rounded-[30px] border border-dashed border-slate-200 bg-white p-12 text-center shadow-[0_18px_40px_rgba(15,23,42,0.03)]">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
                 <svg
-                  className="h-8 w-8 text-sky-600"
+                  className="h-8 w-8 text-slate-700"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -567,7 +567,7 @@ export default function TrackingPage() {
               {!searchQuery && !statusFilter && (
                 <button
                   onClick={() => navigate("/pelaporan")}
-                  className="mt-6 inline-flex rounded-full bg-[linear-gradient(135deg,#155DFC_0%,#2d6bff_100%)] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(21,93,252,0.35)] transition hover:scale-[1.01]"
+                  className="mt-6 inline-flex rounded-full bg-[#111827] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(17,24,39,0.18)] transition hover:scale-[1.01] hover:bg-[#1f2937]"
                 >
                   Ajukan Laporan Pertama
                 </button>
@@ -634,12 +634,12 @@ export default function TrackingPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="cursor-pointer rounded-[30px] border border-sky-100 bg-gradient-to-r from-sky-50 via-white to-blue-100 p-5 shadow-[0_18px_40px_rgba(37,99,235,0.08)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-[0_22px_55px_rgba(37,99,235,0.14)]"
+                    className="cursor-pointer rounded-[30px] border border-slate-200 bg-white p-5 shadow-[0_14px_35px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-red-200 hover:shadow-[0_18px_40px_rgba(220,38,38,0.08)]"
                     onClick={() => handleViewDetail(reportId)}
                   >
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                       <div className="flex items-center gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 text-lg font-bold text-white shadow-[0_12px_25px_rgba(37,99,235,0.3)]">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#111827] text-lg font-bold text-white shadow-[0_12px_25px_rgba(17,24,39,0.18)]">
                           {displayNumber}
                         </div>
 
@@ -667,10 +667,10 @@ export default function TrackingPage() {
 
                     <div className="mt-4 space-y-2">
                       <div className="flex flex-wrap gap-2 text-xs text-slate-600">
-                        <span className="rounded-full border border-sky-200 bg-white/80 px-2.5 py-1">
+                        <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1">
                           Perempuan: {namaPerempuan}
                         </span>
-                        <span className="rounded-full border border-sky-200 bg-white/80 px-2.5 py-1">
+                        <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1">
                           Laki-laki: {namaLaki}
                         </span>
                       </div>
@@ -691,9 +691,9 @@ export default function TrackingPage() {
                         <span className="font-bold text-slate-800">{progress}%</span>
                       </div>
 
-                      <div className="h-2.5 rounded-full bg-sky-100">
+                      <div className="h-2.5 rounded-full bg-slate-100">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 transition-all duration-500"
+                          className="h-full rounded-full bg-[#111827] transition-all duration-500"
                           style={{ width: `${progress}%` }}
                         />
                       </div>
@@ -716,7 +716,7 @@ export default function TrackingPage() {
               <button
                 onClick={() => handlePageChange(safeCurrentPage - 1)}
                 disabled={safeCurrentPage === 1}
-                className="rounded-xl border border-sky-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <svg
                   className="h-5 w-5"
@@ -753,8 +753,8 @@ export default function TrackingPage() {
                     onClick={() => handlePageChange(pageNum)}
                     className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
                       safeCurrentPage === pageNum
-                        ? "bg-gradient-to-r from-sky-600 to-blue-600 text-white shadow-[0_12px_25px_rgba(37,99,235,0.28)]"
-                        : "border border-sky-200 bg-white/80 text-slate-700 hover:bg-sky-50"
+                        ? "bg-[#111827] text-white shadow-[0_12px_25px_rgba(17,24,39,0.18)]"
+                        : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
                     }`}
                   >
                     {pageNum}
@@ -765,7 +765,7 @@ export default function TrackingPage() {
               <button
                 onClick={() => handlePageChange(safeCurrentPage + 1)}
                 disabled={safeCurrentPage === totalPages}
-                className="rounded-xl border border-sky-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <svg
                   className="h-5 w-5"

@@ -284,34 +284,15 @@ function ProfilePage() {
       .toUpperCase() || 'AR';
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#f5f9ff] text-slate-800">
+    <div className="relative min-h-screen overflow-hidden bg-white text-slate-800">
 
       {/* =====================================================
           BACKGROUND
       ===================================================== */}
 
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(37,99,235,0.10),transparent_28%),radial-gradient(circle_at_90%_5%,rgba(6,182,212,0.10),transparent_30%),radial-gradient(circle_at_50%_100%,rgba(79,70,229,0.07),transparent_35%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-white" />
 
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.28]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(37,99,235,0.08) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(37,99,235,0.08) 1px, transparent 1px)
-          `,
-          backgroundSize: '42px 42px',
-          maskImage:
-            'linear-gradient(to bottom, black 0%, rgba(0,0,0,0.65) 60%, transparent 100%)',
-          WebkitMaskImage:
-            'linear-gradient(to bottom, black 0%, rgba(0,0,0,0.65) 60%, transparent 100%)',
-        }}
-      />
-
-      <div className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-blue-500/10 blur-[120px]" />
-
-      <div className="pointer-events-none absolute -right-40 top-32 h-[450px] w-[450px] rounded-full bg-cyan-400/10 blur-[120px]" />
-
-      <div className="pointer-events-none absolute bottom-[-180px] left-1/2 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-indigo-500/10 blur-[120px]" />
+      <div className="pointer-events-none absolute -right-24 top-32 h-[360px] w-[360px] rounded-full bg-black/5 blur-[120px]" />
 
       {/* =====================================================
           NAVBAR
@@ -325,7 +306,7 @@ function ProfilePage() {
           MAIN
       ===================================================== */}
 
-      <main className="relative mx-auto max-w-7xl px-4 pb-10 pt-8 sm:px-6 lg:px-8 lg:pt-10">
+      <main className="relative mx-auto max-w-7xl px-4 pb-10 pt-24 sm:px-6 sm:pt-28 lg:px-8 lg:pt-28">
 
         {/* ===================================================
             PAGE HEADER
@@ -333,19 +314,9 @@ function ProfilePage() {
 
         <div className="mb-8">
 
-          <div className="mb-3 flex items-center gap-2 text-xs font-medium text-slate-400">
-            <span>Beranda</span>
+          
 
-            <span className="text-slate-300">
-              /
-            </span>
-
-            <span className="font-semibold text-blue-600">
-              Profil
-            </span>
-          </div>
-
-          <div className="flex items-start gap-3">
+          <div className="mt-6 flex items-start gap-3">
             <div>
               <h1 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
                 Profil
@@ -364,11 +335,7 @@ function ProfilePage() {
               PROFILE CARD
           ================================================= */}
 
-          <section className="group relative overflow-hidden rounded-[30px] border border-white/80 bg-white/65 shadow-[0_20px_70px_rgba(30,64,175,0.09)] backdrop-blur-2xl">
-
-            <div className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full bg-blue-500/10 blur-3xl transition-opacity duration-500 group-hover:bg-blue-500/15" />
-
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-blue-500/[0.08] to-transparent" />
+          <section className="group relative overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
 
             <div className="relative p-6 sm:p-7">
 
@@ -378,9 +345,7 @@ function ProfilePage() {
 
                 <div className="relative">
 
-                  <div className="absolute -inset-2 rounded-[35px] bg-gradient-to-br from-blue-500/30 via-cyan-400/20 to-indigo-500/30 blur-md" />
-
-                  <div className="relative flex h-36 w-36 items-center justify-center overflow-hidden rounded-[30px] border-[5px] border-white bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 text-4xl font-black text-white shadow-[0_18px_45px_rgba(37,99,235,0.25)]">
+                  <div className="relative flex h-36 w-36 items-center justify-center overflow-hidden rounded-[30px] border-[5px] border-white bg-black text-4xl font-black text-white shadow-[0_18px_45px_rgba(15,23,42,0.12)]">
 
                     {profile.photo ? (
                       <img
@@ -397,7 +362,7 @@ function ProfilePage() {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="absolute -bottom-2 -right-2 flex h-11 w-11 items-center justify-center rounded-2xl border-4 border-white bg-slate-900 text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-blue-600"
+                    className="absolute -bottom-2 -right-2 flex h-11 w-11 items-center justify-center rounded-2xl border-4 border-white bg-red-600 text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-red-500"
                     title="Ubah foto profil"
                   >
                     <svg
@@ -439,7 +404,7 @@ function ProfilePage() {
 
               </div>
 
-              <div className="my-7 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+              <div className="my-7 h-px bg-slate-200" />
 
               {/* CONTACT INFORMATION */}
 
@@ -447,11 +412,11 @@ function ProfilePage() {
 
                 {/* EMAIL */}
 
-                <div className="group/item rounded-2xl border border-slate-100 bg-white/60 p-3.5 transition-all duration-300 hover:border-blue-100 hover:bg-blue-50/40">
+                <div className="group/item rounded-2xl border border-slate-200 bg-white p-3.5 transition-all duration-300 hover:border-red-200 hover:bg-red-50/40">
 
                   <div className="flex items-center gap-3">
 
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition-transform duration-300 group-hover/item:scale-105">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600 transition-transform duration-300 group-hover/item:scale-105">
                       <svg
                         className="h-4.5 w-4.5"
                         fill="none"
@@ -492,11 +457,11 @@ function ProfilePage() {
 
                 {/* PHONE */}
 
-                <div className="group/item rounded-2xl border border-slate-100 bg-white/60 p-3.5 transition-all duration-300 hover:border-cyan-100 hover:bg-cyan-50/40">
+                <div className="group/item rounded-2xl border border-slate-200 bg-white p-3.5 transition-all duration-300 hover:border-red-200 hover:bg-red-50/40">
 
                   <div className="flex items-center gap-3">
 
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 transition-transform duration-300 group-hover/item:scale-105">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-900 transition-transform duration-300 group-hover/item:scale-105">
                       <svg
                         className="h-4.5 w-4.5"
                         fill="none"
@@ -529,11 +494,11 @@ function ProfilePage() {
 
                 {/* LAST LOGIN */}
 
-                <div className="group/item rounded-2xl border border-slate-100 bg-white/60 p-3.5 transition-all duration-300 hover:border-indigo-100 hover:bg-indigo-50/40">
+                <div className="group/item rounded-2xl border border-slate-200 bg-white p-3.5 transition-all duration-300 hover:border-red-200 hover:bg-red-50/40">
 
                   <div className="flex items-center gap-3">
 
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 transition-transform duration-300 group-hover/item:scale-105">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-200 text-slate-900 transition-transform duration-300 group-hover/item:scale-105">
 
                       <svg
                         className="h-4.5 w-4.5"
@@ -578,11 +543,11 @@ function ProfilePage() {
 
               {/* PHOTO INFO */}
 
-              <div className="mt-5 rounded-2xl border border-blue-100/80 bg-gradient-to-br from-blue-50/80 to-cyan-50/60 p-4">
+              <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
 
                 <div className="flex gap-3">
 
-                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-blue-600 shadow-sm">
+                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-red-600 shadow-sm">
 
                     <svg
                       className="h-4 w-4"
@@ -637,9 +602,7 @@ function ProfilePage() {
               ACCOUNT INFORMATION
           ================================================= */}
 
-          <section className="group relative overflow-hidden rounded-[30px] border border-white/80 bg-white/65 shadow-[0_20px_70px_rgba(30,64,175,0.09)] backdrop-blur-2xl">
-
-            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-blue-500/[0.07] blur-3xl transition-all duration-500 group-hover:bg-blue-500/[0.10]" />
+          <section className="group relative overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.05)]">
 
             <div className="relative p-6 sm:p-8">
 
@@ -651,34 +614,7 @@ function ProfilePage() {
 
                   <div className="mb-2 flex items-center gap-2">
 
-                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/20">
-
-                      <svg
-                        className="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                      >
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="3"
-                        />
-
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M19.4 15a1.7 1.7 0 00.34 1.88l.06.06-1.8 1.8-.06-.06a1.7 1.7 0 00-1.88-.34 1.7 1.7 0 00-1.03 1.56V20h-2.55v-.1a1.7 1.7 0 00-1.03-1.56 1.7 1.7 0 00-1.88.34l-.06.06-1.8-1.8.06-.06A1.7 1.7 0 008.1 15a1.7 1.7 0 00-1.56-1.03H6V11.4h.1A1.7 1.7 0 007.66 10a1.7 1.7 0 00-.34-1.88l-.06-.06 1.8-1.8.06.06A1.7 1.7 0 0011 6a1.7 1.7 0 001.03-1.56V4h2.55v.1A1.7 1.7 0 0015.6 5.66a1.7 1.7 0 001.88-.34l.06-.06 1.8 1.8-.06.06A1.7 1.7 0 0018.94 9c.22.64.82 1.07 1.5 1.07h.1v2.55h-.1A1.7 1.7 0 0019.4 15z"
-                        />
-
-                      </svg>
-
-                    </div>
-
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">
-                      Account Settings
-                    </span>
+                   
 
                   </div>
 
@@ -696,7 +632,7 @@ function ProfilePage() {
                   <button
                     type="button"
                     onClick={() => setIsEditing(true)}
-                    className="group/button inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:from-blue-700 hover:to-blue-600 hover:shadow-xl"
+                    className="group/button inline-flex items-center justify-center gap-2 rounded-2xl bg-red-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-500 hover:shadow-xl"
                   >
 
                     <svg
@@ -741,7 +677,7 @@ function ProfilePage() {
                       Identitas Pribadi
                     </span>
 
-                    <div className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent" />
+                    <div className="h-px flex-1 bg-slate-200" />
 
                   </div>
 
@@ -763,8 +699,8 @@ function ProfilePage() {
                         disabled={!isEditing}
                         className={`w-full rounded-2xl border px-4 py-3.5 text-sm font-medium outline-none transition-all duration-300 ${
                           isEditing
-                            ? 'border-blue-200 bg-white/90 text-slate-800 shadow-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10'
-                            : 'border-slate-100 bg-slate-50/60 text-slate-600'
+                            ? 'border-red-200 bg-white text-slate-800 shadow-sm focus:border-red-500 focus:ring-4 focus:ring-red-500/10'
+                            : 'border-slate-200 bg-slate-50 text-slate-600'
                         }`}
                       />
 
@@ -835,8 +771,8 @@ function ProfilePage() {
                         disabled={!isEditing}
                         className={`w-full rounded-2xl border px-4 py-3.5 text-sm font-medium outline-none transition-all duration-300 ${
                           isEditing
-                            ? 'border-blue-200 bg-white/90 text-slate-800 shadow-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10'
-                            : 'border-slate-100 bg-slate-50/60 text-slate-600'
+                            ? 'border-red-200 bg-white text-slate-800 shadow-sm focus:border-red-500 focus:ring-4 focus:ring-red-500/10'
+                            : 'border-slate-200 bg-slate-50 text-slate-600'
                         }`}
                       />
 
@@ -858,8 +794,8 @@ function ProfilePage() {
                         disabled={!isEditing}
                         className={`w-full rounded-2xl border px-4 py-3.5 text-sm font-medium outline-none transition-all duration-300 ${
                           isEditing
-                            ? 'border-blue-200 bg-white/90 text-slate-800 shadow-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10'
-                            : 'border-slate-100 bg-slate-50/60 text-slate-600'
+                            ? 'border-red-200 bg-white text-slate-800 shadow-sm focus:border-red-500 focus:ring-4 focus:ring-red-500/10'
+                            : 'border-slate-200 bg-slate-50 text-slate-600'
                         }`}
                       />
 
@@ -878,17 +814,17 @@ function ProfilePage() {
                       Domisili
                     </span>
 
-                    <div className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent" />
+                    <div className="h-px flex-1 bg-slate-200" />
 
                   </div>
 
-                  <div className="rounded-2xl border border-blue-100/80 bg-gradient-to-br from-blue-50/70 via-white/60 to-cyan-50/50 p-4 sm:p-5">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
 
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                       <div className="flex items-center gap-3">
 
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-blue-600 shadow-sm">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-red-600 shadow-sm">
 
                           <svg
                             className="h-5 w-5"
@@ -936,8 +872,8 @@ function ProfilePage() {
                           disabled={!isEditing}
                           className={`w-full rounded-2xl border px-4 py-3 text-sm font-semibold outline-none transition-all duration-300 ${
                             isEditing
-                              ? 'border-blue-200 bg-white text-slate-700 shadow-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10'
-                              : 'border-white bg-white/60 text-slate-600'
+                              ? 'border-red-200 bg-white text-slate-700 shadow-sm focus:border-red-500 focus:ring-4 focus:ring-red-500/10'
+                              : 'border-slate-200 bg-white text-slate-600'
                           }`}
                         >
 
@@ -1003,7 +939,7 @@ function ProfilePage() {
                       Status Akun
                     </span>
 
-                    <div className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent" />
+                    <div className="h-px flex-1 bg-slate-200" />
 
                   </div>
 
@@ -1011,11 +947,11 @@ function ProfilePage() {
 
                     {/* STATUS */}
 
-                    <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4">
+                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
 
                       <div className="flex items-center gap-3">
 
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-emerald-600 shadow-sm">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 text-red-600 shadow-sm">
 
                           <svg
                             className="h-5 w-5"
@@ -1042,11 +978,11 @@ function ProfilePage() {
 
                         <div>
 
-                          <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-600/70">
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-red-600/80">
                             Status Akun
                           </p>
 
-                          <p className="text-sm font-black text-emerald-700">
+                          <p className="text-sm font-black text-slate-900">
                             {profile.status}
                           </p>
 
@@ -1122,7 +1058,7 @@ function ProfilePage() {
 
                     <button
                       type="submit"
-                      className="group/save inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-500/25"
+                      className="group/save inline-flex items-center justify-center gap-2 rounded-2xl bg-red-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-500 hover:shadow-xl"
                     >
 
                       <svg
@@ -1155,7 +1091,7 @@ function ProfilePage() {
 
                 <div className="flex items-center gap-3">
 
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-blue-600 shadow-sm">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-600 shadow-sm">
 
                     <svg
                       className="h-4 w-4"
@@ -1206,7 +1142,7 @@ function ProfilePage() {
           </p>
 
           <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <span className="h-1.5 w-1.5 rounded-full bg-red-600" />
             <span>Sistem berjalan normal</span>
           </div>
 
