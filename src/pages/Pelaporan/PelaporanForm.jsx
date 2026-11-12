@@ -3016,17 +3016,15 @@ lokasi_kecamatan_desa: [
 
   return (
 
-    <div className="relative min-h-screen overflow-hidden bg-[linear-gradient(135deg,#ffffff_0%,#f7f7f7_20%,#ffffff_50%,#f5f5f5_100%)] px-4 py-10">
+    <div className="relative min-h-screen overflow-hidden bg-white px-4 py-10">
 
       {/* BACKGROUND */}
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(239,68,68,0.18),transparent_18%),radial-gradient(circle_at_78%_12%,rgba(17,24,39,0.12),transparent_22%),radial-gradient(circle_at_68%_72%,rgba(220,38,38,0.12),transparent_28%),radial-gradient(circle_at_48%_42%,rgba(255,255,255,0.95),transparent_30%)]" />
+      <div className="absolute inset-0 bg-white" />
 
-      <div className="absolute -left-20 top-20 h-80 w-80 rounded-full bg-red-200/60 blur-3xl" />
+      <div className="absolute right-0 top-4 h-96 w-96 rounded-full bg-slate-100 blur-3xl" />
 
-      <div className="absolute right-0 top-4 h-96 w-96 rounded-full bg-black/5 blur-3xl" />
-
-      <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-red-200/45 blur-3xl" />
+      <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-slate-100 blur-3xl" />
 
       <div className="relative mx-auto w-full max-w-[1400px]">
 
@@ -3256,13 +3254,13 @@ lokasi_kecamatan_desa: [
 
         >
 
-          <div className="absolute -right-16 top-10 h-40 w-40 rounded-full bg-red-200/60 blur-3xl" />
+          <div className="absolute -right-16 top-10 h-40 w-40 rounded-full bg-slate-100 blur-3xl" />
 
-          <div className="absolute -bottom-12 left-16 h-36 w-36 rounded-full bg-black/5 blur-3xl" />
+          <div className="absolute -bottom-12 left-16 h-36 w-36 rounded-full bg-slate-100 blur-3xl" />
 
-          <div className="absolute left-10 top-6 h-28 w-28 rounded-full bg-red-100/70 blur-3xl" />
+          <div className="absolute left-10 top-6 h-28 w-28 rounded-full bg-slate-100 blur-3xl" />
 
-          <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-red-400 to-transparent" />
+          <div className="absolute inset-x-8 top-0 h-px bg-slate-200" />
 
           {/* SUBMIT MESSAGE */}
 

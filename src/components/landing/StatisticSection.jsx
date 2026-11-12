@@ -69,16 +69,22 @@ export function NewsCardGrid({ items, loading, error, onRetry }) {
           key={`${item.link}-${item.title}`}
           className="group overflow-hidden rounded-[12px] border border-[#E5E7EB] bg-white shadow-[0_8px_20px_rgba(15,23,42,0.04)] transition duration-200 hover:-translate-y-1 hover:border-[#DC2626] hover:shadow-[0_14px_30px_rgba(15,23,42,0.08)]"
         >
-          <div className="relative h-[190px] overflow-hidden">
-            <img
-              src={item.image || defaultNewsImage}
-              alt={item.title}
-              className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-              onError={(event) => {
-                event.currentTarget.src = defaultNewsImage;
-              }}
-            />
-          </div>
+          
+<div className="relative h-[210px] overflow-hidden bg-gray-100">
+  <img
+    src={item.image || defaultNewsImage}
+    alt={item.title || "Gambar berita"}
+    loading="lazy"
+    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+    onError={(event) => {
+      event.currentTarget.onerror = null;
+      event.currentTarget.src = defaultNewsImage;
+    }}
+  />
+
+  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+</div>
+
 
           <div className="p-4">
             <div className="flex items-center gap-2 text-[12px] text-[#6B7280] transition-colors group-hover:text-[#DC2626]">

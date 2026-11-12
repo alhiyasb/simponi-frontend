@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
+import jabar1 from '../../assets/images/jabar1.png';
 import { useAuth } from '../../hooks/useAuth';
 import { register, resendVerification } from '../../services/api';
 import { parseApiError } from '../../utils/apiError';
@@ -226,7 +227,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#EAEAEA] px-4 py-8 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white px-4 py-8 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 18, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -238,11 +239,16 @@ export default function Login() {
             initial={{ opacity: 0, x: -18 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
-            className="relative overflow-hidden bg-[#0A0A0A] p-6 text-white md:p-8 lg:p-10"
+            className="relative overflow-hidden p-6 text-white md:p-8 lg:p-10"
+            style={{
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.6)), url(${jabar1})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
           >
-            <div className="absolute -left-16 top-12 h-44 w-44 rounded-full bg-white/5 blur-3xl" />
-            <div className="absolute -right-12 bottom-12 h-52 w-52 rounded-full bg-white/5 blur-3xl" />
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
+            <div className="absolute -left-16 top-12 h-44 w-44 rounded-full bg-white/10 blur-3xl" />
+            <div className="absolute -right-12 bottom-12 h-52 w-52 rounded-full bg-red-500/20 blur-3xl" />
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
 
             <div className="relative z-10 flex h-full flex-col">
               <div className="flex items-center gap-3">
@@ -278,11 +284,15 @@ export default function Login() {
                         setRegisterSuccess(false);
                         setShowResendForm(false);
                       }}
-                      className={`flex w-full items-center justify-between rounded-[22px] border p-4 text-left transition-all duration-200 ${
-                        selectedRole === role.id
-                          ? 'border-white/35 bg-white/10 shadow-[0_16px_32px_rgba(255,255,255,0.05)]'
-                          : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/8'
-                      }`}
+                     
+
+className={`flex w-full items-center justify-between rounded-[22px] border p-4 text-left backdrop-blur-sm transition-all duration-200 ${
+  selectedRole === role.id
+    ? 'border-[#111111] bg-white/10 shadow-[0_16px_32px_rgba(0,0,0,0.12)]'
+    : 'border-white/10 bg-white/5 hover:border-white/40 hover:bg-white/10'
+}`}
+
+
                     >
                       <div>
                         <p className="text-base font-bold text-white">{role.label}</p>
@@ -319,7 +329,7 @@ export default function Login() {
             initial={{ opacity: 0, x: 18 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
-            className="bg-[#FFFFFF] p-6 md:p-8 lg:p-10"
+            className="bg-white/75 p-6 backdrop-blur-sm md:p-8 lg:p-10"
           >
             <div className="mb-7">
               <div className="flex items-center justify-between gap-4">
@@ -328,7 +338,7 @@ export default function Login() {
                     Autentikasi
                   </p>
 
-                  <h2 className="mt-3 text-3xl font-black tracking-[-0.05em] text-[#111111]">
+                  <h2 className="mt-3 text-3xl font-black tracking-[-0.05em] text-[#111111] drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]">
                     {mode === 'login'
                       ? selectedRole === 'masyarakat'
                         ? 'Login Masyarakat'
@@ -419,7 +429,7 @@ export default function Login() {
                       value={fullName}
                       onChange={(event) => setFullName(event.target.value)}
                       placeholder="Masukkan nama lengkap"
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white focus:text-[#111111]"
                     />
                   </div>
 
@@ -430,7 +440,7 @@ export default function Login() {
                       value={registerEmail}
                       onChange={(event) => setRegisterEmail(event.target.value)}
                       placeholder="nama@email.com"
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-red-500 focus:bg-white focus:text-red-600"
                     />
                   </div>
 
@@ -442,7 +452,7 @@ export default function Login() {
                       onChange={(event) => setRegisterNik(event.target.value)}
                       placeholder="3201xxxxxxxxxxxx (16 digit)"
                       maxLength={16}
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-red-500 focus:bg-white focus:text-red-600"
                     />
                     <p className="mt-1 text-xs text-[#666666]">NIK 16 digit, kode wilayah Jawa Barat (3201-3279)</p>
                   </div>
@@ -454,7 +464,7 @@ export default function Login() {
                       value={registerPassword}
                       onChange={(event) => setRegisterPassword(event.target.value)}
                       placeholder="Minimal 8 karakter"
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-red-500 focus:bg-white focus:text-red-600"
                     />
                   </div>
 
@@ -465,7 +475,7 @@ export default function Login() {
                       value={confirmPassword}
                       onChange={(event) => setConfirmPassword(event.target.value)}
                       placeholder="Ulangi password"
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-red-500 focus:bg-white focus:text-red-600"
                     />
                   </div>
 
@@ -536,7 +546,7 @@ export default function Login() {
                       value={identifier}
                       onChange={(event) => setIdentifier(event.target.value)}
                       placeholder={selectedRole === 'masyarakat' ? 'Masukkan email atau NIK' : 'Masukkan NIP atau email'}
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] py-3.5 pl-12 pr-4 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] py-3.5 pl-12 pr-4 text-[#111111] outline-none transition focus:border-red-500 focus:bg-white focus:text-red-600"
                     />
                   </div>
                 </div>
@@ -557,7 +567,7 @@ export default function Login() {
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}
                       placeholder="Masukkan password"
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] py-3.5 pl-12 pr-11 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] py-3.5 pl-12 pr-11 text-[#111111] outline-none transition focus:border-red-500 focus:bg-white focus:text-red-600"
                     />
 
                     <button
@@ -597,7 +607,7 @@ export default function Login() {
                           value={resendEmail}
                           onChange={(e) => setResendEmail(e.target.value)}
                           placeholder="Masukkan email yang terdaftar"
-                          className="w-full rounded-xl border border-[#D9D9D9] bg-white px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111]"
+                          className="w-full rounded-xl border border-[#D9D9D9] bg-white px-4 py-3 text-[#111111] outline-none transition focus:border-red-500 focus:text-red-600"
                           required
                           autoFocus
                         />
