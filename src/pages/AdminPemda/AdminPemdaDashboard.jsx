@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import AdminPemdaLayout from '../../components/admin/AdminPemdaLayout';
+import jabar1 from '../../assets/images/jabar1.png';
 import { getAdminDashboard } from '../../services/api';
 
 function Reveal({ children, delay = 0, className = '' }) {
@@ -22,12 +23,13 @@ function Reveal({ children, delay = 0, className = '' }) {
   );
 }
 
+
+
 function StatusCard({
   label,
   value,
   description,
   icon,
-  gradient = false,
   delay = 0,
 }) {
   return (
@@ -35,108 +37,59 @@ function StatusCard({
       <motion.div
         whileHover={{ y: -5 }}
         transition={{ duration: 0.2 }}
-        className={`
+        className="
           group relative overflow-hidden rounded-[24px]
-          border p-5
-          backdrop-blur-2xl
+          border border-slate-200
+          bg-white p-5
           transition-all duration-300
-          ${
-            gradient
-              ? `
-                border-blue-400/30
-                bg-gradient-to-br
-                from-[#155EEF]
-                via-[#2563EB]
-                to-[#08A7E8]
-                text-white
-                shadow-[0_18px_45px_rgba(21,94,239,0.20)]
-              `
-              : `
-                border-white/80
-                bg-white/75
-                text-slate-900
-                shadow-[0_15px_45px_rgba(37,99,235,0.08)]
-                hover:border-blue-200
-                hover:shadow-[0_20px_50px_rgba(37,99,235,0.12)]
-              `
-          }
-        `}
+          hover:border-[#0071FA]
+        "
       >
-        {/* Decorative glow */}
-        <div
-          className={`
-            pointer-events-none absolute -right-10 -top-10
-            h-28 w-28 rounded-full blur-3xl
-            ${
-              gradient
-                ? 'bg-white/15'
-                : 'bg-blue-400/10'
-            }
-          `}
-        />
-
         <div className="relative flex items-start justify-between">
-
           <div>
-            <p
-              className={`
-                text-[10px] font-bold uppercase tracking-[0.16em]
-                ${
-                  gradient
-                    ? 'text-blue-100'
-                    : 'text-slate-400'
-                }
-              `}
-            >
+            <p className="
+              text-[10px] font-bold uppercase tracking-[0.16em]
+              text-slate-400
+              transition-colors duration-300
+              group-hover:text-[#0071FA]
+            ">
               {label}
             </p>
 
-            <p
-              className={`
-                mt-3 text-3xl font-extrabold tracking-tight
-                ${
-                  gradient
-                    ? 'text-white'
-                    : 'text-slate-900'
-                }
-              `}
-            >
+            <p className="
+              mt-3 text-3xl font-extrabold tracking-tight
+              text-slate-900
+              transition-colors duration-300
+              group-hover:text-[#0071FA]
+            ">
               {value}
             </p>
 
-            <p
-              className={`
-                mt-1 text-xs
-                ${
-                  gradient
-                    ? 'text-blue-100'
-                    : 'text-slate-500'
-                }
-              `}
-            >
+            <p className="
+              mt-1 text-xs text-slate-500
+              transition-colors duration-300
+              group-hover:text-[#0071FA]
+            ">
               {description}
             </p>
           </div>
 
-          <div
-            className={`
-              flex h-11 w-11 items-center justify-center
-              rounded-2xl text-lg
-              ${
-                gradient
-                  ? 'bg-white/15 text-white'
-                  : 'bg-blue-50 text-[#155EEF]'
-              }
-            `}
-          >
+          <div className="
+            flex h-11 w-11 items-center justify-center
+            rounded-2xl bg-slate-50 text-lg text-slate-500
+            transition-all duration-300
+            group-hover:bg-[#EFF6FF]
+            group-hover:text-[#0071FA]
+          ">
             {icon}
           </div>
-
         </div>
       </motion.div>
     </Reveal>
   );
 }
+
+
 
 function StatusRow({ label, value, total, index }) {
   const percentage =
@@ -271,28 +224,7 @@ export default function AdminPemdaDashboard() {
   return (
     <AdminPemdaLayout>
 
-      <div className="relative min-h-screen overflow-hidden">
-
-        {/* =====================================================
-            BACKGROUND
-        ====================================================== */}
-
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.045]"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, #1683ff 1px, transparent 1px),
-              linear-gradient(to bottom, #1683ff 1px, transparent 1px)
-            `,
-            backgroundSize: '42px 42px',
-          }}
-        />
-
-        <div className="pointer-events-none absolute left-[10%] top-[-100px] h-[360px] w-[520px] rounded-full bg-cyan-300/20 blur-[110px]" />
-
-        <div className="pointer-events-none absolute right-[-120px] top-[20%] h-[400px] w-[400px] rounded-full bg-blue-400/15 blur-[120px]" />
-
-        <div className="pointer-events-none absolute bottom-[-180px] left-[35%] h-[420px] w-[520px] rounded-full bg-sky-300/15 blur-[120px]" />
+      <div className="relative min-h-screen overflow-hidden bg-white">
 
         {/* =====================================================
             CONTENT
@@ -310,16 +242,17 @@ export default function AdminPemdaDashboard() {
               className="
                 relative overflow-hidden
                 rounded-[30px]
-                bg-gradient-to-br
-                from-[#155EEF]
-                via-[#2563EB]
-                to-[#08A7E8]
                 px-6 py-7
                 text-white
                 shadow-[0_25px_70px_rgba(21,94,239,0.20)]
                 sm:px-8 sm:py-9
                 lg:px-10 lg:py-10
               "
+              style={{
+                backgroundImage: `linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)), url(${jabar1})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
             >
 
               {/* Inner glass */}
@@ -332,27 +265,9 @@ export default function AdminPemdaDashboard() {
                 "
               />
 
-              {/* Glow */}
-              <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
-
-              <div className="pointer-events-none absolute -bottom-28 left-[30%] h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />
-
               <div className="relative z-10">
 
-                <div className="mb-5 flex flex-wrap items-center gap-2">
-
-                  <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-blue-50 backdrop-blur-md">
-                    Dashboard Admin Pemda
-                  </span>
-
-                  {dashboard?.scope && (
-                    <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-medium text-blue-50 backdrop-blur-md">
-                      {dashboard.scope}
-                    </span>
-                  )}
-
-                </div>
-
+               
                 <div className="max-w-3xl">
 
                   <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-[42px]">
@@ -436,7 +351,6 @@ export default function AdminPemdaDashboard() {
               value={loading ? '...' : total}
               description="Seluruh laporan yang tercatat"
               icon="▦"
-              gradient
               delay={0}
             />
 
@@ -535,98 +449,199 @@ export default function AdminPemdaDashboard() {
             </Reveal>
 
             {/* QUICK INFO */}
-            <Reveal delay={0.08}>
+          
+{/* QUICK INFO */}
+<Reveal delay={0.08}>
 
-              <div
-                className="
-                  relative h-full overflow-hidden
-                  rounded-[28px]
-                  border border-blue-100/80
-                  bg-gradient-to-br
-                  from-blue-50/90
-                  via-white/80
-                  to-cyan-50/80
-                  p-6
-                  shadow-[0_18px_55px_rgba(37,99,235,0.07)]
-                  backdrop-blur-2xl
-                  sm:p-7
-                "
-              >
+  <div
+    className="
+      relative h-full min-h-[390px] overflow-hidden
+      rounded-[28px]
+      border border-[#DBEAFE]
+      bg-gradient-to-br from-[#F0F7FF] via-white to-[#F0FDFF]
+      p-6 sm:p-7
+    "
+  >
 
-                <div className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-blue-300/15 blur-3xl" />
+    <div className="relative flex h-full flex-col">
 
-                <div className="relative flex h-full flex-col">
+      {/* HEADER */}
+      <div className="flex items-center justify-between">
 
-                  <div>
+      </div>
 
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#155EEF] to-[#08A7E8] text-xl text-white shadow-[0_10px_25px_rgba(21,94,239,0.20)]">
-                      i
-                    </div>
+      {/* TITLE */}
+      <div className="mt-6">
 
-                    <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#155EEF]">
-                      SIMPONI
-                    </p>
+        <h2 className="text-2xl font-extrabold leading-tight tracking-tight text-slate-900">
+          Pantau setiap laporan
+        </h2>
 
-                    <h2 className="mt-1 text-xl font-bold tracking-tight text-slate-900">
-                      Pantau setiap laporan
-                    </h2>
+        <p className="mt-3 max-w-md text-sm leading-6 text-slate-500">
+          Pantau perkembangan laporan pernikahan dini,
+          mulai dari laporan masuk hingga proses
+          penanganan selesai melalui dashboard SIMPONI.
+        </p>
 
-                    <p className="mt-3 text-sm leading-6 text-slate-500">
-                      Gunakan menu di sebelah kiri untuk
-                      melihat laporan, melakukan penanganan,
-                      dan memantau laporan yang sudah selesai.
-                    </p>
+      </div>
 
-                  </div>
+      {/* REPORT FLOW */}
+      <div className="mt-7">
 
-                  <div className="mt-auto pt-8">
+        <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
+          Alur penanganan laporan
+        </p>
 
-                    <div className="rounded-2xl border border-blue-100 bg-white/70 p-4 backdrop-blur-xl">
+        <div className="flex items-center">
 
-                      <div className="flex items-center justify-between">
+          {/* STEP 1 */}
+          <div className="flex flex-1 flex-col items-center gap-2">
 
-                        <span className="text-xs font-medium text-slate-500">
-                          Antrean laporan
-                        </span>
+            <div className="
+              flex h-12 w-12 items-center justify-center
+              rounded-2xl border border-blue-100
+              bg-white text-[#0071FA]
+            ">
+              <span className="text-xl">▤</span>
+            </div>
 
-                        <span className="text-lg font-extrabold text-[#155EEF]">
-                          {loading ? '...' : queue}
-                        </span>
+            <span className="text-[11px] font-semibold text-slate-600">
+              Masuk
+            </span>
 
-                      </div>
+          </div>
 
-                      <div className="mt-3 h-2 overflow-hidden rounded-full bg-blue-50">
+          <div className="mb-5 h-px flex-1 bg-blue-200" />
 
-                        <motion.div
-                          initial={{ width: 0 }}
-                          whileInView={{
-                            width:
-                              total > 0
-                                ? `${Math.min(
-                                    (queue / total) * 100,
-                                    100
-                                  )}%`
-                                : '0%',
-                          }}
-                          viewport={{ once: true }}
-                          transition={{
-                            duration: 0.9,
-                            ease: [0.22, 1, 0.36, 1],
-                          }}
-                          className="h-full rounded-full bg-gradient-to-r from-[#155EEF] to-[#08A7E8]"
-                        />
+          {/* STEP 2 */}
+          <div className="flex flex-1 flex-col items-center gap-2">
 
-                      </div>
+            <div className="
+              flex h-12 w-12 items-center justify-center
+              rounded-2xl border border-blue-100
+              bg-white text-[#0071FA]
+            ">
+              <span className="text-xl">◷</span>
+            </div>
 
-                    </div>
+            <span className="text-[11px] font-semibold text-slate-600">
+              Diproses
+            </span>
 
-                  </div>
+          </div>
 
-                </div>
+          <div className="mb-5 h-px flex-1 bg-blue-200" />
 
-              </div>
+          {/* STEP 3 */}
+          <div className="flex flex-1 flex-col items-center gap-2">
 
-            </Reveal>
+            <div className="
+              flex h-12 w-12 items-center justify-center
+              rounded-2xl border border-blue-100
+              bg-white text-[#0071FA]
+            ">
+              <span className="text-xl">✓</span>
+            </div>
+
+            <span className="text-[11px] font-semibold text-slate-600">
+              Selesai
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* QUEUE CARD */}
+      <div className="mt-auto pt-7">
+
+        <div className="
+          rounded-[20px]
+          border border-[#DBEAFE]
+          bg-white p-5
+        ">
+
+          <div className="flex items-center justify-between gap-3">
+
+            <div>
+              <p className="text-xs font-medium text-slate-500">
+                Antrean laporan
+              </p>
+
+              <p className="mt-2 text-3xl font-extrabold tracking-tight text-[#0071FA]">
+                {loading ? '...' : queue}
+              </p>
+
+              <p className="mt-1 text-[11px] text-slate-400">
+                Laporan menunggu tindakan
+              </p>
+            </div>
+
+            <div className="
+              flex h-12 w-12 items-center justify-center
+              rounded-2xl bg-[#EFF6FF] text-[#0071FA]
+            ">
+              <span className="text-2xl">↗</span>
+            </div>
+
+          </div>
+
+          {/* PROGRESS */}
+          <div className="mt-5">
+
+            <div className="mb-2 flex items-center justify-between">
+
+              <span className="text-[11px] font-medium text-slate-500">
+                Proporsi antrean
+              </span>
+
+              <span className="text-xs font-bold text-[#0071FA]">
+                {loading
+                  ? '...'
+                  : `${total > 0
+                      ? Math.round((queue / total) * 100)
+                      : 0}%`}
+              </span>
+
+            </div>
+
+            <div className="h-2 overflow-hidden rounded-full bg-[#EFF6FF]">
+
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{
+                  width:
+                    total > 0
+                      ? `${Math.min((queue / total) * 100, 100)}%`
+                      : '0%',
+                }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.9,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="h-full rounded-full bg-[#0071FA]"
+              />
+
+            </div>
+
+            <p className="mt-2 text-[10px] text-slate-400">
+              Dari total {loading ? '...' : total} laporan tercatat
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</Reveal>
+
 
           </section>
 
@@ -634,21 +649,7 @@ export default function AdminPemdaDashboard() {
               FOOTER NOTE
           ================================================== */}
 
-          <Reveal delay={0.12}>
-
-            <div className="mt-6 flex flex-col gap-2 rounded-2xl border border-blue-100/70 bg-white/55 px-5 py-4 text-xs text-slate-500 shadow-sm backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
-
-              <span>
-                Sistem Informasi Pemerintah Digital
-              </span>
-
-              <span className="font-medium text-[#155EEF]">
-                SIMPONI
-              </span>
-
-            </div>
-
-          </Reveal>
+      
 
         </div>
 

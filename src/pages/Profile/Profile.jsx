@@ -1,6 +1,10 @@
+
 import { useEffect, useRef, useState } from 'react';
 import Navbar from '../../components/layout/Navbar';
-import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile } from '../../services/api';
+import {
+  getProfile as apiGetProfile,
+  updateProfile as apiUpdateProfile,
+} from '../../services/api';
 
 const kabupatenKotaJawaBarat = [
   'Kabupaten Bandung',
@@ -43,19 +47,36 @@ const defaultProfile = {
 };
 
 const buildProfileFromUser = (userData = {}) => ({
-  name: userData.name || userData.full_name || userData.nama_lengkap || defaultProfile.name,
+  name:
+    userData.name ||
+    userData.full_name ||
+    userData.nama_lengkap ||
+    defaultProfile.name,
   nik: userData.nik || userData.NIK || defaultProfile.nik,
   email: userData.email || defaultProfile.email,
-  phone: userData.phone || userData.no_telepon || userData.telepon || defaultProfile.phone,
-  wilayah: userData.wilayah || userData.kabupaten || userData.kota || defaultProfile.wilayah,
+  phone:
+    userData.phone ||
+    userData.no_telepon ||
+    userData.telepon ||
+    defaultProfile.phone,
+  wilayah:
+    userData.wilayah ||
+    userData.kabupaten ||
+    userData.kota ||
+    defaultProfile.wilayah,
   status: userData.status || defaultProfile.status,
   photo: userData.photo || '',
 });
 
 const persistProfile = (nextProfile) => {
-  localStorage.setItem('simponi-user-profile', JSON.stringify(nextProfile));
+  localStorage.setItem(
+    'simponi-user-profile',
+    JSON.stringify(nextProfile)
+  );
 
-  const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+  const storedUser = JSON.parse(
+    localStorage.getItem('user') || '{}'
+  );
 
   const nextUser = {
     ...storedUser,
@@ -80,9 +101,7 @@ const persistProfile = (nextProfile) => {
 const getLastLogin = () => {
   const saved = localStorage.getItem('simponi-last-login');
 
-  if (!saved) {
-    return 'Belum tersedia';
-  }
+  if (!saved) return 'Belum tersedia';
 
   const date = new Date(saved);
 
@@ -107,18 +126,31 @@ const getActiveProfile = () => {
 
   try {
     const saved = localStorage.getItem('simponi-user-profile');
-    const currentUser = JSON.parse(localStorage.getItem('user') || 'null');
+    const currentUser = JSON.parse(
+      localStorage.getItem('user') || 'null'
+    );
 
     const mergedProfile = {
       ...fallbackProfile,
       ...(saved ? JSON.parse(saved) : {}),
     };
 
-    const userName = currentUser?.name || currentUser?.full_name || currentUser?.nama_lengkap;
+    const userName =
+      currentUser?.name ||
+      currentUser?.full_name ||
+      currentUser?.nama_lengkap;
+
     const userNik = currentUser?.nik || currentUser?.NIK;
     const userEmail = currentUser?.email;
-    const userPhone = currentUser?.phone || currentUser?.no_telepon || currentUser?.telepon;
-    const userWilayah = currentUser?.wilayah || currentUser?.kabupaten || currentUser?.kota;
+    const userPhone =
+      currentUser?.phone ||
+      currentUser?.no_telepon ||
+      currentUser?.telepon;
+
+    const userWilayah =
+      currentUser?.wilayah ||
+      currentUser?.kabupaten ||
+      currentUser?.kota;
 
     return {
       ...mergedProfile,
@@ -127,7 +159,10 @@ const getActiveProfile = () => {
       email: userEmail || mergedProfile.email,
       phone: userPhone || mergedProfile.phone,
       wilayah: userWilayah || mergedProfile.wilayah,
-      status: currentUser?.status || mergedProfile.status || 'Aktif',
+      status:
+        currentUser?.status ||
+        mergedProfile.status ||
+        'Aktif',
     };
   } catch (error) {
     console.error('Gagal membaca profil:', error);
@@ -135,9 +170,25 @@ const getActiveProfile = () => {
   }
 };
 
+/* =========================================================
+   FORM INPUT STYLE
+========================================================= */
+
+const inputBaseClass =
+  'w-full rounded-2xl border px-4 py-3.5 text-sm font-medium text-[#1E293B] outline-none transition-all duration-300 placeholder:text-slate-400';
+
+const inputEditClass =
+  'border-slate-200 bg-white hover:border-[#0071FA] focus:border-[#0071FA] focus:ring-4 focus:ring-[#0071FA]/10';
+
+const inputDisabledClass =
+  'cursor-not-allowed border-slate-200 bg-slate-50 text-[#1E293B]';
+
+/* =========================================================
+   PROFILE PAGE
+========================================================= */
+
 function ProfilePage() {
   const [profile, setProfile] = useState(() => getActiveProfile());
-
   const [isEditing, setIsEditing] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -152,7 +203,7 @@ function ProfilePage() {
           ...nextProfile,
         }));
       } catch {
-        // fallback ke data lokal jika backend belum tersedia
+        // Fallback ke data lokal jika backend belum tersedia.
       }
     };
 
@@ -170,9 +221,9 @@ function ProfilePage() {
     }
   }, [profile]);
 
-  // =========================================================
-  // HANDLE INPUT
-  // =========================================================
+  /* =======================================================
+     HANDLE INPUT
+  ======================================================= */
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -183,9 +234,9 @@ function ProfilePage() {
     }));
   };
 
-  // =========================================================
-  // HANDLE FOTO
-  // =========================================================
+  /* =======================================================
+     HANDLE FOTO
+  ======================================================= */
 
   const handlePhotoChange = (e) => {
     const file = e.target.files?.[0];
@@ -214,9 +265,9 @@ function ProfilePage() {
     reader.readAsDataURL(file);
   };
 
-  // =========================================================
-  // SIMPAN
-  // =========================================================
+  /* =======================================================
+     SIMPAN
+  ======================================================= */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -231,7 +282,13 @@ function ProfilePage() {
 
       try {
         const serverResponse = await apiUpdateProfile(payload);
-        const remoteProfile = buildProfileFromUser(serverResponse?.user || serverResponse || profile);
+
+        const remoteProfile = buildProfileFromUser(
+          serverResponse?.user ||
+          serverResponse ||
+          profile
+        );
+
         const nextProfile = {
           ...profile,
           ...remoteProfile,
@@ -242,11 +299,17 @@ function ProfilePage() {
         setIsEditing(false);
         return;
       } catch (backendError) {
-        if (!String(backendError?.message || '').includes('Endpoint profil belum tersedia')) {
+        if (
+          !String(backendError?.message || '').includes(
+            'Endpoint profil belum tersedia'
+          )
+        ) {
           throw backendError;
         }
 
-        console.info('Backend belum menyediakan endpoint update profil, memakai penyimpanan lokal.');
+        console.info(
+          'Backend belum menyediakan endpoint update profil, memakai penyimpanan lokal.'
+        );
       }
 
       persistProfile(profile);
@@ -263,17 +326,18 @@ function ProfilePage() {
     }
   };
 
-  // =========================================================
-  // BATAL
-  // =========================================================
+  /* =======================================================
+     BATAL
+  ======================================================= */
 
   const handleCancel = () => {
     setIsEditing(false);
+    setProfile(getActiveProfile());
   };
 
-  // =========================================================
-  // INITIAL
-  // =========================================================
+  /* =======================================================
+     INITIAL
+  ======================================================= */
 
   const initials =
     profile.name
@@ -284,69 +348,45 @@ function ProfilePage() {
       .toUpperCase() || 'AR';
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-white text-slate-800">
+    <div className="relative min-h-screen overflow-hidden bg-[#F5F8FC] text-slate-800">
 
-      {/* =====================================================
-          BACKGROUND
-      ===================================================== */}
+      {/* BACKGROUND */}
+      <div className="pointer-events-none absolute inset-0 bg-[#F5F8FC]" />
+      <div className="pointer-events-none absolute -right-24 top-32 h-[360px] w-[360px] rounded-full bg-[#0071FA]/5 blur-[120px]" />
 
-      <div className="pointer-events-none absolute inset-0 bg-white" />
-
-      <div className="pointer-events-none absolute -right-24 top-32 h-[360px] w-[360px] rounded-full bg-black/5 blur-[120px]" />
-
-      {/* =====================================================
-          NAVBAR
-      ===================================================== */}
-
+      {/* NAVBAR */}
       <div className="relative z-50">
         <Navbar />
       </div>
 
-      {/* =====================================================
-          MAIN
-      ===================================================== */}
-
+      {/* MAIN */}
       <main className="relative mx-auto max-w-7xl px-4 pb-10 pt-24 sm:px-6 sm:pt-28 lg:px-8 lg:pt-28">
 
-        {/* ===================================================
-            PAGE HEADER
-        =================================================== */}
-
+        {/* PAGE HEADER */}
         <div className="mb-8">
-
-          
-
           <div className="mt-6 flex items-start gap-3">
             <div>
               <h1 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
                 Profil
               </h1>
+              <p className="mt-2 text-sm text-slate-500">
+                Kelola informasi dan data akun Anda.
+              </p>
             </div>
           </div>
         </div>
 
-        {/* ===================================================
-            MAIN GRID
-        =================================================== */}
-
+        {/* MAIN GRID */}
         <div className="grid gap-6 lg:grid-cols-[350px_minmax(0,1fr)]">
 
-          {/* =================================================
-              PROFILE CARD
-          ================================================= */}
-
+          {/* PROFILE CARD */}
           <section className="group relative overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
-
             <div className="relative p-6 sm:p-7">
 
               {/* AVATAR */}
-
               <div className="flex flex-col items-center text-center">
-
                 <div className="relative">
-
-                  <div className="relative flex h-36 w-36 items-center justify-center overflow-hidden rounded-[30px] border-[5px] border-white bg-black text-4xl font-black text-white shadow-[0_18px_45px_rgba(15,23,42,0.12)]">
-
+                  <div className="relative flex h-36 w-36 items-center justify-center overflow-hidden rounded-[30px] border-[5px] border-white bg-[#0071FA] text-4xl font-black text-white shadow-[0_18px_45px_rgba(15,23,42,0.12)]">
                     {profile.photo ? (
                       <img
                         src={profile.photo}
@@ -356,13 +396,12 @@ function ProfilePage() {
                     ) : (
                       initials
                     )}
-
                   </div>
 
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="absolute -bottom-2 -right-2 flex h-11 w-11 items-center justify-center rounded-2xl border-4 border-white bg-red-600 text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-red-500"
+                    className="absolute -bottom-2 -right-2 flex h-11 w-11 items-center justify-center rounded-2xl border-4 border-white bg-[#0071FA] text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-[#0056D6]"
                     title="Ubah foto profil"
                   >
                     <svg
@@ -377,11 +416,7 @@ function ProfilePage() {
                         strokeLinejoin="round"
                         d="M4 7h3l2-3h6l2 3h3a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2V9a2 2 0 012-2z"
                       />
-                      <circle
-                        cx="12"
-                        cy="13"
-                        r="3"
-                      />
+                      <circle cx="12" cy="13" r="3" />
                     </svg>
                   </button>
                 </div>
@@ -401,22 +436,17 @@ function ProfilePage() {
                 <p className="mt-1 text-sm text-slate-500">
                   Masyarakat Jawa Barat
                 </p>
-
               </div>
 
               <div className="my-7 h-px bg-slate-200" />
 
               {/* CONTACT INFORMATION */}
-
               <div className="space-y-3">
 
                 {/* EMAIL */}
-
-                <div className="group/item rounded-2xl border border-slate-200 bg-white p-3.5 transition-all duration-300 hover:border-red-200 hover:bg-red-50/40">
-
+                <div className="group/item rounded-2xl border border-slate-200 bg-white p-3.5 transition-all duration-300 hover:border-[#0071FA] hover:bg-[#0071FA]/5">
                   <div className="flex items-center gap-3">
-
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600 transition-transform duration-300 group-hover/item:scale-105">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0071FA]/10 text-[#0071FA] transition-transform duration-300 group-hover/item:scale-105">
                       <svg
                         className="h-4.5 w-4.5"
                         fill="none"
@@ -424,44 +454,26 @@ function ProfilePage() {
                         stroke="currentColor"
                         strokeWidth="1.8"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M3 7l9 6 9-6"
-                        />
-
-                        <rect
-                          x="3"
-                          y="5"
-                          width="18"
-                          height="14"
-                          rx="2"
-                        />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 7l9 6 9-6" />
+                        <rect x="3" y="5" width="18" height="14" rx="2" />
                       </svg>
                     </div>
 
                     <div className="min-w-0">
-
                       <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                         Email
                       </p>
-
                       <p className="mt-0.5 truncate text-sm font-semibold text-slate-700">
                         {profile.email}
                       </p>
-
                     </div>
-
                   </div>
                 </div>
 
                 {/* PHONE */}
-
-                <div className="group/item rounded-2xl border border-slate-200 bg-white p-3.5 transition-all duration-300 hover:border-red-200 hover:bg-red-50/40">
-
+                <div className="group/item rounded-2xl border border-slate-200 bg-white p-3.5 transition-all duration-300 hover:border-[#0071FA] hover:bg-[#0071FA]/5">
                   <div className="flex items-center gap-3">
-
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-900 transition-transform duration-300 group-hover/item:scale-105">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0071FA]/10 text-[#0071FA] transition-transform duration-300 group-hover/item:scale-105">
                       <svg
                         className="h-4.5 w-4.5"
                         fill="none"
@@ -478,77 +490,21 @@ function ProfilePage() {
                     </div>
 
                     <div>
-
                       <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                         Nomor Telepon
                       </p>
-
                       <p className="mt-0.5 text-sm font-semibold text-slate-700">
                         {profile.phone}
                       </p>
-
                     </div>
-
                   </div>
                 </div>
-
-                {/* LAST LOGIN */}
-
-                <div className="group/item rounded-2xl border border-slate-200 bg-white p-3.5 transition-all duration-300 hover:border-red-200 hover:bg-red-50/40">
-
-                  <div className="flex items-center gap-3">
-
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-200 text-slate-900 transition-transform duration-300 group-hover/item:scale-105">
-
-                      <svg
-                        className="h-4.5 w-4.5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                      >
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="9"
-                        />
-
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 7v5l3 2"
-                        />
-
-                      </svg>
-
-                    </div>
-
-                    <div>
-
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                        Login Terakhir
-                      </p>
-
-                      <p className="mt-0.5 text-sm font-semibold text-slate-700">
-                        {getLastLogin()}
-                      </p>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
               </div>
 
               {/* PHOTO INFO */}
-
               <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-
                 <div className="flex gap-3">
-
-                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-red-600 shadow-sm">
-
+                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#0071FA]/10 text-[#0071FA] shadow-sm">
                     <svg
                       className="h-4 w-4"
                       fill="none"
@@ -556,85 +512,46 @@ function ProfilePage() {
                       stroke="currentColor"
                       strokeWidth="1.8"
                     >
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="9"
-                      />
-
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 8v4"
-                      />
-
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 16h.01"
-                      />
-
+                      <circle cx="12" cy="12" r="9" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 16h.01" />
                     </svg>
-
                   </div>
 
                   <div>
-
                     <p className="text-xs font-bold text-slate-700">
                       Foto profil
                     </p>
-
                     <p className="mt-1 text-[11px] leading-relaxed text-slate-500">
                       JPG, PNG, atau WEBP dengan ukuran maksimal 2 MB.
                     </p>
-
                   </div>
-
                 </div>
-
               </div>
-
             </div>
-
           </section>
 
-          {/* =================================================
-              ACCOUNT INFORMATION
-          ================================================= */}
-
+          {/* ACCOUNT INFORMATION */}
           <section className="group relative overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.05)]">
-
             <div className="relative p-6 sm:p-8">
 
               {/* HEADER */}
-
               <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
                 <div>
-
-                  <div className="mb-2 flex items-center gap-2">
-
-                   
-
-                  </div>
-
                   <h2 className="text-2xl font-black tracking-tight text-slate-900">
                     Informasi Akun
                   </h2>
-
                   <p className="mt-1 text-sm text-slate-500">
                     Kelola informasi pribadi dan domisili akun Anda.
                   </p>
-
                 </div>
 
                 {!isEditing && (
                   <button
                     type="button"
                     onClick={() => setIsEditing(true)}
-                    className="group/button inline-flex items-center justify-center gap-2 rounded-2xl bg-red-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-500 hover:shadow-xl"
+                    className="group/button inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0071FA] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#0071FA]/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0056D6] hover:shadow-xl"
                   >
-
                     <svg
                       className="h-4 w-4 transition-transform duration-300 group-hover/button:-rotate-6"
                       fill="none"
@@ -642,90 +559,57 @@ function ProfilePage() {
                       stroke="currentColor"
                       strokeWidth="1.8"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 20h9"
-                      />
-
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M16.5 3.5a2.121 2.121 0 013 3L8 18l-4 1 1-4L16.5 3.5z"
-                      />
-
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 20h9" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 3.5a2.121 2.121 0 013 3L8 18l-4 1 1-4L16.5 3.5z" />
                     </svg>
-
                     Edit Profil
-
                   </button>
                 )}
-
               </div>
 
               {/* FORM */}
-
               <form onSubmit={handleSubmit}>
 
                 {/* IDENTITAS */}
-
                 <div className="mb-8">
-
                   <div className="mb-5 flex items-center gap-3">
-
-                    <span className="whitespace-nowrap text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                      Identitas Pribadi
-                    </span>
-
                     <div className="h-px flex-1 bg-slate-200" />
-
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
 
-                    {/* Nama */}
-
+                    {/* NAMA */}
                     <div>
-
                       <label className="mb-2 block text-xs font-bold text-slate-600">
                         Nama Lengkap
                       </label>
-
                       <input
                         type="text"
                         name="name"
                         value={profile.name}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className={`w-full rounded-2xl border px-4 py-3.5 text-sm font-medium outline-none transition-all duration-300 ${
-                          isEditing
-                            ? 'border-red-200 bg-white text-slate-800 shadow-sm focus:border-red-500 focus:ring-4 focus:ring-red-500/10'
-                            : 'border-slate-200 bg-slate-50 text-slate-600'
+                        className={`${inputBaseClass} ${
+                          isEditing ? inputEditClass : inputDisabledClass
                         }`}
                       />
-
                     </div>
 
                     {/* NIK */}
-
                     <div>
-
                       <label className="mb-2 block text-xs font-bold text-slate-600">
                         NIK
                       </label>
-
                       <div className="relative">
-
                         <input
                           type="text"
                           name="nik"
                           value={profile.nik}
                           disabled
-                          className="w-full rounded-2xl border border-slate-100 bg-slate-50/70 px-4 py-3.5 pr-11 text-sm font-medium tracking-wide text-slate-500"
+                          className={`${inputBaseClass} ${inputDisabledClass} pr-11 tracking-wide`}
                         />
 
                         <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
-
                           <svg
                             className="h-4 w-4"
                             fill="none"
@@ -733,99 +617,62 @@ function ProfilePage() {
                             stroke="currentColor"
                             strokeWidth="1.8"
                           >
-                            <rect
-                              x="3"
-                              y="5"
-                              width="18"
-                              height="14"
-                              rx="2"
-                            />
-
+                            <rect x="3" y="5" width="18" height="14" rx="2" />
                             <path d="M7 9h.01M11 9h6M7 13h.01M11 13h6" />
-
                           </svg>
-
                         </div>
-
                       </div>
-
                       <p className="mt-1.5 text-[10px] text-slate-400">
                         NIK tidak dapat diubah.
                       </p>
-
                     </div>
 
                     {/* EMAIL */}
-
                     <div>
-
                       <label className="mb-2 block text-xs font-bold text-slate-600">
                         Alamat Email
                       </label>
-
                       <input
                         type="email"
                         name="email"
                         value={profile.email}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className={`w-full rounded-2xl border px-4 py-3.5 text-sm font-medium outline-none transition-all duration-300 ${
-                          isEditing
-                            ? 'border-red-200 bg-white text-slate-800 shadow-sm focus:border-red-500 focus:ring-4 focus:ring-red-500/10'
-                            : 'border-slate-200 bg-slate-50 text-slate-600'
+                        className={`${inputBaseClass} ${
+                          isEditing ? inputEditClass : inputDisabledClass
                         }`}
                       />
-
                     </div>
 
                     {/* PHONE */}
-
                     <div>
-
                       <label className="mb-2 block text-xs font-bold text-slate-600">
                         Nomor Telepon
                       </label>
-
                       <input
                         type="tel"
                         name="phone"
                         value={profile.phone}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className={`w-full rounded-2xl border px-4 py-3.5 text-sm font-medium outline-none transition-all duration-300 ${
-                          isEditing
-                            ? 'border-red-200 bg-white text-slate-800 shadow-sm focus:border-red-500 focus:ring-4 focus:ring-red-500/10'
-                            : 'border-slate-200 bg-slate-50 text-slate-600'
+                        className={`${inputBaseClass} ${
+                          isEditing ? inputEditClass : inputDisabledClass
                         }`}
                       />
-
                     </div>
-
                   </div>
                 </div>
 
                 {/* DOMISILI */}
-
                 <div className="mb-8">
-
                   <div className="mb-5 flex items-center gap-3">
-
-                    <span className="whitespace-nowrap text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                      Domisili
-                    </span>
-
                     <div className="h-px flex-1 bg-slate-200" />
-
                   </div>
 
                   <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
-
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
                       <div className="flex items-center gap-3">
-
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-red-600 shadow-sm">
-
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#0071FA] shadow-sm">
                           <svg
                             className="h-5 w-5"
                             fill="none"
@@ -833,67 +680,43 @@ function ProfilePage() {
                             stroke="currentColor"
                             strokeWidth="1.8"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 21s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"
-                            />
-
-                            <circle
-                              cx="12"
-                              cy="9"
-                              r="2.5"
-                            />
-
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z" />
+                            <circle cx="12" cy="9" r="2.5" />
                           </svg>
-
                         </div>
 
                         <div>
-
                           <p className="text-xs font-bold text-slate-500">
                             Kabupaten / Kota
                           </p>
-
                           <p className="mt-0.5 text-sm font-black text-slate-800">
                             Domisili Terdaftar
                           </p>
-
                         </div>
-
                       </div>
 
                       <div className="sm:min-w-[260px]">
-
                         <select
                           name="wilayah"
                           value={profile.wilayah}
                           onChange={handleChange}
                           disabled={!isEditing}
-                          className={`w-full rounded-2xl border px-4 py-3 text-sm font-semibold outline-none transition-all duration-300 ${
+                          className={`${inputBaseClass} ${
                             isEditing
-                              ? 'border-red-200 bg-white text-slate-700 shadow-sm focus:border-red-500 focus:ring-4 focus:ring-red-500/10'
-                              : 'border-slate-200 bg-white text-slate-600'
-                          }`}
+                              ? inputEditClass
+                              : inputDisabledClass
+                          } py-3`}
                         >
-
                           {kabupatenKotaJawaBarat.map((wilayah) => (
-                            <option
-                              key={wilayah}
-                              value={wilayah}
-                            >
+                            <option key={wilayah} value={wilayah}>
                               {wilayah}
                             </option>
                           ))}
-
                         </select>
-
                       </div>
-
                     </div>
 
                     <div className="mt-3 flex items-start gap-2 text-[11px] leading-relaxed text-slate-400">
-
                       <svg
                         className="mt-0.5 h-3.5 w-3.5 shrink-0"
                         fill="none"
@@ -901,58 +724,30 @@ function ProfilePage() {
                         stroke="currentColor"
                         strokeWidth="2"
                       >
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="9"
-                        />
-
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 8v4"
-                        />
-
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 16h.01"
-                        />
-
+                        <circle cx="12" cy="12" r="9" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 16h.01" />
                       </svg>
-
                       Wilayah digunakan untuk menentukan cakupan laporan berdasarkan domisili Anda.
-
                     </div>
-
                   </div>
-
                 </div>
 
                 {/* STATUS AKUN */}
-
                 <div className="mb-8">
-
                   <div className="mb-5 flex items-center gap-3">
-
                     <span className="whitespace-nowrap text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
                       Status Akun
                     </span>
-
                     <div className="h-px flex-1 bg-slate-200" />
-
                   </div>
 
                   <div className="grid gap-3 sm:grid-cols-2">
 
                     {/* STATUS */}
-
                     <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-
                       <div className="flex items-center gap-3">
-
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 text-red-600 shadow-sm">
-
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0071FA]/10 text-[#0071FA] shadow-sm">
                           <svg
                             className="h-5 w-5"
                             fill="none"
@@ -960,46 +755,26 @@ function ProfilePage() {
                             stroke="currentColor"
                             strokeWidth="2"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M9 12l2 2 4-4"
-                            />
-
-                            <circle
-                              cx="12"
-                              cy="12"
-                              r="9"
-                            />
-
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4" />
+                            <circle cx="12" cy="12" r="9" />
                           </svg>
-
                         </div>
 
                         <div>
-
-                          <p className="text-[10px] font-bold uppercase tracking-wider text-red-600/80">
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-[#0071FA]/80">
                             Status Akun
                           </p>
-
                           <p className="text-sm font-black text-slate-900">
                             {profile.status}
                           </p>
-
                         </div>
-
                       </div>
-
                     </div>
 
                     {/* LAST LOGIN */}
-
-                    <div className="rounded-2xl border border-slate-100 bg-slate-50/60 p-4">
-
+                    <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
                       <div className="flex items-center gap-3">
-
                         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-slate-500 shadow-sm">
-
                           <svg
                             className="h-5 w-5"
                             fill="none"
@@ -1007,60 +782,39 @@ function ProfilePage() {
                             stroke="currentColor"
                             strokeWidth="1.8"
                           >
-                            <circle
-                              cx="12"
-                              cy="12"
-                              r="9"
-                            />
-
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 7v5l3 2"
-                            />
-
+                            <circle cx="12" cy="12" r="9" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 7v5l3 2" />
                           </svg>
-
                         </div>
 
                         <div className="min-w-0">
-
                           <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                             Login Terakhir
                           </p>
-
                           <p className="truncate text-sm font-bold text-slate-700">
                             {getLastLogin()}
                           </p>
-
                         </div>
-
                       </div>
-
                     </div>
-
                   </div>
-
                 </div>
 
                 {/* ACTION */}
-
                 {isEditing && (
                   <div className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
-
                     <button
                       type="button"
                       onClick={handleCancel}
-                      className="rounded-2xl border border-slate-200 bg-white/70 px-5 py-3 text-sm font-bold text-slate-600 transition-all duration-300 hover:border-slate-300 hover:bg-white"
+                      className="rounded-2xl border border-[#0071FA] bg-[#0071FA] px-5 py-3 text-sm font-bold text-white shadow-md shadow-[#0071FA]/20 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#0056D6] hover:bg-[#0056D6]"
                     >
                       Batal
                     </button>
 
                     <button
                       type="submit"
-                      className="group/save inline-flex items-center justify-center gap-2 rounded-2xl bg-red-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-500 hover:shadow-xl"
+                      className="group/save inline-flex items-center justify-center gap-2 rounded-2xl border border-[#0071FA] bg-[#0071FA] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-[#0071FA]/20 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#0056D6] hover:bg-[#0056D6] hover:shadow-xl"
                     >
-
                       <svg
                         className="h-4 w-4 transition-transform duration-300 group-hover/save:scale-110"
                         fill="none"
@@ -1068,31 +822,18 @@ function ProfilePage() {
                         stroke="currentColor"
                         strokeWidth="2"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M5 13l4 4L19 7"
-                        />
-
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
-
                       Simpan Perubahan
-
                     </button>
-
                   </div>
                 )}
-
               </form>
 
               {/* SECURITY NOTE */}
-
               <div className="mt-8 rounded-2xl border border-slate-100 bg-slate-50/50 px-4 py-3.5">
-
                 <div className="flex items-center gap-3">
-
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-600 shadow-sm">
-
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#0071FA]/10 text-[#0071FA] shadow-sm">
                     <svg
                       className="h-4 w-4"
                       fill="none"
@@ -1100,56 +841,21 @@ function ProfilePage() {
                       stroke="currentColor"
                       strokeWidth="1.8"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 3l7 4v5c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V7l7-4z"
-                      />
-
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 12l2 2 4-4"
-                      />
-
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 4v5c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V7l7-4z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4" />
                     </svg>
-
                   </div>
 
                   <p className="text-[11px] leading-relaxed text-slate-500">
                     Data profil Anda disimpan secara lokal pada perangkat
                     dan digunakan untuk kebutuhan akun SIMPONI.
                   </p>
-
                 </div>
-
               </div>
-
             </div>
-
           </section>
-
         </div>
-
-        {/* ===================================================
-            FOOTER
-        =================================================== */}
-
-        <footer className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-slate-200/60 pt-5 text-center text-[11px] text-slate-400 sm:flex-row sm:text-left">
-
-          <p>
-            © 2026 SIMPONI — Sistem Informasi Pelaporan Pernikahan Dini
-          </p>
-
-          <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-red-600" />
-            <span>Sistem berjalan normal</span>
-          </div>
-
-        </footer>
-
       </main>
-
     </div>
   );
 }

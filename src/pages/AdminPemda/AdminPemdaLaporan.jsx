@@ -171,10 +171,7 @@ export default function AdminPemdaLaporan() {
             <div className="mb-6 overflow-hidden rounded-3xl bg-gradient-to-br from-[#155DFC] via-[#2563EB] to-[#0F3FAE] p-6 text-white shadow-xl shadow-blue-100 sm:p-8">
               <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                  <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold backdrop-blur-sm">
-                    <span className="h-2 w-2 rounded-full bg-emerald-300" />
-                    Inbox Laporan
-                  </div>
+            
 
                   <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
                     Laporan Masyarakat

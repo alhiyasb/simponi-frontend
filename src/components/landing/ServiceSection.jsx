@@ -46,7 +46,7 @@ export default function ServiceSection() {
             className="mx-auto max-w-3xl text-center"
           >
            
-            <h2 className="mt-4 text-4xl font-black tracking-tight text-[#1A1A1A] lg:text-5xl">
+            <h2 className="mt-4 text-4xl font-black tracking-tight text-[#0071fa] lg:text-5xl">
               Solusi digital yang lebih mudah, lebih aman, dan lebih transparan.
             </h2>
             <p className="mt-5 text-base leading-relaxed text-[#5F5F5F] lg:text-lg">
@@ -69,7 +69,7 @@ export default function ServiceSection() {
                   ease: "easeOut",
                 }}
                 whileHover={{ y: -8, scale: 1.01 }}
-                className="group flex h-[360px] flex-col overflow-hidden rounded-[18px] border border-[#D9D9D9] bg-white transition-all duration-200 hover:border-[#D21F2B]"
+                className="group flex h-[360px] flex-col overflow-hidden rounded-[18px] border border-[#D9D9D9] bg-white transition-all duration-200 hover:border-[#0071fa]"
               >
                 <div
                   className="relative h-[80px] w-full bg-cover bg-center"
@@ -88,7 +88,7 @@ export default function ServiceSection() {
                   </div>
 
                   <div className="mt-5 flex-1">
-                    <h3 className="text-[17px] font-semibold leading-tight text-[#222222] transition-colors duration-200 group-hover:text-[#D21F2B]">
+                    <h3 className="text-[17px] font-semibold leading-tight text-[#222222] transition-colors duration-200 group-hover:text-[#0071fa]">
                       {service.title}
                     </h3>
                     <p
@@ -106,7 +106,7 @@ export default function ServiceSection() {
 
                   <Link
                     to={service.to}
-                    className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-[#1E3A5F] transition-all duration-200 hover:text-[#D21F2B]"
+                    className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-[#1E3A5F] transition-all duration-200 hover:text-[#0071fa]"
                   >
                     <span>{cardLinkLabel[index]}</span>
                     <span aria-hidden="true">→</span>

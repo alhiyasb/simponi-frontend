@@ -22,24 +22,23 @@ const statusConfig = {
     progress: 50,
   },
 
-  diproses: {
-    label: "Diproses",
-    class: "border-red-200 bg-red-50 text-red-700",
-    progress: 75,
-  },
+diproses: {
+  label: "Diproses",
+  class: "border-[#0071FA]/20 bg-[#0071FA]/10 text-[#0071FA]",
+  progress: 75,
+},
 
   selesai: {
     label: "Selesai",
-    class: "border-black bg-black text-white",
+    class: "border-[#0071FA]/20 bg-[#0071FA]/10 text-[#0071FA]",
     progress: 100,
   },
 
-  ditolak: {
-    label: "Ditolak",
-    class: "border-red-200 bg-red-50 text-red-700",
-    progress: 0,
-  },
-
+ditolak: {
+  label: "Ditolak",
+  class: "border-[#0071FA]/20 bg-[#0071FA]/10 text-[#0071FA]",
+  progress: 0,
+},
   default: {
     label: "Tidak diketahui",
     class: "border-slate-200 bg-slate-50 text-slate-700",
@@ -347,7 +346,7 @@ export default function TrackingPage() {
         (report) =>
           normalizeStatus(report.status) === "diproses"
       ).length,
-      color: "from-red-500 to-red-600",
+      color: "from-[#0071FA] to-[#0056D6]",
     },
 
     {
@@ -366,7 +365,7 @@ export default function TrackingPage() {
           normalizeStatus(report.status)
         )
       ).length,
-      color: "from-red-400 to-red-500",
+      color: "from-[#60A5FA] to-[#0071FA]",
     },
   ];
 
@@ -377,9 +376,9 @@ export default function TrackingPage() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-white text-slate-800">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-16 top-20 h-64 w-64 rounded-full bg-red-100/50 blur-3xl" />
+        <div className="absolute -left-16 top-20 h-64 w-64 rounded-fullbg-[#0071FA]/10 blur-3xl" />
         <div className="absolute right-0 top-10 h-72 w-72 rounded-full bg-slate-200/70 blur-3xl" />
-        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-red-100/40 blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-[#0071FA]/10 blur-3xl" />
       </div>
 
       <Navbar />
@@ -389,19 +388,16 @@ export default function TrackingPage() {
           initial={{ opacity: 0, y: 26 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative overflow-hidden rounded-[36px] border border-slate-200 bg-[#111827] p-6 shadow-[0_20px_50px_rgba(15,23,42,0.08)] sm:p-8 lg:p-10"
+          className="relative overflow-hidden rounded-[36px] border border-slate-200 bg-[#0071fa] p-6 shadow-[0_20px_50px_rgba(15,23,42,0.08)] sm:p-8 lg:p-10"
         >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.08),_transparent_18%)]" />
 
           <div className="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-100">
-                Tracking Laporan
-              </span>
 
               <h1 className="mt-5 text-3xl font-black tracking-[-0.06em] text-white md:text-5xl">
                 Pantau perkembangan{" "}
-                <span className="text-red-200">
+                <span className="text-white]">
                   laporan Anda
                 </span>
               </h1>
@@ -477,7 +473,7 @@ export default function TrackingPage() {
                     setCurrentPage(1);
                   }}
                   placeholder="Cari ID, judul, lokasi, nama pelapor..."
-                  className="w-full rounded-2xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-slate-800 outline-none transition focus:border-red-400 focus:ring-4 focus:ring-red-100 sm:w-[420px]"
+                  className="w-full rounded-2xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-slate-800 outline-none transition focus:border-red-400 focus:ring-4 focus:border-[#0071FA] focus:ring-[#0071FA]/10 sm:w-[420px]"
                 />
               </div>
 
@@ -525,15 +521,15 @@ export default function TrackingPage() {
               ))}
             </div>
           ) : error ? (
-            <div className="rounded-[28px] border border-red-200 bg-red-50 p-6 text-center shadow-[0_18px_45px_rgba(239,68,68,0.08)]">
-              <p className="text-red-700">{error}</p>
-              <button
-                onClick={doFetchReports}
-                className="mt-4 rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700"
-              >
-                Coba Lagi
-              </button>
-            </div>
+            <div className="rounded-[28px] border border-[#0071FA]/20 bg-[#0071FA]/5 p-6 text-center shadow-[0_18px_45px_rgba(0,113,250,0.08)]">
+  <p className="text-[#0071FA]">{error}</p>
+  <button
+    onClick={doFetchReports}
+    className="mt-4 rounded-full bg-[#0071FA] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0056D6]"
+  >
+    Coba Lagi
+  </button>
+</div>
           ) : filteredReports.length === 0 ? (
             <div className="rounded-[30px] border border-dashed border-slate-200 bg-white p-12 text-center shadow-[0_18px_40px_rgba(15,23,42,0.03)]">
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
@@ -634,7 +630,7 @@ export default function TrackingPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="cursor-pointer rounded-[30px] border border-slate-200 bg-white p-5 shadow-[0_14px_35px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-red-200 hover:shadow-[0_18px_40px_rgba(220,38,38,0.08)]"
+                   className="cursor-pointer rounded-[30px] border border-slate-200 bg-white p-5 shadow-[0_14px_35px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#0071FA]/40 hover:shadow-[0_18px_40px_rgba(0,113,250,0.08)]"
                     onClick={() => handleViewDetail(reportId)}
                   >
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -693,7 +689,7 @@ export default function TrackingPage() {
 
                       <div className="h-2.5 rounded-full bg-slate-100">
                         <div
-                          className="h-full rounded-full bg-[#111827] transition-all duration-500"
+                          className="h-full rounded-full bg-[#0071FA] transition-all duration-500"
                           style={{ width: `${progress}%` }}
                         />
                       </div>

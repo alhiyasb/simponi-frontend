@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -33,25 +34,6 @@ const featureList = [
   'Keamanan data dengan validasi 2 langkah',
 ];
 
-const getLastLogin = () => {
-  const saved = localStorage.getItem('simponi-last-login');
-
-  if (!saved) {
-    return 'Belum tersedia';
-  }
-
-  return (
-    new Date(saved).toLocaleString('id-ID', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      timeZone: 'Asia/Jakarta',
-    }) + ' WIB'
-  );
-};
-
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -77,6 +59,15 @@ export default function Login() {
   const [resendMessage, setResendMessage] = useState('');
   const [showResendForm, setShowResendForm] = useState(false);
   const [resendEmail, setResendEmail] = useState('');
+
+  const inputClass =
+    'w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition-all duration-200 placeholder:text-[#888888] focus:border-[#0071FA] focus:bg-white focus:text-[#111111] focus:ring-4 focus:ring-[#0071FA]/10';
+
+  const linkClass =
+    'font-semibold text-[#0071FA] transition-colors hover:text-[#0063DC] hover:underline';
+
+  const primaryButtonClass =
+    'w-full rounded-full bg-[#0071FA] px-5 py-3.5 text-base font-semibold text-white shadow-[0_18px_32px_rgba(0,113,250,0.20)] transition-all duration-200 hover:-translate-y-[1px] hover:bg-[#0063DC] disabled:cursor-not-allowed disabled:opacity-60';
 
   const navigateByRole = (user) => {
     if (user?.role === 'admin_pemprov') {
@@ -146,10 +137,10 @@ export default function Login() {
       });
 
       setRegisterSuccess(true);
-      setIsLoading(false);
     } catch (err) {
-      setIsLoading(false);
       setError(parseApiError(err));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -227,7 +218,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-white px-4 py-8 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F5F8FC] px-4 py-8 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 18, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -284,19 +275,19 @@ export default function Login() {
                         setRegisterSuccess(false);
                         setShowResendForm(false);
                       }}
-                     
-
-className={`flex w-full items-center justify-between rounded-[22px] border p-4 text-left backdrop-blur-sm transition-all duration-200 ${
-  selectedRole === role.id
-    ? 'border-[#111111] bg-white/10 shadow-[0_16px_32px_rgba(0,0,0,0.12)]'
-    : 'border-white/10 bg-white/5 hover:border-white/40 hover:bg-white/10'
-}`}
-
-
+                      className={`flex w-full items-center justify-between rounded-[22px] border p-4 text-left backdrop-blur-sm transition-all duration-200 ${
+                        selectedRole === role.id
+                          ? 'border-[#0071FA] bg-white/15 shadow-[0_16px_32px_rgba(0,113,250,0.15)]'
+                          : 'border-white/10 bg-white/5 hover:border-[#0071FA] hover:bg-white/10'
+                      }`}
                     >
                       <div>
-                        <p className="text-base font-bold text-white">{role.label}</p>
-                        <p className="mt-1 text-sm text-[#D9D9D9]">{role.description}</p>
+                        <p className="text-base font-bold text-white">
+                          {role.label}
+                        </p>
+                        <p className="mt-1 text-sm text-[#D9D9D9]">
+                          {role.description}
+                        </p>
                       </div>
 
                       <span className="rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#EAEAEA]">
@@ -338,7 +329,7 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                     Autentikasi
                   </p>
 
-                  <h2 className="mt-3 text-3xl font-black tracking-[-0.05em] text-[#111111] drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]">
+                  <h2 className="mt-3 text-3xl font-black tracking-[-0.05em] text-[#111111]">
                     {mode === 'login'
                       ? selectedRole === 'masyarakat'
                         ? 'Login Masyarakat'
@@ -353,12 +344,14 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                   <button
                     type="button"
                     onClick={() => {
-                      setMode((prev) => (prev === 'login' ? 'register' : 'login'));
+                      setMode((prev) =>
+                        prev === 'login' ? 'register' : 'login'
+                      );
                       setError('');
                       setRegisterSuccess(false);
                       setShowResendForm(false);
                     }}
-                    className="rounded-full border border-[#111111]/15 bg-[#F3F3F3] px-3 py-1.5 text-xs font-semibold text-[#111111] transition hover:bg-[#111111] hover:text-white"
+                    className="rounded-full border border-[#0071FA]/20 bg-[#0071FA]/5 px-3 py-1.5 text-xs font-semibold text-[#0071FA] transition hover:bg-[#0071FA] hover:text-white"
                   >
                     {mode === 'login' ? 'Daftar' : 'Masuk'}
                   </button>
@@ -381,31 +374,57 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                   animate={{ opacity: 1, y: 0 }}
                   className="py-4 text-center"
                 >
-                  <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#111111] text-white">
-                    <svg className="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#0071FA] text-white">
+                    <svg
+                      className="h-10 w-10"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   </div>
 
-                  <h3 className="text-xl font-bold text-[#111111]">Periksa Email Anda</h3>
+                  <h3 className="text-xl font-bold text-[#111111]">
+                    Periksa Email Anda
+                  </h3>
 
                   <p className="mt-2 text-[#555555]">
-                    Kami telah mengirim link verifikasi ke <strong>{registerEmail}</strong>. Silakan cek inbox dan folder spam lalu klik link tersebut.
+                    Kami telah mengirim link verifikasi ke{' '}
+                    <strong>{registerEmail}</strong>. Silakan cek inbox dan
+                    folder spam lalu klik link tersebut.
                   </p>
 
                   <div className="mt-6 space-y-3">
-                    <form onSubmit={handleResendVerification} className="w-full">
+                    <form
+                      onSubmit={(event) => {
+                        setResendEmail(registerEmail);
+                        handleResendVerification(event);
+                      }}
+                      className="w-full"
+                    >
                       <button
                         type="submit"
                         disabled={resendLoading}
-                        onClick={() => setResendEmail(registerEmail)}
-                        className="w-full px-4 py-2 text-sm font-semibold text-[#111111] hover:underline disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                        className={linkClass}
                       >
-                        {resendLoading ? 'Mengirim...' : 'Kirim Ulang Email Verifikasi'}
+                        {resendLoading
+                          ? 'Mengirim...'
+                          : 'Kirim Ulang Email Verifikasi'}
                       </button>
                     </form>
 
-                    {resendMessage && <p className="text-sm text-[#111111]">{resendMessage}</p>}
+                    {resendMessage && (
+                      <p className="text-sm text-[#111111]">
+                        {resendMessage}
+                      </p>
+                    )}
 
                     <button
                       type="button"
@@ -414,7 +433,7 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                         resetRegisterForm();
                         setIdentifier(registerEmail);
                       }}
-                      className="w-full px-4 py-2 text-sm font-semibold text-[#111111] hover:underline sm:w-auto"
+                      className={linkClass}
                     >
                       Kembali ke Login
                     </button>
@@ -423,59 +442,80 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
               ) : (
                 <form onSubmit={handleRegister} className="space-y-4">
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-[#111111]">Nama lengkap</label>
+                    <label className="mb-2 block text-sm font-semibold text-[#111111]">
+                      Nama lengkap
+                    </label>
                     <input
                       type="text"
                       value={fullName}
                       onChange={(event) => setFullName(event.target.value)}
                       placeholder="Masukkan nama lengkap"
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-[#111111] focus:bg-white focus:text-[#111111]"
+                      className={inputClass}
+                      required
                     />
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-[#111111]">Email</label>
+                    <label className="mb-2 block text-sm font-semibold text-[#111111]">
+                      Email
+                    </label>
                     <input
                       type="email"
                       value={registerEmail}
                       onChange={(event) => setRegisterEmail(event.target.value)}
                       placeholder="nama@email.com"
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-red-500 focus:bg-white focus:text-red-600"
+                      className={inputClass}
+                      required
                     />
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-[#111111]">NIK</label>
+                    <label className="mb-2 block text-sm font-semibold text-[#111111]">
+                      NIK
+                    </label>
                     <input
                       type="text"
                       value={registerNik}
                       onChange={(event) => setRegisterNik(event.target.value)}
                       placeholder="3201xxxxxxxxxxxx (16 digit)"
                       maxLength={16}
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-red-500 focus:bg-white focus:text-red-600"
+                      className={inputClass}
+                      required
                     />
-                    <p className="mt-1 text-xs text-[#666666]">NIK 16 digit, kode wilayah Jawa Barat (3201-3279)</p>
+                    <p className="mt-1 text-xs text-[#666666]">
+                      NIK 16 digit, kode wilayah Jawa Barat (3201-3279)
+                    </p>
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-[#111111]">Password</label>
+                    <label className="mb-2 block text-sm font-semibold text-[#111111]">
+                      Password
+                    </label>
                     <input
                       type="password"
                       value={registerPassword}
-                      onChange={(event) => setRegisterPassword(event.target.value)}
+                      onChange={(event) =>
+                        setRegisterPassword(event.target.value)
+                      }
                       placeholder="Minimal 8 karakter"
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-red-500 focus:bg-white focus:text-red-600"
+                      className={inputClass}
+                      required
                     />
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-[#111111]">Konfirmasi password</label>
+                    <label className="mb-2 block text-sm font-semibold text-[#111111]">
+                      Konfirmasi password
+                    </label>
                     <input
                       type="password"
                       value={confirmPassword}
-                      onChange={(event) => setConfirmPassword(event.target.value)}
+                      onChange={(event) =>
+                        setConfirmPassword(event.target.value)
+                      }
                       placeholder="Ulangi password"
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] px-4 py-3 text-[#111111] outline-none transition focus:border-red-500 focus:bg-white focus:text-red-600"
+                      className={inputClass}
+                      required
                     />
                   </div>
 
@@ -484,12 +524,21 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                       <input
                         type="checkbox"
                         checked={acceptedTerms}
-                        onChange={(event) => setAcceptedTerms(event.target.checked)}
-                        className="mt-0.5 h-4 w-4 rounded border-[#B0B0B0] text-[#111111] focus:ring-[#111111]"
+                        onChange={(event) =>
+                          setAcceptedTerms(event.target.checked)
+                        }
+                        className="mt-0.5 h-4 w-4 rounded border-[#B0B0B0] text-[#0071FA] focus:ring-[#0071FA]"
                       />
                       <span>
-                        Saya menyetujui <span className="font-semibold text-[#111111]">Syarat & Ketentuan</span> dan{' '}
-                        <span className="font-semibold text-[#111111]">Kebijakan Privasi</span>.
+                        Saya menyetujui{' '}
+                        <span className="font-semibold text-[#0071FA]">
+                          Syarat & Ketentuan
+                        </span>{' '}
+                        dan{' '}
+                        <span className="font-semibold text-[#0071FA]">
+                          Kebijakan Privasi
+                        </span>
+                        .
                       </span>
                     </label>
                   </div>
@@ -503,7 +552,7 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                   <button
                     type="submit"
                     disabled={!acceptedTerms || isLoading}
-                    className="w-full rounded-full bg-[#111111] px-5 py-3.5 text-base font-semibold text-white shadow-[0_18px_32px_rgba(17,17,17,0.20)] transition hover:translate-y-[-1px] disabled:cursor-not-allowed disabled:opacity-60"
+                    className={primaryButtonClass}
                   >
                     {isLoading ? 'Memproses...' : 'Daftar Sekarang'}
                   </button>
@@ -517,7 +566,7 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                         resetRegisterForm();
                         setError('');
                       }}
-                      className="font-semibold text-[#111111] hover:underline"
+                      className={linkClass}
                     >
                       Masuk di sini
                     </button>
@@ -528,12 +577,18 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-[#111111]">
-                    {selectedRole === 'masyarakat' ? 'Email / NIK' : 'NIP / Email'}
+                    {selectedRole === 'masyarakat'
+                      ? 'Email / NIK'
+                      : 'NIP / Email'}
                   </label>
 
                   <div className="relative">
                     <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-[#777777]">
-                      <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="h-5 w-5 fill-none stroke-current stroke-2"
+                        aria-hidden="true"
+                      >
                         <path d="M16 19v-1a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v1" />
                         <circle cx="10" cy="7" r="3.5" />
                         <path d="M20 19v-1a4 4 0 0 0-3-3.87" />
@@ -545,18 +600,29 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                       type="text"
                       value={identifier}
                       onChange={(event) => setIdentifier(event.target.value)}
-                      placeholder={selectedRole === 'masyarakat' ? 'Masukkan email atau NIK' : 'Masukkan NIP atau email'}
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] py-3.5 pl-12 pr-4 text-[#111111] outline-none transition focus:border-red-500 focus:bg-white focus:text-red-600"
+                      placeholder={
+                        selectedRole === 'masyarakat'
+                          ? 'Masukkan email atau NIK'
+                          : 'Masukkan NIP atau email'
+                      }
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] py-3.5 pl-12 pr-4 text-[#111111] outline-none transition-all duration-200 placeholder:text-[#888888] focus:border-[#0071FA] focus:bg-white focus:text-[#111111] focus:ring-4 focus:ring-[#0071FA]/10"
+                      required
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-[#111111]">Password</label>
+                  <label className="mb-2 block text-sm font-semibold text-[#111111]">
+                    Password
+                  </label>
 
                   <div className="relative">
                     <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-[#777777]">
-                      <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="h-5 w-5 fill-none stroke-current stroke-2"
+                        aria-hidden="true"
+                      >
                         <rect x="4" y="11" width="16" height="9" rx="2" />
                         <path d="M8 11V8a4 4 0 1 1 8 0v3" />
                       </svg>
@@ -567,13 +633,14 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}
                       placeholder="Masukkan password"
-                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] py-3.5 pl-12 pr-11 text-[#111111] outline-none transition focus:border-red-500 focus:bg-white focus:text-red-600"
+                      className="w-full rounded-2xl border border-[#D9D9D9] bg-[#F3F3F3] py-3.5 pl-12 pr-28 text-[#111111] outline-none transition-all duration-200 placeholder:text-[#888888] focus:border-[#0071FA] focus:bg-white focus:text-[#111111] focus:ring-4 focus:ring-[#0071FA]/10"
+                      required
                     />
 
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
-                      className="absolute inset-y-0 right-0 flex items-center pr-4 text-sm font-medium text-[#666666] hover:text-[#111111]"
+                      className="absolute inset-y-0 right-0 flex items-center pr-4 text-sm font-medium text-[#666666] transition hover:text-[#0071FA]"
                     >
                       {showPassword ? 'Sembunyikan' : 'Tampil'}
                     </button>
@@ -589,7 +656,7 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                         setResendEmail('');
                         setResendMessage('');
                       }}
-                      className="font-semibold text-[#111111] hover:underline"
+                      className={linkClass}
                     >
                       Belum verifikasi email? Kirim ulang
                     </button>
@@ -597,30 +664,44 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                 )}
 
                 {selectedRole === 'masyarakat' && showResendForm && (
-                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-3">
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="space-y-3"
+                  >
                     <div className="rounded-xl border border-[#E5E5E5] bg-[#F3F3F3] p-4">
-                      <p className="mb-3 text-sm font-medium text-[#111111]">Kirim Ulang Email Verifikasi</p>
+                      <p className="mb-3 text-sm font-medium text-[#111111]">
+                        Kirim Ulang Email Verifikasi
+                      </p>
 
-                      <form onSubmit={handleResendVerification} className="space-y-2">
+                      <form
+                        onSubmit={handleResendVerification}
+                        className="space-y-2"
+                      >
                         <input
                           type="email"
                           value={resendEmail}
-                          onChange={(e) => setResendEmail(e.target.value)}
+                          onChange={(event) =>
+                            setResendEmail(event.target.value)
+                          }
                           placeholder="Masukkan email yang terdaftar"
-                          className="w-full rounded-xl border border-[#D9D9D9] bg-white px-4 py-3 text-[#111111] outline-none transition focus:border-red-500 focus:text-red-600"
+                          className="w-full rounded-xl border border-[#D9D9D9] bg-white px-4 py-3 text-[#111111] outline-none transition-all duration-200 focus:border-[#0071FA] focus:ring-4 focus:ring-[#0071FA]/10"
                           required
-                          autoFocus
                         />
 
                         <button
                           type="submit"
                           disabled={resendLoading}
-                          className="w-full rounded-full bg-[#111111] px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+                          className="w-full rounded-full bg-[#0071FA] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0063DC] disabled:cursor-not-allowed disabled:opacity-60"
                         >
                           {resendLoading ? 'Mengirim...' : 'Kirim Ulang'}
                         </button>
 
-                        {resendMessage && <p className="text-center text-sm text-[#111111]">{resendMessage}</p>}
+                        {resendMessage && (
+                          <p className="text-center text-sm text-[#111111]">
+                            {resendMessage}
+                          </p>
+                        )}
                       </form>
 
                       <button
@@ -629,7 +710,7 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                           setShowResendForm(false);
                           setResendMessage('');
                         }}
-                        className="mt-2 text-sm font-semibold text-[#111111] hover:underline"
+                        className="mt-2 text-sm font-semibold text-[#0071FA] hover:text-[#0063DC] hover:underline"
                       >
                         Batal
                       </button>
@@ -639,14 +720,17 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
 
                 <div className="flex items-center justify-between gap-3 pt-1">
                   <label className="inline-flex items-center gap-2 text-sm text-[#666666]">
-                    <input type="checkbox" className="h-4 w-4 rounded border-[#B0B0B0] text-[#111111] focus:ring-[#111111]" />
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-[#B0B0B0] text-[#0071FA] focus:ring-[#0071FA]"
+                    />
                     Ingat saya
                   </label>
 
                   <button
                     type="button"
                     onClick={() => navigate('/forgot-password')}
-                    className="text-sm font-semibold text-[#111111] hover:underline"
+                    className={linkClass}
                   >
                     Lupa password?
                   </button>
@@ -661,7 +745,7 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full rounded-full bg-[#111111] px-5 py-3.5 text-base font-semibold text-white shadow-[0_18px_32px_rgba(17,17,17,0.20)] transition hover:translate-y-[-1px] disabled:cursor-not-allowed disabled:opacity-60"
+                  className={primaryButtonClass}
                 >
                   {isLoading
                     ? 'Memproses...'
@@ -680,7 +764,7 @@ className={`flex w-full items-center justify-between rounded-[22px] border p-4 t
                         resetRegisterForm();
                         setError('');
                       }}
-                      className="font-semibold text-[#111111] hover:underline"
+                      className={linkClass}
                     >
                       Daftar sekarang
                     </button>

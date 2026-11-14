@@ -5,7 +5,7 @@ return (
 <footer className="
 relative
 overflow-hidden
-bg-[#111827]
+bg-[#0071fa]
 text-white
 pt-20
 pb-8

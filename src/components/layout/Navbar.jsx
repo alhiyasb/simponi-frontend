@@ -121,13 +121,6 @@ export default function Navbar() {
       <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between px-4 py-5 transition-colors duration-300 ease-in-out sm:px-6 lg:px-8">
         <div className="flex items-center gap-3">
           <NavLink to="/" onClick={closeMobileMenu} className="flex items-center gap-3 transition hover:opacity-90">
-            <div
-              className={`flex h-9 w-9 items-center justify-center rounded-full border text-sm font-bold shadow-sm transition-colors duration-300 ${
-                isTopState ? 'border-white/30 bg-white/10 text-white' : 'border-slate-200 bg-slate-900 text-white'
-              }`}
-            >
-              S
-            </div>
             <div>
               <h1 className={`text-xl font-bold tracking-tight sm:text-2xl transition-colors duration-300 ${isTopState ? 'text-white' : 'text-[#111827]'}`}>
                 SIMPONI

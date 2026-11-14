@@ -93,23 +93,13 @@ export default function AdminPemdaSelesai() {
 
   return (
     <AdminPemdaLayout>
-      <div className="relative min-h-screen overflow-hidden bg-slate-50 px-4 pb-12 pt-24 lg:px-8 lg:pt-10">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.05]"
-          style={{
-            backgroundImage: `linear-gradient(to right, #1683ff 1px, transparent 1px), linear-gradient(to bottom, #1683ff 1px, transparent 1px)`,
-            backgroundSize: "42px 42px",
-          }}
-        />
-        <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-cyan-300/20 blur-[100px]" />
-        <div className="pointer-events-none absolute right-[-80px] top-[18%] h-80 w-80 rounded-full bg-blue-400/15 blur-[120px]" />
+      <div className="relative min-h-screen bg-white px-4 pb-12 pt-24 lg:px-8 lg:pt-10">
 
         <div className="relative mx-auto max-w-[1200px]">
           <Reveal>
             <div className="rounded-[30px] border border-white/80 bg-gradient-to-br from-[#155EEF] via-[#2563EB] to-[#08A7E8] p-6 text-white shadow-[0_25px_70px_rgba(21,94,239,0.18)] sm:p-8">
               <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-blue-100">SIMPONI</p>
                   <h1 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl">Laporan Selesai</h1>
                   <p className="mt-2 max-w-xl text-sm leading-6 text-blue-50">
                     Daftar laporan yang telah selesai ditangani dan siap diarsipkan.

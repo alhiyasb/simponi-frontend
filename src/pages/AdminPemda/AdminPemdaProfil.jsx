@@ -23,7 +23,7 @@ function Reveal({ children, delay = 0, className = '' }) {
 
 function InfoItem({ label, value, children }) {
   return (
-    <div className="rounded-2xl border border-blue-100/70 bg-white/60 p-4 backdrop-blur-xl">
+    <div className="rounded-2xl border border-slate-200 bg-white p-4">
       <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
         {label}
       </p>
@@ -47,31 +47,9 @@ export default function AdminPemdaProfil() {
 
   return (
     <AdminPemdaLayout>
-      <div className="relative min-h-screen overflow-hidden">
+      <div className="relative min-h-screen bg-white">
 
-        {/* =====================================================
-            BACKGROUND
-        ====================================================== */}
-
-        {/* Grid hanya untuk background halaman */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.045]"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, #1683ff 1px, transparent 1px),
-              linear-gradient(to bottom, #1683ff 1px, transparent 1px)
-            `,
-            backgroundSize: '42px 42px',
-          }}
-        />
-
-        {/* Background glow */}
-        <div className="pointer-events-none absolute -left-32 top-[-100px] h-[420px] w-[520px] rounded-full bg-cyan-300/20 blur-[120px]" />
-
-        <div className="pointer-events-none absolute right-[-120px] top-[20%] h-[420px] w-[420px] rounded-full bg-blue-400/15 blur-[120px]" />
-
-        <div className="pointer-events-none absolute bottom-[-100px] left-[35%] h-[350px] w-[350px] rounded-full bg-indigo-300/10 blur-[120px]" />
-
+        
         {/* =====================================================
             CONTENT
         ====================================================== */}
@@ -85,11 +63,7 @@ export default function AdminPemdaProfil() {
           <Reveal>
             <div className="mb-6">
 
-              <span className="inline-flex rounded-full border border-blue-200 bg-blue-50/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#155EEF] backdrop-blur-md">
-                Akun Admin Pemda
-              </span>
-
-              <h1 className="mt-4 text-3xl font-extrab800 tracking-tight text-slate-900 sm:text-4xl">
+                        <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
                 Profil Saya
               </h1>
 
@@ -179,16 +153,6 @@ export default function AdminPemdaProfil() {
 
                   <div className="flex flex-wrap items-center gap-2">
 
-                    <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] backdrop-blur-md">
-                      Administrator
-                    </span>
-
-                    {isActive && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/30 bg-emerald-400/15 px-3 py-1 text-[10px] font-bold text-white backdrop-blur-md">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
-                        Aktif
-                      </span>
-                    )}
 
                   </div>
 
@@ -250,24 +214,16 @@ export default function AdminPemdaProfil() {
               className="
                 relative overflow-hidden
                 rounded-[28px]
-                border border-white/80
-                bg-white/75
-                p-5
-                shadow-[0_18px_55px_rgba(37,99,235,0.08)]
-                backdrop-blur-2xl
+                border border-slate-200
+bg-white
+shadow-sm
                 sm:p-7
               "
             >
 
-              <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-blue-400/10 blur-3xl" />
-
               <div className="relative">
 
                 <div className="mb-6">
-
-                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#155EEF]">
-                    Informasi Akun
-                  </p>
 
                   <h2 className="mt-1 text-xl font-bold text-slate-900">
                     Identitas Pengguna
@@ -345,145 +301,13 @@ export default function AdminPemdaProfil() {
 
             </section>
           </Reveal>
-
-          {/* =================================================
-              SECURITY / VERIFICATION
-          ================================================== */}
-
-          <section className="mt-6 grid gap-6 lg:grid-cols-2">
-
-            <Reveal>
-              <motion.div
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="
-                  relative overflow-hidden
-                  rounded-[26px]
-                  border border-white/80
-                  bg-white/75
-                  p-6
-                  shadow-[0_18px_55px_rgba(37,99,235,0.07)]
-                  backdrop-blur-2xl
-                "
-              >
-
-                <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-blue-400/10 blur-3xl" />
-
-                <div className="relative flex items-start gap-4">
-
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-lg text-[#155EEF]">
-                    ◈
-                  </div>
-
-                  <div>
-
-                    <p className="text-sm font-bold text-slate-900">
-                      Email
-                    </p>
-
-                    <p className="mt-1 text-xs leading-5 text-slate-500">
-                      Status verifikasi alamat email akun.
-                    </p>
-
-                    <div className="mt-4">
-
-                      <span
-                        className={`
-                          inline-flex items-center gap-2
-                          rounded-full border
-                          px-3 py-1.5
-                          text-xs font-bold
-                          ${
-                            user?.email_verified
-                              ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
-                              : 'border-amber-200 bg-amber-50 text-amber-700'
-                          }
-                        `}
-                      >
-                        <span
-                          className={`
-                            h-1.5 w-1.5 rounded-full
-                            ${
-                              user?.email_verified
-                                ? 'bg-emerald-500'
-                                : 'bg-amber-500'
-                            }
-                          `}
-                        />
-
-                        {user?.email_verified
-                          ? 'Terverifikasi'
-                          : 'Belum Terverifikasi'}
-                      </span>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </motion.div>
-            </Reveal>
-
-            <Reveal delay={0.08}>
-              <motion.div
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="
-                  relative overflow-hidden
-                  rounded-[26px]
-                  border border-white/80
-                  bg-white/75
-                  p-6
-                  shadow-[0_18px_55px_rgba(37,99,235,0.07)]
-                  backdrop-blur-2xl
-                "
-              >
-
-                <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-cyan-400/10 blur-3xl" />
-
-                <div className="relative flex items-start gap-4">
-
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-cyan-50 text-lg text-cyan-600">
-                    ◎
-                  </div>
-
-                  <div>
-
-                    <p className="text-sm font-bold text-slate-900">
-                      Akses Wilayah
-                    </p>
-
-                    <p className="mt-1 text-xs leading-5 text-slate-500">
-                      Akun digunakan untuk pengelolaan
-                      laporan pada wilayah pemerintah daerah.
-                    </p>
-
-                    <div className="mt-4">
-
-                      <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-bold text-[#155EEF]">
-                        Kode Wilayah:{' '}
-                        {user?.kode_kabupaten ?? '-'}
-                      </span>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </motion.div>
-            </Reveal>
-
-          </section>
-
           {/* =================================================
               INFORMATION NOTE
           ================================================== */}
 
           <Reveal delay={0.12} className="mt-6">
 
-            <div className="relative overflow-hidden rounded-[24px] border border-blue-100 bg-blue-50/70 p-5 backdrop-blur-xl">
+            <div className="relative overflow-hidden rounded-[24px] border border-slate-200 bg-white p-5 backdrop-blur-xl">
 
               <div className="pointer-events-none absolute right-0 top-0 h-28 w-28 rounded-full bg-blue-300/15 blur-3xl" />
 

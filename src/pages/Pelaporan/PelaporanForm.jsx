@@ -122,8 +122,7 @@ const steps = [
 ];
 
 const inputClass =
-
-  "w-full rounded-2xl border border-slate-200 bg-white px-3 py-3 text-slate-800 shadow-sm outline-none transition focus:border-red-400 focus:ring-4 focus:ring-red-100";
+  "w-full rounded-2xl border border-slate-200 bg-white px-3 py-3 text-slate-800 shadow-sm outline-none transition focus:border-[#0071FA] focus:ring-4 focus:ring-blue-100";
 
 const errorClass = "mt-1 text-sm text-red-500";
 
@@ -1764,7 +1763,7 @@ lokasi_kecamatan_desa: [
 
                 }
 
-                className="mt-1 h-4 w-4 rounded border-slate-300 text-red-600 focus:ring-red-500"
+                className="mt-1 h-4 w-4 rounded border-slate-300 text-[#0071FA] focus:ring-[#0071FA]"
 
               />
 
@@ -3030,7 +3029,7 @@ lokasi_kecamatan_desa: [
 
         {/* HERO */}
 
-        <div className="mb-8 overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#111827_0%,#1f2937_100%)] p-6 text-white shadow-[0_25px_70px_rgba(17,24,39,0.28)] md:p-8">
+        <div className="mb-8 overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#0071FA_0%,#005FCC_100%)] p-6 text-white shadow-[0_25px_70px_rgba(0,113,250,0.25)] md:p-8">
 
           <div className="relative isolate overflow-hidden rounded-[28px] border border-white/15 bg-white/5 p-4 md:p-6">
 
@@ -3046,11 +3045,6 @@ lokasi_kecamatan_desa: [
 
               <div className="max-w-xl">
 
-                <span className="inline-flex rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-white/90">
-
-                  Layanan Pengaduan
-
-                </span>
 
                 <h1 className="mt-4 text-3xl font-black tracking-tight md:text-4xl">
 
@@ -3112,7 +3106,7 @@ lokasi_kecamatan_desa: [
 
                   <div className="space-y-3 text-center">
 
-                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-[#dc2626] shadow-lg">
+                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-[#0071FA] shadow-lg">
 
                       <svg
 
@@ -3185,14 +3179,10 @@ lokasi_kecamatan_desa: [
                     className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
 
                       isActive
-
-                        ? "bg-white text-[#dc2626] shadow-lg shadow-red-900/20"
-
-                        : isDone
-
-                          ? "bg-red-500 text-white"
-
-                          : "bg-white/10 text-white/80"
+  ? "bg-white text-[#0071FA] shadow-lg shadow-blue-900/20"
+  : isDone
+    ? "bg-[#0071FA] text-white"
+    : "bg-white/10 text-white/80"
 
                     }`}
 
@@ -3216,7 +3206,7 @@ lokasi_kecamatan_desa: [
 
                       className={`truncate text-sm font-semibold ${
 
-                        isActive ? "text-white" : "text-red-100"
+                        isActive ? "text-white" : "text-blue-100"
 
                       }`}
 
@@ -3226,7 +3216,7 @@ lokasi_kecamatan_desa: [
 
                     </p>
 
-                    <p className="truncate text-xs text-red-100/80">
+                    <p className="truncate text-xs text-blue-100/80">
 
                       {step.caption}
 
@@ -3294,7 +3284,7 @@ lokasi_kecamatan_desa: [
 
             <motion.div
 
-              className="h-full rounded-full bg-[#111827]"
+              className="h-full rounded-full bg-[#0071fa]"
 
               initial={{ width: 0 }}
 
@@ -3460,7 +3450,7 @@ lokasi_kecamatan_desa: [
 
                 onClick={goNext}
 
-                className="rounded-full bg-[#111827] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(17,24,39,0.18)] transition hover:scale-[1.01] hover:bg-[#1f2937]"
+                className="rounded-full bg-[#0071FA] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(0,113,250,0.2)] transition hover:scale-[1.01] hover:bg-[#005FCC]"
 
               >
 
@@ -3476,9 +3466,7 @@ lokasi_kecamatan_desa: [
 
                 disabled={isSubmitting}
 
-                className="rounded-full bg-[#dc2626] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(220,38,38,0.2)] transition hover:scale-[1.01] hover:bg-[#b91c1c] disabled:cursor-not-allowed disabled:opacity-70"
-
-              >
+                className="rounded-full bg-[#0071FA] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(0,113,250,0.2)] transition hover:scale-[1.01] hover:bg-[#005FCC] disabled:cursor-not-allowed disabled:opacity-70">
 
                 {isSubmitting
 
