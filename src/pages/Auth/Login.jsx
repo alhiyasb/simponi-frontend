@@ -243,14 +243,7 @@ export default function Login() {
 
             <div className="relative z-10 flex h-full flex-col">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/5 text-lg font-bold">
-                  S
-                </div>
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#D9D9D9]">
-                    SIMPONI
-                  </p>
-                </div>
+              
               </div>
 
               <div className="mt-12 max-w-md">

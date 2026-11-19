@@ -9,7 +9,7 @@ const contactItems = [
     icon: '☎',
   },
   {
-    value: 'helpdesk@simpani.go.id',
+    value: 'helpdesk@simponi.go.id',
     detail: 'Balasan dalam 1x24 jam kerja',
     icon: '✉',
   },

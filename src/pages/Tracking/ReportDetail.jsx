@@ -5,13 +5,40 @@ import Footer from "../../components/layout/Footer";
 import { getReportDetail } from "../../services/api";
 import { useParams, useNavigate } from "react-router-dom";
 
+
 const statusConfig = {
-  Diajukan: { label: "Diajukan", class: "border-slate-200 bg-white text-slate-800", icon: "📨", progress: 25 },
-  Diverifikasi: { label: "Diverifikasi", class: "border-slate-300 bg-slate-100 text-slate-800", icon: "🔍", progress: 50 },
-  Diproses: { label: "Diproses", class: "border-red-200 bg-red-50 text-red-700", icon: "⚙️", progress: 75 },
-  Selesai: { label: "Selesai", class: "border-black bg-black text-white", icon: "✅", progress: 100 },
-  Ditolak: { label: "Ditolak", class: "border-red-200 bg-red-50 text-red-700", icon: "❌", progress: 0 },
+  Diajukan: {
+    label: "Diajukan",
+    class: "border-slate-200 bg-white text-slate-800",
+    icon: "📨",
+    progress: 25,
+  },
+  Diverifikasi: {
+    label: "Diverifikasi",
+    class: "border-blue-200 bg-blue-50 text-[#0071FA]",
+    icon: "🔍",
+    progress: 50,
+  },
+  Diproses: {
+    label: "Diproses",
+    class: "border-blue-200 bg-blue-50 text-[#0071FA]",
+    icon: "⚙️",
+    progress: 75,
+  },
+  Selesai: {
+    label: "Selesai",
+    class: "border-[#0071FA] bg-[#0071FA] text-white",
+    icon: "✅",
+    progress: 100,
+  },
+  Ditolak: {
+    label: "Ditolak",
+    class: "border-red-200 bg-red-50 text-red-700",
+    icon: "❌",
+    progress: 0,
+  },
 };
+
 
 const defaultStatus = { label: "Tidak diketahui", class: "border-slate-200 bg-slate-50 text-slate-700", icon: "❓", progress: 0 };
 
@@ -167,7 +194,9 @@ export default function ReportDetailPage() {
         <main className="mx-auto max-w-4xl px-4 pb-20 pt-28">
           <div className={`rounded-[28px] p-8 text-center ${error ? "border border-red-200 bg-red-50" : "border border-slate-200 bg-white"}`}>
             <p className={error ? "mb-4 text-red-700" : "text-slate-600"}>{error || "Laporan tidak ditemukan"}</p>
-            <button onClick={handleBack} className="rounded-full bg-[#111827] px-6 py-3 text-sm font-semibold text-white hover:bg-[#1f2937]">Kembali</button>
+            <button onClick={handleBack} className="rounded-full bg-[#0071FA] px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700">
+              Kembali
+          </button>
           </div>
         </main>
         <Footer />
@@ -278,7 +307,7 @@ export default function ReportDetailPage() {
             </button>
           </div>
 
-          <section className="print-card rounded-[30px] border border-slate-200 bg-[#111827] p-6 text-white shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
+         <section className="print-card rounded-[30px] border border-[#0071FA] bg-[#0071FA] p-6 text-white shadow-[0_18px_50px_rgba(0,113,250,0.20)]">
             <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{cfg.icon}</span>
@@ -294,9 +323,14 @@ export default function ReportDetailPage() {
             </div>
             <div>
               <div className="mb-2 flex justify-between text-sm text-slate-300"><span>Progress</span><b className="text-white">{cfg.progress}%</b></div>
-              <div className="print-progress h-3 overflow-hidden rounded-full bg-white/10">
-                <div style={{ width: `${cfg.progress}%` }} className="print-progress-fill h-full rounded-full bg-[#dc2626]" />
-              </div>
+              
+<div className="print-progress h-3 overflow-hidden rounded-full bg-white/30">
+  <div
+    style={{ width: `${cfg.progress}%` }}
+    className="print-progress-fill h-full rounded-full bg-white transition-all duration-500"
+  />
+</div>
+
               <div className="mt-2 flex justify-between text-[10px] text-slate-300"><span>Diajukan</span><span>Diverifikasi</span><span>Diproses</span><span>Selesai</span></div>
             </div>
           </section>
@@ -344,7 +378,7 @@ export default function ReportDetailPage() {
               <h2 className="mb-4 text-lg font-bold text-slate-900">Dokumen Pendukung</h2>
               <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <p className="text-sm text-slate-500">Dokumen Pendukung</p>
-                <a href={dokumenPendukungUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex text-sm font-semibold text-red-600 hover:underline">Lihat Dokumen</a>
+                <a href={dokumenPendukungUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex text-sm font-semibold text-[#0071FA] hover:underline">Lihat Dokumen</a>
               </div>
             </section>
           )}
@@ -354,7 +388,7 @@ export default function ReportDetailPage() {
             <div className="border-l-2 border-slate-200 pl-4">
               {histories.length ? histories.map((item, index) => (
                 <motion.div key={item.id || index} className="relative mb-6 last:mb-0">
-                  <div className="absolute left-[-6px] top-1 h-3 w-3 rounded-full border-2 border-white bg-[#111827]" />
+                  <div className="absolute left-[-6px] top-1 h-3 w-3 rounded-full border-2 border-white bg-[#0071FA]" />
                   <p className="print-muted text-sm text-slate-500">{formatDate(item.created_at)}</p>
                   <p className="mt-1 font-semibold text-slate-900">{item.new_status || "Perubahan Status"}</p>
                   {item.note && <p className="mt-1 text-slate-600">{item.note}</p>}

@@ -1,7 +1,7 @@
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getNews } from "../../services/api";
-import defaultNewsImage from "../../assets/images/seminar.jpeg";
 
 const formatDate = (dateString) => {
   if (!dateString) return "Baru-baru ini";
@@ -24,7 +24,64 @@ const stripHtml = (text = "") =>
     .replace(/\s+/g, " ")
     .trim();
 
-export function NewsCardGrid({ items, loading, error, onRetry }) {
+// Mengambil gambar dari berbagai kemungkinan field API
+const getNewsImage = (item) => {
+  const candidates = [
+    item.image,
+    item.image_url,
+    item.thumbnail,
+    item.thumbnail_url,
+    item.urlToImage,
+    item.url_to_image,
+    item.gambar,
+    item.foto,
+    item.enclosure?.url,
+    item.media?.url,
+  ];
+
+  const image = candidates.find(
+    (value) =>
+      typeof value === "string" &&
+      value.trim() !== ""
+  );
+
+  if (!image) return null;
+
+  if (
+    image.startsWith("http://") ||
+    image.startsWith("https://")
+  ) {
+    return image;
+  }
+
+  return null;
+};
+
+// Placeholder ketika berita tidak mempunyai gambar
+function ImagePlaceholder({ title }) {
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 p-6 text-center">
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#0071FA] text-3xl text-white shadow-lg shadow-blue-200">
+        📰
+      </div>
+
+      <p className="mt-4 line-clamp-2 max-w-[220px] text-sm font-semibold text-slate-600">
+        {title || "Berita SIMPONI"}
+      </p>
+
+      <span className="mt-2 text-xs text-slate-400">
+        Gambar belum tersedia
+      </span>
+    </div>
+  );
+}
+
+export function NewsCardGrid({
+  items,
+  loading,
+  error,
+  onRetry,
+}) {
   if (loading) {
     return (
       <div className="mt-10 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
@@ -34,6 +91,7 @@ export function NewsCardGrid({ items, loading, error, onRetry }) {
             className="overflow-hidden rounded-[14px] border border-[#E5E7EB] bg-white shadow-[0_8px_20px_rgba(15,23,42,0.04)]"
           >
             <div className="h-[220px] animate-pulse bg-neutral-200" />
+
             <div className="space-y-3 p-5">
               <div className="h-3 w-28 animate-pulse rounded bg-neutral-200" />
               <div className="h-5 w-full animate-pulse rounded bg-neutral-200" />
@@ -52,9 +110,11 @@ export function NewsCardGrid({ items, loading, error, onRetry }) {
         <p className="text-base font-medium text-[#1F2937]">
           Berita sedang tidak dapat dimuat.
         </p>
+
         <p className="mt-2 text-sm text-[#6B7280]">
           Silakan coba beberapa saat lagi.
         </p>
+
         <button
           type="button"
           onClick={onRetry}
@@ -68,74 +128,87 @@ export function NewsCardGrid({ items, loading, error, onRetry }) {
 
   return (
     <div className="mt-10 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
-      {items.map((item, index) => (
-        <article
-          key={`${item.link}-${item.title}-${index}`}
-          className="group overflow-hidden rounded-[14px] border border-[#E5E7EB] bg-white shadow-[0_8px_20px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-[#0071FA] hover:shadow-[0_14px_30px_rgba(0,113,250,0.12)]"
-        >
-          {/* Gambar Berita */}
-          <div className="relative h-[230px] overflow-hidden bg-gray-100">
-            <img
-              src={item.image || defaultNewsImage}
-              alt={item.title || "Gambar berita"}
-              loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              onError={(event) => {
-                event.currentTarget.onerror = null;
-                event.currentTarget.src = defaultNewsImage;
-              }}
-            />
+      {items.map((item, index) => {
+        const imageUrl = getNewsImage(item);
 
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-          </div>
+        return (
+          <article
+            key={`${item.link}-${item.title}-${index}`}
+            className="group overflow-hidden rounded-[14px] border border-[#E5E7EB] bg-white shadow-[0_8px_20px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-[#0071FA] hover:shadow-[0_14px_30px_rgba(0,113,250,0.12)]"
+          >
+            {/* Gambar Berita */}
+            <div className="relative h-[230px] overflow-hidden bg-gray-100">
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={item.title || "Gambar berita"}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  onError={(event) => {
+                    event.currentTarget.style.display = "none";
+                    event.currentTarget.nextElementSibling.style.display = "flex";
+                  }}
+                />
+              ) : null}
 
-          {/* Konten Berita */}
-          <div className="p-5">
-            <div className="flex flex-wrap items-center gap-2 text-[12px] text-[#6B7280] transition-colors duration-200 group-hover:text-[#0071FA]">
-              <span className="inline-flex items-center justify-center">
-                🗓️
-              </span>
+              <div
+                className="absolute inset-0"
+                style={{ display: imageUrl ? "none" : "flex" }}
+              >
+                <ImagePlaceholder title={item.title} />
+              </div>
 
-              <span>{formatDate(item.published_at)}</span>
-              <span className="mx-1">•</span>
-              <span>{item.source || "Sumber berita"}</span>
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </div>
 
-            <h3
-              className="mt-3 text-[18px] font-bold leading-[1.45] text-[#111827] transition-colors duration-200 group-hover:text-[#0071FA]"
-              style={{
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-              }}
-            >
-              {item.title}
-            </h3>
+            {/* Konten Berita */}
+            <div className="p-5">
+              <div className="flex flex-wrap items-center gap-2 text-[12px] text-[#6B7280] transition-colors duration-200 group-hover:text-[#0071FA]">
+                <span>🗓️</span>
 
-            <p
-              className="mt-3 text-sm leading-[1.7] text-[#6B7280] transition-colors duration-200 group-hover:text-[#0071FA]"
-              style={{
-                display: "-webkit-box",
-                WebkitLineClamp: 3,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-              }}
-            >
-              {stripHtml(item.description || item.title)}
-            </p>
+                <span>{formatDate(item.published_at)}</span>
 
-            <a
-              href={item.link}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-5 inline-flex rounded-full border border-[#D1D5DB] px-5 py-2 text-sm font-medium text-[#111827] transition-all duration-200 hover:border-[#0071FA] hover:bg-[#EFF6FF] hover:text-[#0071FA]"
-            >
-              Lihat Detail
-            </a>
-          </div>
-        </article>
-      ))}
+                <span className="mx-1">•</span>
+
+                <span>{item.source || "Sumber berita"}</span>
+              </div>
+
+              <h3
+                className="mt-3 text-[18px] font-bold leading-[1.45] text-[#111827] transition-colors duration-200 group-hover:text-[#0071FA]"
+                style={{
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }}
+              >
+                {item.title}
+              </h3>
+
+              <p
+                className="mt-3 text-sm leading-[1.7] text-[#6B7280] transition-colors duration-200 group-hover:text-[#0071FA]"
+                style={{
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }}
+              >
+                {stripHtml(item.description || item.title)}
+              </p>
+
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-5 inline-flex rounded-full border border-[#D1D5DB] px-5 py-2 text-sm font-medium text-[#111827] transition-all duration-200 hover:border-[#0071FA] hover:bg-[#EFF6FF] hover:text-[#0071FA]"
+              >
+                Lihat Detail
+              </a>
+            </div>
+          </article>
+        );
+      })}
     </div>
   );
 }
@@ -157,16 +230,22 @@ export default function StatisticSection() {
 
     getNews({ limit: 3 })
       .then((newsItems) => {
-        if (!cancelled) setItems(newsItems);
+        if (!cancelled) {
+          setItems(newsItems);
+        }
       })
       .catch((err) => {
         if (!cancelled) {
-          setError(err.message || "Terjadi kesalahan saat mengambil berita.");
+          setError(
+            err.message || "Terjadi kesalahan saat mengambil berita."
+          );
           setItems([]);
         }
       })
       .finally(() => {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       });
 
     return () => {

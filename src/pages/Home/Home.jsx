@@ -8,7 +8,6 @@ import ServiceSection from "../../components/landing/ServiceSection";
 import FeatureSection from "../../components/landing/FeatureSection";
 import StatisticSection from "../../components/landing/StatisticSection";
 
-
 export default function Home() {
   return (
     <div>
@@ -16,15 +15,10 @@ export default function Home() {
 
       <main>
         <HeroSection />
-
         <MarqueeSection />
-
         <ServiceSection />
-
         <FeatureSection />
-
-              <VisionSection />
-
+        <VisionSection />
         <StatisticSection />
       </main>
 
